@@ -1,0 +1,39 @@
+#set($pageTitle = "DMS - data preview for $update")
+
+#set($update = $dms.metadataManager.getUpdateRecord($update))
+#set($source = $dms.previewUpdate($update))
+
+#set($componentRoot="$root/services/$service.shortID/components/$component.shortID")
+
+#parse("header.vm")
+#parse("navbar.vm")
+
+<div id="page-wrapper" role="main">
+    <div class="container-fluid">
+        <ol class="breadcrumb" role="menubar">
+            <li><a href="$root/services"><i class="fa fa-bars"></i></a></li>
+            <li><a href="$root/services/$service.shortID">$service.label</a></li>
+            <li><a href="$componentRoot">$component.label</a></li>
+            <li><a href="$componentRoot/update/$update.shortID">$update.label</a></li>
+            <li class="active"><a href="$root/$uri">Preview</a></li>
+        </ol>   
+
+        <h1>Preview publishable data</h1>
+
+        #if ($resource) 
+            #parse("preview-resource.vm")
+        #elseif ($class)
+            #parse("preview-instances.vm")
+        #else
+            #if($mode == "byinstance")
+                #parse("preview-allinstances.vm")
+            #else
+                #parse("preview-classes.vm")
+            #end
+        #end
+
+    </div>
+</div>
+<!-- /#page-wrapper -->
+
+#parse("footer.vm")

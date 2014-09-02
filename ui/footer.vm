@@ -1,0 +1,21 @@
+      <footer>
+        <div class="pull-right">Developed by <a href="http://www.epimorphics.com/">Epimorphics Ltd</a></div>
+      </footer>
+   </div>
+    <!-- /#wrapper -->
+
+    <script type="text/javascript" src="$assets/js/jquery.form.js"></script>
+    <script src="$assets/js/bootstrap.min.js"></script>
+    <script src="$assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+    <script src="$assets/js/dms.js"></script>
+
+    #if($extraJS)
+      #foreach($file in $extraJS.split(","))
+        <script type="text/javascript" src="$assets/js/$file.trim()"></script>
+      #end
+    #end
+
+  </body>
+
+</html>

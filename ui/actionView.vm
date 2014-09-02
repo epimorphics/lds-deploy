@@ -1,0 +1,90 @@
+## Displays the body of an action execution, dyanamically updating progress bar and message
+## Args:     $execution  - the action execution object
+
+#set($monitor = $execution.monitor)
+#set($finished = $monitor.state.toString() == "Terminated")
+#set($aeURI="$root/services/$service.shortID/execution/$execution.id")
+<div id="actionview" data-target="$root/$uri#if($returnURL)?returnURL=$returnURL#end" data-messages="$aeURI/messages" > 
+    ## Summary and progress bar
+    <div class="row">
+        <div class="col-md-5">
+            <div class="row">
+                <span class="col-md-3"><strong>Action:</strong></span>
+                <span class="col-md-9">$execution.action.name</span>
+            </div>
+            <div class="row">
+                <span class="col-md-3"><strong>ID:</strong></span>
+                <span class="col-md-9">$execution.id</span>
+            </div>
+            #if($execution.parameters.username)
+            <div class="row">
+                <span class="col-md-3"><strong>Started by:</strong></span>
+                <span class="col-md-9">$execution.parameters.username.value()</span>
+            </div>
+            #end
+            <div class="row">
+                <span class="col-md-3"><strong>Started:</strong></span>
+                <span class="col-md-9">$lib.printDatetime($execution.startTime)</span>
+            </div>
+            #if($finished)
+            <div class="row">
+                <span class="col-md-3"><strong>Finished:</strong></span>
+                <span class="col-md-9">$lib.printDatetime($execution.finishTime)</span>
+            </div>
+            <div class="row">
+                <span class="col-md-3"><strong>Duration:</strong></span>
+                <span class="col-md-9">$execution.duration ms</span>
+            </div>
+            #end
+        </div>
+        <div class="col-md-7 vcenter">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="progress" class="progress">
+                        <div class="progress-bar #if($monitor.succeeded())#if($finished)progress-bar-success#end #else progress-bar-danger#end" role="progressbar" aria-valuenow="$monitor.progress" aria-valuemin="0" aria-valuemax="100" style="width: ${monitor.progress}%;">
+                            <span class="sr-only">${monitor.progress}% Complete</span>
+                            #if($finished)
+                            <span>#if($monitor.succeeded()) Completed #else Failed #end</span>
+                            #end
+                        </div>
+                    </div>                
+                </div>
+            </div>
+            #if(!$finished)
+            <div class="row">
+                <div class="col-md-4">
+                    <form class="form-inline" role="form"  action="$aeURI/requestNotify" method="post">
+                        <input type="hidden" name="event" value="complete">
+                        <button type="submit" class="btn btn-default">Notify me when finished</button>
+                    </form>
+                </div>
+                <div class="col-md-4">
+                    <form class="form-inline" role="form"  action="$aeURI/requestNotify" method="post">
+                        <input type="hidden" name="event" value="error">
+                        <button type="submit" class="btn btn-default">Notify me if fails</button>
+                    </form>
+                </div>
+                <div class="col-md-4">
+                    <form class="form-inline" role="form"  action="$aeURI/cancel" method="post">
+                        <button type="submit" class="btn btn-default">Cancel action</button>
+                    </form>
+                </div>
+            </div>
+            #end
+        </div>
+    </div>  <!-- summary and progress row -->
+
+    ## Messages display
+    <div id="messages" class="space-above blob">
+        #if($finished)
+            #foreach($message in $monitor.messages)
+                <div class="progress-message $message.type">$message</div>
+            #end
+        #end
+    </div>
+
+    #if(!$finished)
+    <script type="text/javascript" src="$assets/js/actionview.js"></script>
+    #end
+
+</div>

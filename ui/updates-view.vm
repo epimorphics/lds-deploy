@@ -1,0 +1,63 @@
+## Partial to display a set of updates for some data component
+##  $service        the DataService
+##  $component      the DataComponent
+##  $updates        the list of updates to display
+##  $componentRoot  the relative URI of the display page for the data component
+
+        <div class="table-responsive">
+            #set($pubsets = $service.listPublicationSets())
+            <table class="table table-striped table-bordered table-hover" id="uploads-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Base name</th>
+                        <th>Size</th>
+                        <th>Converted</th>
+                        #foreach($ps in $pubsets)
+                        <th>$ps.label</th>
+                        #end
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    #foreach($update in $updates)
+                    #if($foreach.count > 100) #break #end
+                    #set($updateRoot = "$componentRoot/update/$update.iD")
+                    <tr>
+                        <td>
+                            <a href="$updateRoot">
+                                $lib.printDatetime( $update.uploadActivityRecord.endTime )
+                            </a>
+                        </td>
+                        <td>$update.basename</td>
+                        <td>$update.upload.fileSize</td>
+                        <td>
+                            #if( $update.convertActivityRecord )
+                            #set( $ar = $update.convertActivityRecord )
+                            <a href="$root/services/$service.shortID/execution/$ar.executionID">
+                                #if( $ar.endTime != -1 )
+                                <i class="fa fa-check text-success"></i>
+                                #else
+                                <i class="fa fa-exclamation-circle text-danger"></i>
+                                #end
+                            </a>
+                            #end
+                            #if( $update.publishable )
+                            <a class="btn btn-default btn-sm" role="button" href="$updateRoot/preview">View data</a>
+                            #end
+                        </td>
+                        #foreach($ps in $pubsets)
+                            <td>#if( $update.publishable ) #pubform( $update, $ps ) #end</td>
+                        #end
+                        <td>
+                            #if (! $update.isPublished())
+                            <form class="form-inline" role="form"  action="$updateRoot/delete" method="post">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-times-circle text-danger"></i></button>
+                            </form>
+                            #end
+                        </td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+        </div>

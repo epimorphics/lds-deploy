@@ -1,0 +1,19 @@
+#set($pageTitle = "DMS - list users")
+#parse("header.vm")
+#parse("navbar.vm")
+
+<div id="page-wrapper" role="main">
+    <div class="container-fluid">   
+        <h1>Pick a user to administer</h1>
+        #foreach($user in $userstore.listUsers(""))
+            <div class="row">
+                <div class="col-md-offset-1 col-md-6">
+                    <a href="$root/system/security/administerUser?userid=$lib.pathEncode($user.id)">$user.name</a>
+                </div>
+            </div>
+        #end
+    </div> <!-- /.container-fluid -->
+</div>
+<!-- /#page-wrapper -->
+
+#parse("footer.vm")

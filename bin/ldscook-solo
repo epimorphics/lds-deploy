@@ -1,0 +1,24 @@
+#!/bin/bash
+#      ldscook [runlist]
+# Run from server directory to run chef solo configuration, 
+# either the default runlist for the node or the specified runlist
+# e.g.
+#       ldscook recipe[epi_base]
+set -o errexit
+
+if [[ $# = 1 ]]; then
+    readonly ARG="-o $1"
+else
+    readonly ARG=""
+fi
+
+if [[ ! -a aws-instance.json ]]; then
+    echo "Can't find AWS config, must run from server directory"
+    exit 1;
+fi
+
+readonly IP=$(jq -r ".Instances[0].PublicDnsName" < aws-instance.json)
+readonly serverDir=$(pwd)
+cd /opt/dms/conf/chef
+
+knife solo cook ubuntu@$IP $serverDir/node.json --identity-file /var/opt/dms/.ssh/lds.pem --yes $ARG

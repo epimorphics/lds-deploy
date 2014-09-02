@@ -1,0 +1,145 @@
+## Global macros
+
+## Determine the href value to use in a link to the given resource, reference URIs go external
+#macro(linkhref $res)?resource=$lib.pathEncode($res.uRI)#end
+
+## Inject a link to the given resource
+#macro(linkfor $res)
+   <a href="#linkhref($res)" title="$res.uRI">$res.label</a>
+#end
+
+## Render a value either as a link (if a resource) or as a (trimmed) lexical form
+#macro(render $v)
+      #if($v.isAnon())
+        []
+      #elseif($v.isResource())
+        #linkfor($v)
+      #elseif($v.isLiteral())
+        $lib.escapeHtml($v.asLiteral().lexicalForm, 1000)
+      #else
+        null
+      #end
+#end
+
+## Display a description for a resource if one is available, otherwise show the default (which can be empty)
+#macro(description $r $default)
+  #if($r.getPropertyValue("dct:description"))
+    <p>$r.getLocalizedValue("dct:description")</p>
+  #else$default#end
+#end
+
+## Inject a plain link for a resource - no encoding or mapping to the host
+#macro(link $uri)
+  <a href="$uri">$uri</a>
+#end
+
+## Display a property value in the RDF browser
+#macro(resentry $v)
+  #if($v.isList())
+    <ul>
+      #foreach($e in $v.asList())
+        <li>#resentry($e)</li>
+      #end
+    </ul>
+  #elseif($v.isAnon())
+    #restable($v)
+  #else
+    #render($v)
+  #end
+#end
+
+## Display a set of property/value pairs in the RDF browser
+#macro(restable $res $classes)
+  <table class="table $classes">
+##    <thead><tr><th>Property</th><th>Value</th></tr></thead>
+    <tbody>
+      #foreach($pv in $res.listProperties())
+        <tr>
+          <td> <strong title="$pv.getProp().uRI">$pv.getProp().label</strong> </td>
+          <td>
+            #foreach($v in $pv.getSortedValues())
+              #if($v.isList())
+                  (#foreach($e in $v.asList())#resentry($e)#if( $foreach.hasNext ), #end#end)
+              #elseif($v.isAnon())
+                #restable($v)
+              #else
+                #resentry($v)
+              #end
+              #if( $foreach.hasNext )|#end
+              #if( $foreach.count > 8 ) ... #break #end
+            #end
+            <br />
+          </td>
+        </tr>
+      #end
+    </tbody>
+  </table>
+
+#end
+
+## Debug utility to display the roots of a model
+#macro(showmodel $model)
+  #foreach($root in $model.listSubjects())
+    <h4>Root: $root.uRI</h4>
+    #restable($root, "table-condensed table-bordered")
+  #end
+#end
+
+## Publish/unpublish form - assumes $root, $component and $service set
+#macro(pubform $update $ps)
+  #set($updateRoot = "$root/services/$service.shortID/components/$component.shortID/update/$update.iD")
+  #if ( $update.isPublishedIn($ps) )
+    <i class="fa fa-check text-success"></i>
+    <form class="inline form-inline" role="form" action="$updateRoot/unpublish" method="post">
+      <input type="hidden" value="$ps.uRI" name="publicationSet" />
+      <button type="submit" class="btn btn-default btn-sm">remove</button>
+    </form>
+  #else
+    <form class="inline form-inline" role="form" action="$updateRoot/publish" method="post">
+      <input type="hidden" value="$ps.uRI" name="publicationSet" />
+      <button type="submit" class="btn btn-default btn-sm">publish</button>
+    </form>
+  #end
+#end
+
+## List of updates which are published or unpublished by an action
+## Assumes context of execution.vm so $update, $component and $componentRoot are bound
+#macro(listExecutionPublishes $list $op)
+        #foreach( $updateV in $list )
+            #set( $update = $mm.getUpdateRecord( $updateV ) )
+            #set( $component = $update.component )
+            #set($service = $component.service)
+            #set($componentRoot="$root/services/$service.shortID/components/$component.shortID")
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <span class="col-md-3"><strong>$op:</strong></span>
+                        <span class="col-md-9"><a href="$componentRoot/update/$update.iD">$update</a> to <a href="$componentRoot">$component.label</a></span>
+                    </div>
+                </div>
+            </div>
+        #end
+#end
+
+## List updates published or unpublished by a PublishRecord
+#macro(listRecordPublishes $list $op)
+      #foreach( $update in $list )
+          #set( $component = $update.component )
+          #set($service = $component.service)
+          #set($componentRoot="$root/services/$service.shortID/components/$component.shortID")
+          <div class="row">
+              <div class="col-md-8">
+                  <div class="row">
+                      <span class="col-md-3"><strong>$op:</strong></span>
+                      <span class="col-md-9"><a href="$componentRoot/update/$update.iD">$update</a> to <a href="$componentRoot">$component.label</a></span>
+                  </div>
+              </div>
+          </div>
+      #end
+#end
+
+#macro(linkForUpdate $update)
+    #set( $component = $update.component )
+    #set($componentRoot="$root/services/$service.shortID/components/$component.shortID")
+    <a href="$componentRoot/update/$update.iD">$update</a>
+#end

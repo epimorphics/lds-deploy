@@ -1,0 +1,35 @@
+{
+    "name" : "hierarchical-skos",
+    "description" : "Template hierarchical code lists up to four levels. Use columns label1, label2 .. label4 for lables and provide a unique notation for each entry. Optionally provide description, node and definition columns",
+    "type" : "Composite",
+    "required" : ["notation"],
+    "optional" : ["label1", "label2","label3","label4","description", "note", "definition"],
+    "oneOffs" : {
+        "@id" : "{$dataset}",
+        "<rdf:type>" : [ "<reg:Register>", "<skos:ConceptScheme>"],
+        "<reg:inverseMembershipPredicate>" : "<skos:inScheme>",
+        "<http://purl.org/linked-data/registry-ui#hierarchyChildProperty>" : "<skos:narrower>",
+        "<http://purl.org/linked-data/registry-ui#hierarchyRootProperty>" : "<skos:topConceptOf>"
+    },
+    "templates" : {
+        "parentLink" : "<skos:broader>" ,
+        "childLink" : "<skos:narrower>" ,
+        "invTopLink" : "<skos:topConceptOf>",
+        "0" : { 
+            "bind" : {"notation" : "{notation.toSegment()}", "label" : "{label1}"},
+            "template" : "simple-skos" 
+        },
+        "1" : { 
+            "bind" : {"notation" : "{notation.toSegment()}", "label" : "{label2}"},
+            "template" : "simple-skos" 
+        },
+        "2" : { 
+            "bind" : {"notation" : "{notation.toSegment()}", "label" : "{label3}"},
+            "template" : "simple-skos" 
+        },
+        "3" : { 
+            "bind" : {"notation" : "{notation.toSegment()}", "label" : "{label4}"},
+            "template" : "simple-skos" 
+        }
+    }
+}

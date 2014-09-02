@@ -1,0 +1,10 @@
+[
+  {
+    "@name" : "default/convertUpload",
+    "@javaclass" : "com.epimorphics.dms.dc.ConversionAction"
+  },
+  {
+    "@name" : "default/publish",
+    "@javaclass" : "com.epimorphics.dms.publication.DirectPublishAction"
+  }
+]

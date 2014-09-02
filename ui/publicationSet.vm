@@ -1,0 +1,104 @@
+#set($pageTitle = "DMS - " + $service.label + " - " + $pset.label)
+#set($extraCSS="jquery.fileupload.css")
+#parse("header.vm")
+#parse("navbar.vm")
+
+## #set($psRoot="$root/services/$service.shortID/publicationSets/$pset.shortID")
+#set($psRoot="$pset.shortID")
+
+<div id="page-wrapper" role="main">
+    <div class="container-fluid">
+        <ol class="breadcrumb" role="menubar">
+            <li><a href="$root/services"><i class="fa fa-bars"></i></a></li>
+            <li><a href="$root/services/$service.shortID">$service.label</a></li>
+            <li class="active"><a href="$psRoot">$pset.label</a></li>
+        </ol>   
+
+        <h1 class="page-header">Environment: $pset.label</h1>
+        <p>$pset.description</p>
+
+        <h2>Image and backups</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Effective date</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($image in $pset.listImages())
+                <tr>
+                    <td><a href="$psRoot/images?image=$lib.pathEncode($image.uRI)">$image.label</a></td>
+                    <td>$image.effectiveDateString</td>
+                    <td>
+                        <form class="inline form-inline" role="form" action="$psRoot/images/delete" method="post">
+                            <input type="hidden" name="image" value="$image.uRI">
+                            <button type="submit" class="btn btn-default btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+
+        <h2>Server tiers</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tier</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($tier in $pset.listTiers())
+                    #set($status = $tier.status)
+                <tr>
+                    <td><a href="$psRoot/tiers/$tier.shortID">$tier.label</a></td>
+                    <td>#if ($status.status)
+                        <span #if($status.status == "Error")class="text-danger"#end>$status.status ($status.message)</span> 
+                        #else Ready #end</td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+
+        <h2>Operations</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <form class="inline form-inline" role="form" action="$pset.shortID/republish" method="post">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="sumit">Republish recent</button>
+                        </span>
+                        <input type="text" name="period" size="6" class="form-control" value="120">
+                        <span class="input-group-addon">hours</span>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-7 col-md-offset-1">
+                #foreach($other in $service.listPublicationSets())
+                    <span>
+                        #if($other != $pset)
+                            <form class="inline form-inline" role="form" action="$pset.shortID/replace" method="post">
+                                <input type="hidden" name="replacement" value="$other.shortID">
+                                <button type="submit" class="btn btn-danger">Replace data from $other.label</button>
+                            </form>
+                        #end
+                    </span>
+                #end
+            </div>
+        </div>
+
+##        <h2>Debug - all publications</h2>
+##        <ul>
+##        #foreach($pub in $pset.listPublicationsSince(0))
+##            <li>$pub.updateSet.published - $pub.updateSet.unpublished</li>
+##        #end
+##        </ul>
+    </div> <!-- /.container-fluid -->
+</div>
+<!-- /#page-wrapper -->
+
+#set($extraJS="vendor/jquery.ui.widget.js, jquery.iframe-transport.js, jquery.fileupload.js, plugins/dataTables/jquery.dataTables.js, plugins/dataTables/dataTables.bootstrap.js, upload.js")
+#parse("footer.vm")

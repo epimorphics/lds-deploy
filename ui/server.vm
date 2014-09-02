@@ -1,0 +1,104 @@
+#set($pageTitle = "DMS - " + $service.label + " - " + $tier.label + " - " + $server.name)
+#parse("header.vm")
+#parse("navbar.vm")
+#set($mm = $dms.metadataManager)
+
+#set($psRoot="$root/services/$service.shortID/publicationSets/$pset.shortID")
+
+<div id="page-wrapper" role="main">
+    <div class="container-fluid">
+        <ol class="breadcrumb" role="menubar">
+            <li><a href="$root/services"><i class="fa fa-bars"></i></a></li>
+            <li><a href="$root/services/$service.shortID">$service.label</a></li>
+            <li><a href="$psRoot">$pset.label</a></li>
+            <li ><a href="$psRoot/tiers/$tier.shortID">$tier.label</a></li>
+            <li class="active"><a href="$server.name">$server.name</a></li>
+        </ol>   
+
+        <h1 class="page-header">Server: $tier.label - $server.name</h1>
+
+        <h2>Status</h2>
+        $server.status #if(!$server.message.isEmpty())($server.message)#end
+
+        #if ($server.status != "Terminated")
+            <h2>Operations</h2>
+            <div>
+                #if ($server.status == "Running")
+                <form class="inline form-inline" role="form" action="$server.name/suspend" method="post">
+                    <button type="submit" class="btn btn-default">Suspend</button>
+                </form>
+                #else
+                <form class="inline form-inline" role="form" action="$server.name/activate" method="post">
+                    <button type="submit" class="btn btn-default">Activate</button>
+                </form>
+                #end
+                <form class="inline form-inline" role="form" action="$server.name/operate" method="post">
+                    <input type="hidden" name="operation" value="configure">
+                    <button type="submit" class="btn btn-default">Configure</button>
+                </form>
+                #if($tier.isPublicationTier())
+                <form class="inline form-inline" role="form" action="$server.name/backup" method="post">
+                    <button type="submit" class="btn btn-default">Backup data</button>
+                </form>
+                #end
+                ##<form class="inline form-inline" role="form" action="$server.name/rebuild" method="post">
+                ##    <button type="submit" class="btn btn-default">Rebuild server</button>
+                ##</form>
+                #foreach($op in $tier.listOperations())
+                    #if(!$op.isTierOnly())
+                        <form class="inline form-inline" role="form" action="$server.name/operate" method="post">
+                            <input type="hidden" name="operation" value="$op.operationName">
+                            <button type="submit" class="btn btn-default">$op.label</button>
+                        </form>
+                    #end
+                #end
+                #if ($server.status != "Running")
+                <form class="inline form-inline" role="form" action="$server.name/terminate" method="post">
+                    <button type="submit" class="btn btn-danger">Terminate</button>
+                </form>
+                #end
+            </div>
+        #end
+
+        <h2>Recent actions</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Action</th>
+                    <th>Argument</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($le in $server.getRecentLogEntries(20))
+                <tr>
+                    <td><a href="$root/services/$service.shortID/execution/$le.aeID?serviceID=$service.shortID">$le.timestamp</a></td>
+                    <td>$le.actionRole</td>
+                    <td>
+                        #if($le.actionRole == "publish")
+                            <a href="$psRoot/viewPublishRecord?uri=$lib.pathEncode($le.arg)">$le.arg</a>
+                        #elseif($le.actionRole == "loadServer" || $le.actionRole == "backupServer")
+                            <a href="$psRoot/images?image=$lib.pathEncode($le.arg)">$le.arg</a>
+                        #else
+                            $le.arg
+                        #end
+                    </td>
+                    <td>#if($le.succeeded())
+                            <span class="text-success"><i class="fa fa-check"></i> ok</span>
+                        #else
+                            <span class="text-danger"><i class="fa fa-times"></i> failed</span>
+                        #end</td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+
+
+        <h2>Monitoring</h2>
+        <p>TODO</p>
+    </div> <!-- /.container-fluid -->
+</div>
+<!-- /#page-wrapper -->
+
+#parse("footer.vm")

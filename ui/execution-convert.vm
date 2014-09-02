@@ -1,0 +1,42 @@
+## Customized action page start for a conversion action
+## Assumes run in context of execution.vm so $parameters have been bound to the execution parameters
+
+        #set($file=$parameters.filename)
+        #set($filename=$lib.regex($file, ".*/([^/]*)")[0])
+        #set($link="$root/services/$service.shortID/components/$component.shortID")
+
+        #set($monitor = $execution.monitor)
+        #set($finished = $monitor.state.toString() == "Terminated")
+
+        <h1 class="page-header">Data conversion: $execution.name</h1>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row">
+                    <span class="col-md-3"><strong>Converting:</strong></span>
+                    <span class="col-md-9">$filename</span>
+                </div>
+                #if($parameters.dataConverter)
+                <div class="row">
+                    <span class="col-md-3"><strong>Using:</strong></span>
+                    <span class="col-md-9">$parameters.dataConverter</span>
+                </div>
+                #end
+                <div class="row">
+                    <span class="col-md-3"><strong>Update record:</strong></span>
+                    <span class="col-md-9">#linkForUpdate($update)</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                #if($finished && $monitor.succeeded())
+                <span>
+                    <a class="btn btn-default btn-sm" role="button" href="$link/update/$update.iD/preview">View data</a>
+                </span>
+                <span>
+                    #pubform( $update, $service.defaultPublicationSet )
+                </span>
+                <span>
+                    <a class="btn btn-default btn-sm" role="button" href="$link/upload">Upload more</a>
+                </span>
+                #end
+            </div>
+        </div>

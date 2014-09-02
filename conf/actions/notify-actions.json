@@ -1,0 +1,20 @@
+[
+  {
+      "@name" : "notifications/create-topic",
+      "@type" : "script",
+      "@script" : "notify/create-topic.sh",
+      "@args" : [ "topicname" ]
+  },
+  {
+      "@name" : "notifications/subscribe-topic",
+      "@type" : "script",
+      "@script" : "notify/subscribe-topic.sh",
+      "@args" : [ "topic", "email" ]
+  },
+  {
+      "@name" : "notifications/send-message",
+      "@type" : "script",
+      "@script" : "notify/send-message.sh",
+      "@args" : [ "topic", "message" ]
+  }
+]

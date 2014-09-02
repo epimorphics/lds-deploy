@@ -1,0 +1,119 @@
+#set($pageTitle = "DMS - " + $service.label + " - " + $tier.label)
+#parse("header.vm")
+#parse("navbar.vm")
+
+#set($psRoot="$root/services/$service.shortID/publicationSets/$pset.shortID")
+
+<div id="page-wrapper" role="main">
+    <div class="container-fluid">
+        <ol class="breadcrumb" role="menubar">
+            <li><a href="$root/services"><i class="fa fa-bars"></i></a></li>
+            <li><a href="$root/services/$service.shortID">$service.label</a></li>
+            <li><a href="$psRoot">$pset.label</a></li>
+            <li class="active"><a href="$tier.shortID">$tier.label</a></li>
+        </ol>   
+
+        <h1 class="page-header">Server Tier: $tier.label</h1>
+        <p>$tier.description</p>
+
+        <h2>Status</h2>
+        #set($status = $tier.status)
+        <span #if($status.status == "Error")class="text-danger"#end>$status.status ($status.message)</span>
+
+
+        <h2>Operations</h2>
+        <div>
+            #if ($tier.state.name() != "Ready")
+            <form class="inline form-inline" role="form" action="$tier.shortID/operate" method="post">
+                <input type="hidden" name="operation" value="prepareTier">
+                <button type="submit" class="btn btn-default">Prepare tier</button>
+            </form>
+            #end
+            <form class="inline form-inline" role="form" action="$tier.shortID/clearState" method="post">
+                <button type="submit" class="btn btn-default">Clear state</button>
+            </form>
+
+            <form class="inline form-inline" role="form" action="$tier.shortID/addServer" method="post">
+                <button type="submit" class="btn btn-primary">Add server</button>
+            </form>
+
+            #if ($tier.state.name() == "Ready")
+            <form class="inline form-inline" role="form" action="$tier.shortID/terminate" method="post">
+                <button type="submit" class="btn btn-danger">Terminate All</button>
+            </form>
+            #end
+            
+            #foreach($op in $tier.listOperations())
+                #if($op.isTierOnly())
+                    <form class="inline form-inline" role="form" action="$tier.shortID/operate" method="post">
+                        <input type="hidden" name="operation" value="$op.operationName">
+                        <button type="submit" class="btn btn-default">$op.label</button>
+                    </form>
+                #end
+            #end
+        </div>
+
+        <h2>Apply to all servers</h2>
+        <div>
+            #foreach($op in $tier.listOperations())
+                #if( ! $op.isTierOnly())
+                    <form class="inline form-inline" role="form" action="$tier.shortID/operateAll" method="post">
+                        <input type="hidden" name="operation" value="$op.operationName">
+                        <button type="submit" class="btn btn-default">$op.label</button>
+                    </form>
+                #end
+            #end
+        </div>
+
+        <h2>Servers</h2>
+        <p>Suspend a server to see repair or other actions.</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Server</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($server in $tier.listServers())
+                    #if ($server.status != "Terminated")
+                    <tr>
+                        <td><a href="$tier.shortID/servers/$server.name">$server.name</a></td>
+                        <td>$server.status ($server.message)</td>
+                        <td>
+                            #if ($server.status == "Running")
+                            <form class="inline form-inline" role="form" action="$tier.shortID/servers/$server.name/suspend" method="post">
+                                <button type="submit" class="btn btn-default">Suspend</button>
+                            </form>
+                            #else
+                            <form class="inline form-inline" role="form" action="$tier.shortID/servers/$server.name/activate" method="post">
+                                <button type="submit" class="btn btn-default">Activate</button>
+                            </form>
+                            <form class="inline form-inline" role="form" action="$tier.shortID/servers/$server.name/operate" method="post">
+                                <input type="hidden" name="operation" value="configure">
+                                <button type="submit" class="btn btn-default">Configure</button>
+                            </form>
+                            #end
+                            <form class="inline form-inline" role="form" action="$tier.shortID/servers/$server.name/backup" method="post">
+                                <button type="submit" class="btn btn-default">Backup data</button>
+                            </form>
+                            #foreach($op in $tier.listOperations())
+                                #if(!$op.isTierOnly())
+                                    <form class="inline form-inline" role="form" action="$tier.shortID/servers/$server.name/operate" method="post">
+                                        <input type="hidden" name="operation" value="$op.operationName">
+                                        <button type="submit" class="btn btn-default">$op.label</button>
+                                    </form>
+                                #end
+                            #end
+                        </td>
+                    </tr>
+                    #end
+                #end
+            </tbody>
+        </table>
+    </div> <!-- /.container-fluid -->
+</div>
+<!-- /#page-wrapper -->
+
+#parse("footer.vm")

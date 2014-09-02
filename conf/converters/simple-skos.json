@@ -1,0 +1,22 @@
+{
+    "name" : "simple-skos",
+    "description" : "Template for generating code lists as SKOS concept schemes. Takes the label and code ('notation') for each concept from the csv, along with optional text description/note/definition.",
+    "type" : "Composite",
+    "required" : ["label", "notation"],
+    "optional" : ["description", "note", "definition"],
+    "oneOffs" : {
+        "@id" : "{$dataset}",
+        "<rdf:type>" : "<skos:ConceptScheme>"
+    },
+    "templates" : {
+        "@id" : "<{$base}/{notation}>",
+        "<rdf:type>" : "<skos:Concept>",
+        "<skos:notation>" : "{notation.toSegment()}",
+        "<dct:description>" : "{description}",
+        "<skos:prefLabel>" : "{label}",
+        "<skos:note>" : "{note}",
+        "<skos:definition>" : "{definition}",
+        "<rdfs:label>" : "{label}",
+        "<skos:inScheme>" : "{$dataset}"
+    }
+}

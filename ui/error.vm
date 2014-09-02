@@ -1,0 +1,18 @@
+#set($pageTitle = "DMS - error")
+#parse("header.vm")
+#parse("navbar.vm")
+
+<div id="page-wrapper" role="main">
+    <div class="container-fluid">   
+
+        <h1 class="page-header">Sorry, an error occurred</h1>
+        <div class="alert alert-danger" role="alert">
+##            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <p>$message</p>
+        </div>
+
+    </div> <!-- /.container-fluid -->
+</div>
+<!-- /#page-wrapper -->
+
+#parse("footer.vm")

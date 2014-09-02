@@ -1,0 +1,181 @@
+#set($pageTitle = "DMS - view update $update.label")
+#parse("header.vm")
+#parse("navbar.vm")
+
+#set($componentRoot="$root/services/$service.shortID/components/$component.shortID")
+#set($updateRoot="$componentRoot/update/$update.shortID")
+
+<div id="page-wrapper" role="main">
+    <div class="container-fluid">
+        <ol class="breadcrumb" role="menubar">
+            <li><a href="$root/services"><i class="fa fa-bars"></i></a></li>
+            <li><a href="$root/services/$service.shortID">$service.label</a></li>
+            <li><a href="$componentRoot">$component.label</a></li>
+            <li class="active"><a href="$root/$uri">$update.label</a></li>
+        </ol>   
+
+        <h1 class="page-header">Data Update: $update.basename</h1>
+        <p>Update $update.iD to $component.label of $service.label</p>
+        <div class="row">
+            <div class="col-md-6">
+                #set($upload = $update.upload)
+                <div class="row">
+                    <span class="col-md-6"><h2>Upload</h2></span>
+                    <span class="col-md-6">
+                        #if( $upload.isRDFTripleFile() )
+                            <a class="btn btn-default btn-sm space-above" role="button" href="$root/$uri/preview">View data</a>
+                        #end
+                    </span>
+                </div>
+                
+                <table class="table table-condensed table-bordered">
+                    <tbody>
+                        <tr>
+                            <td><strong>Basename:</strong></td>
+                            <td>$update.basename</td>
+                        </tr>
+                        <tr>
+                            <td><strong>File:</strong></td>
+                            <td><span  class="file-box">$upload.filename.replaceAll(".*/([^/]*)", "$1")</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Type:</strong></td>
+                            <td>$upload.mediaType</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Size:</strong></td>
+                            <td>$upload.fileSize bytes</td>
+                        </tr>
+                        #if($update.uploadActivityRecord.userName)
+                        <tr>
+                            <td><strong>Uploaded by:</strong></td>
+                            <td>$update.uploadActivityRecord.userName</td>
+                        </tr>
+                        #end
+                        <tr>
+                            <td><strong>Completed:</strong></td>
+                            <td>$lib.printDatetime( $update.uploadActivityRecord.endTime )</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div> <!-- Upload column -->
+            #if( $update.convertActivityRecord )
+            
+            #set($ae = $update.convertActivityRecord.execution)
+            #set($monitor = $ae.monitor)
+            #set($finished = $monitor.state.toString() == "Terminated")
+            #set($parameters=$ae.parameters)
+
+            <div class="col-md-6">
+
+                <div class="row">
+                    <h2 class="col-md-5">Conversion</h2>
+                    <div class="col-md-5">
+                        <a class="btn btn-default btn-sm" role="button" href="$root/services/$service.shortID/execution/$ae.id">View log</a>
+                        <a class="btn btn-default btn-sm" role="button" href="$root/$uri/preview">View data</a>
+                    </div>
+                    <div class="col-md-2">
+                        <form class="form-inline" role="form"  action="$updateRoot/reconvert" method="post">
+                            <button type="submit" class="btn btn-sm btn-default">reconvert</button>
+                        </form>
+                    </div>                        
+                </div>
+
+                <table class="table table-condensed table-bordered">
+                    <tbody>
+                        <tr>
+                            <td><strong>Action:</strong></td>
+                            <td>$ae.action.name</td>
+                        </tr>
+                        #if($parameters.dataConverter)
+                        <tr>
+                            <td><strong>Using:</strong></td>
+                            <td>$parameters.dataConverter.asString.value()</td>
+                        </tr>
+                        #end
+                        <tr>
+                            <td><strong>Status:</strong></td>
+                            <td>
+                                #if(!$finished)
+                                    Running
+                                #else
+                                    #if($monitor.succeeded())
+                                        <span class="text-success">Suceeded<span>
+                                    #else
+                                        <span class="text-danger">Failed<span>
+                                    #end
+                                #end
+                            </td>
+                        </tr>
+                        #if( $finished )
+                        <tr>
+                            <td><strong>Duration:</strong></td>
+                            <td>$ae.duration ms</td>
+                        </tr>
+                        <tr>
+                            <td><strong>File:</strong></td>
+                            <td><span  class="file-box">$update.publishable.filename.replaceAll(".*/([^/]*)", "$1")</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Completed:</strong></td>
+                            <td>$lib.printDatetime( $ae.finishTime )</td>
+                        </tr>
+                        #end
+                    </tbody>
+                </table>
+
+            </div>  <!-- Convert column -->
+            #end
+        </div> <!-- Upload/convert row -->
+
+        #set($pubsets = $service.listPublicationSets())
+        #foreach($ps in $pubsets)
+            <div class="row">
+                <span class="col-md-3"><h2>$ps.label</h2></span>
+                <span class="col-md-3">
+                    <div class="space-above"> #pubform( $update, $ps ) </div>
+                </span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Action</th>
+                            <th>Execution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #foreach($publish in $update.listPublishActivityRecord($ps))
+                        <tr>
+                            <td>$lib.printDatetime( $publish.startTime )</td>
+                            <td>
+                                #if( $publish.hasResourceValue("dms:published", $update) )
+                                    publish
+                                #else
+                                     remove
+                                #end
+                            </td>
+                            <td>
+                                #set($monitor =  $dms.actionManager.getExecution($publish.executionID).monitor)
+                                #if($monitor.succeeded()) 
+                                    <span class="text-success">Succeeded - </span>
+                                #else 
+                                    <span class="text-danger">Failed - </span>
+                                #end
+                                <a href="$root/services/$service.shortID/execution/$publish.executionID">view log $publish.executionID</a></td>
+                        </tr>
+                        #end
+                    </tbody>
+                </table>
+            </div>
+        #end
+    </div>
+</div>
+<!-- /#page-wrapper -->
+
+#set($extraJS="plugins/dataTables/jquery.dataTables.js, 
+     plugins/dataTables/dataTables.bootstrap.js, 
+     dtinit.js")
+#parse("footer.vm")

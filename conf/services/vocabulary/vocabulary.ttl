@@ -1,0 +1,140 @@
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix version:  <http://purl.org/linked-data/version#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qb:   <http://purl.org/linked-data/cube#> .
+@prefix org:  <http://www.w3.org/ns/org#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+
+@prefix dms: <http://www.epimorphics.com/public/vocabulary/dms#> .
+
+@prefix : <http://localhost/dms/metadata/vocabulary/> .
+
+:vocabulary a dms:DataService;
+    rdfs:label "Vocabulary service"@en;
+    rdfs:comment "Test service for development purposes. There is no real data here, move along."@en;
+    skos:notation "vocabulary";
+    dms:defaultPublicationSet :production;
+    dms:publicationSet :production, :testing;
+    .
+
+:reference a dms:DataComponent;
+    rdfs:label "Reference"@en;
+    rdfs:comment "A single reference file that can be updated."@en;
+    skos:notation "reference";
+    dms:updatePolicy dms:single;
+    dct:isPartOf  :vocabulary;
+    .
+
+:datasets a dms:DataComponent;
+    rdfs:label "Data sets"@en;
+    rdfs:comment "Data sets, can be  provided directly in RDF."@en;
+    skos:notation "datasets";
+    dms:updatePolicy dms:series;
+    dct:isPartOf  :vocabulary;
+    .
+
+:codelists a dms:DataComponent;
+    rdfs:label "Code lists"@en;
+    rdfs:comment "Code lists that can be provided as CSV tables of concepts. "@en;
+    skos:notation "codelists";
+    dms:updatePolicy dms:multiple;
+    dct:isPartOf  :vocabulary;
+#    dms:uploadAction "testAction";
+    dms:dataConverter "test-skos";
+    .
+
+:production a dms:PublicationSet;
+    rdfs:label "Production"@en;
+    skos:notation "production";
+    dct:description "The publications released to the production service."@en;
+#    dms:publishAction "test/publish";
+    dms:publicationTier :productionPubServers;
+    dms:tier :widgetServers;
+    dms:consolidatedUpdates false;
+    dms:image  :baseline;
+    .
+
+:baseline a dms:image;
+    dct:description "Baseline image for testing, contains just 3 test resources a, b and c." ;
+    dms:dumpFile  "/opt/dms/dumps/baseload.nq.gz" ;
+    dms:effectiveDate "2014-08-01T19:00:00Z"^^xsd:dateTime;
+    .
+
+:productionPubServers a dms:Tier;
+    rdfs:label "Production publication servers"@en;
+    dct:description "Data servers holding published data for the production service."@en;
+    skos:notation "pubservers";
+    dms:tierRole "dataServers";
+    dms:graphEndpoint   "http://{address}:3030/ds/data";
+    dms:updateEndpoint  "http://{address}:3030/ds/update";
+    dms:queryEndpoint  "http://{address}:3030/ds/query";
+#    dms:configureAction "vocabulary/configure";
+#    dms:allocateAction "vocabulary/allocate";
+#    dms:operation :tierOnlyTestOp, :testOp;
+#    dms:operation :testOp;
+    dms:loadBalancer  :dataLB;
+    dms:testServerAction "dataserver/testServer";
+    .
+
+:dataLB a dms:LoadBalancer;
+    rdfs:label "Data LB"@en;
+    rdfs:comment "Load balancer for the the data server tier"@en;
+    # Use only the default actions
+    .
+
+#:tierOnlyTestOp
+#    rdfs:label "test tier only";
+#    rdfs:comment "Test operation which only applies to the tier";
+#    dms:action "test/testTierOnly";
+#    skos:notation "testTierOnly";
+#    dms:tierOnly true;
+#    .
+
+#:testOp
+#    rdfs:label "test server";
+#    rdfs:comment "Test operation";
+#    dms:action "test/testOp";
+#    skos:notation "testOp";
+#    .
+    
+:testing a dms:PublicationSet;
+    rdfs:label "Testing"@en;
+    skos:notation "testing";
+    dct:description "The publications released to the testing service."@en;
+    dms:publicationTier :testingPubServers;
+    dms:consolidatedUpdates false;
+    .
+
+:testingPubServers a dms:Tier;
+    rdfs:label "Testing publication servers"@en;
+    dct:description "Data servers holding published data for the testing service."@en;
+    skos:notation "testingservers";
+    dms:tierRole "dataServers";
+    dms:graphEndpoint   "http://{address}:3030/ds/data";
+    dms:updateEndpoint  "http://{address}:3030/ds/update";
+    dms:queryEndpoint  "http://{address}:3030/ds/query";
+#    dms:operation :tierOnlyTestOp, :testOp;
+    dms:loadBalancer  :dataLBt;
+    .
+
+:dataLBt a dms:LoadBalancer;
+    rdfs:label "Data test LB"@en;
+    rdfs:comment "Load balancer for the the data server tier"@en;
+    # Use only the default actions
+    .
+
+:widgetServers a dms:Tier;
+    rdfs:label "Presentation servers in the production service"@en;
+    skos:notation "presentationServers";
+    dms:tierRole "presentationServers";
+    .    
+        

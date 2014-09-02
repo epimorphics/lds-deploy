@@ -1,0 +1,57 @@
+#set($pageTitle = "DMS - Action execution $execution.id")
+#set($parameters= $lib.fromJson($execution.parameters))
+#set($update = $parameters.updateRecord)
+#set($role = $parameters.actionRole)
+#set($mm = $dms.metadataManager)
+#if($update)
+    #set($update = $mm.getUpdateRecord($update))
+    #set($component = $mm.getDataComponent( $update.component ) )
+    #set($service = $component.service)
+    #set($componentRoot="$root/services/$service.shortID/components/$component.shortID")
+#end
+
+#parse("header.vm")
+#parse("navbar.vm")
+<div id="page-wrapper" role="main">
+    <div class="container-fluid">
+        #if($component)
+        <ol class="breadcrumb" role="menubar">
+            <li><a href="$root/services"><i class="fa fa-bars"></i></a></li>
+            <li><a href="$root/services/$service.shortID">$service.label</a></li>
+            <li class="active"><a href="$componentRoot">$component.label</a></li>
+        </ol>   
+        #elseif($service)
+        <ol class="breadcrumb" role="menubar">
+            <li><a href="$root/services"><i class="fa fa-bars"></i></a></li>
+            <li class="active"><a href="$root/services/$service.shortID">$service.label</a></li>
+        </ol>   
+        #end
+
+        #if($role == "publish")
+            #parse("execution-publish.vm")
+        #elseif($role == "convert")
+            #parse("execution-convert.vm")
+        #else
+            <h1 class="page-header">Action execution: $execution.name</h1>
+            #if ($parameters.serverDir)
+                <p> <strong>Server action:</strong> $role $parameters.serverDir </p>
+            #end
+        #end
+        <p></p>
+
+        #set($target="$root/services/$service.shortID/execution/$execution.id")
+        #parse("actionView.vm")
+
+        #if($returnURL)
+        <p>
+            <a class="btn btn-default" role="button" href="$returnURL">Back to calling page</a>
+        </p>
+        #end
+    </div>
+</div>
+<!-- /#page-wrapper -->
+
+#set($extraJS="plugins/dataTables/jquery.dataTables.js, 
+     plugins/dataTables/dataTables.bootstrap.js, 
+     dtinit.js")
+#parse("footer.vm")

@@ -1,0 +1,13 @@
+#!/bin/bash
+#      ldscook 
+# Run from server directory to run chef server configuration for this node.
+
+set -o errexit
+
+if [[ ! -a aws-instance.json ]]; then
+    echo "Can't find AWS config, must run from server directory"
+    exit 1;
+fi
+
+readonly IP=$(jq -r ".Instances[0].PublicDnsName" < aws-instance.json)
+ssh -i /var/opt/dms/.ssh/lds.pem ubuntu@$IP sudo chef-client -F min --no-color

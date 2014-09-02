@@ -1,0 +1,31 @@
+#set($pageTitle = "DMS - Activity Record")
+
+#parse("header.vm")
+#parse("navbar.vm")
+<div id="page-wrapper" role="main">
+    <div class="container-fluid">
+        <ol class="breadcrumb" role="menubar">
+            <li><a href="$root/services"><i class="fa fa-bars"></i></a></li>
+            <li class="active"><a href="$root/services/$service.shortID">$service.label</a></li>
+        </ol>   
+
+        <h1>Activity Record - $record.getConnectedResourceView("rdf:type")</h1>
+        <div class="row">
+            <span class="col-md-2"><strong>Started at:</strong></span>
+            <span class="col-md-4">$lib.printDatetime($record.startTime)</span>
+        </div>
+        <div class="row">
+            <span class="col-md-2"><strong>Ended at:</strong></span>
+            #if ($record.endTime != -1)
+                <span class="col-md-4">$lib.printDatetime($record.endTime)</span>
+            #else
+                <span class="col-md-4 text-danger">Failed</span>
+            #end
+        </div>
+        <div class="row">
+            <span class="col-md-2"><strong>Action trace:</strong></span>
+            <span class="col-md-4"><a href="$root/services/$service.shortID/execution/$record.executionID">$record.executionID</a></span>
+        </div>
+    </div>
+</div>
+<!-- /#page-wrapper -->

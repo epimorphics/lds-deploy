@@ -1,0 +1,157 @@
+#set($pageTitle = "DMS - " + $service.label + " - " + $image.label)
+#parse("header.vm")
+#parse("navbar.vm")
+
+#set($psRoot="$root/services/$service.shortID/publicationSets/$pset.shortID")
+
+<div id="page-wrapper" role="main">
+    <div class="container-fluid">
+        <ol class="breadcrumb" role="menubar">
+            <li><a href="$root/services"><i class="fa fa-bars"></i></a></li>
+            <li><a href="$root/services/$service.shortID">$service.label</a></li>
+            <li><a href="$psRoot">$pset.label</a></li>
+            <li class="active">image $image.label</a></li>
+        </ol>   
+
+        <h1 class="page-header">Data image: $image.label</h1>
+        <p>$image.description</p>
+
+        <h2>Details</h2>
+        #set($pubSince=$image.listPublicationsSince())
+        #set($derived=$image.listUpdatedBy())
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Effective date</strong></td>
+                    <td>Covers publications up to: $lib.printDatetime($image.effectiveDate)</td>
+                </tr>
+                <tr>
+                    <td><strong>Publications since</strong></td>
+                    <td>
+                        #if($pubSince.isEmpty())
+                            Image is up to date
+                        #else
+                            $pubSince.size() publications since then
+                        #end
+                    </td>
+                </tr>
+                #if(!$derived.isEmpty())
+                <tr>
+                    <td><strong>Updated version</strong></td>
+                    <td>
+                        #foreach($new in $derived)
+                            <a href="images?image=$lib.pathEncode($new.uRI)">$new.label</a>
+                        #end
+                    </td>
+                </tr>
+                #end
+                <tr>
+                    <td><strong>Size</strong></td>
+                    <td>
+                        #if($image.hasCount())
+                            $image.count
+                        #else
+                            <form class="inline form-inline" role="form" action="images/count" method="post">
+                                <input type="hidden" name="image" value="$image.uRI">
+                                <button type="submit" class="btn btn-default">Count</button>
+                            </form>
+                        #end
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Dump file</strong></td>
+                    <td>
+                        #if($image.hasDump())
+                            $image.dumpLocation
+                        #else
+                            <form class="inline form-inline" role="form" action="images/makeDump" method="post">
+                                <input type="hidden" name="image" value="$image.uRI">
+                                <button type="submit" class="btn btn-default">Make dump</button>
+                            </form>
+                        #end
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Database image</strong></td>
+                    <td>
+                        #if($image.hasDatabase())
+                            $image.databaseLocation
+                        #else
+                            <form class="inline form-inline" role="form" action="images/makeDatabase" method="post">
+                                <input type="hidden" name="image" value="$image.uRI">
+                                <button type="submit" class="btn btn-default">Make database</button>
+                            </form>
+                        #end
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        #set($creation=$image.origin)
+        #if($creation)
+        <h2>Created from</h2>
+            #set($baseline=$creation.baseImage)
+            #set($updates = $creation.updateSet)
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Content</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Base line</td>
+                        <td><a href="images?image=$lib.pathEncode($baseline.uRI)">$baseline.label</a></td>
+                    </tr>
+                    #foreach($update in $updates.published)
+                        #set( $component = $update.component )
+                        #set($service = $component.service)
+                        #set($componentRoot="$root/services/$service.shortID/components/$component.shortID")
+                        <tr>
+                            <td>Published</td>
+                            <td><a href="$componentRoot/update/$update.iD">$update</a> to <a href="$componentRoot">$component.label</a></td>
+                        </tr>
+                    #end
+                    #foreach($update in $updates.unpublished)
+                        #set( $component = $update.component )
+                        #set($service = $component.service)
+                        #set($componentRoot="$root/services/$service.shortID/components/$component.shortID")
+                        <tr>
+                            <td>Unpublished</td>
+                            <td><a href="$componentRoot/update/$update.iD">$update</a> to <a href="$componentRoot">$component.label</a></td>
+                        </tr>
+                    #end
+                </tbody>
+            </table>
+        #end
+
+        <h2>Operations</h2>
+        <div>
+            <form class="inline form-inline" role="form" action="images/delete" method="post">
+                <input type="hidden" name="image" value="$image.uRI">
+                <button type="submit" class="btn btn-default">Delete</button>
+            </form>
+        #if(!$pubSince.isEmpty())
+            <form class="inline form-inline" role="form" action="images/makeUpdated" method="post">
+                <input type="hidden" name="image" value="$image.uRI">
+                <button type="submit" class="btn btn-default">Make updated image</button>
+            </form>
+        #end
+        </div>
+
+        <p></p>
+
+        <p>Reload servers from this image - TODO</p>
+
+    </div> <!-- /.container-fluid -->
+</div>
+<!-- /#page-wrapper -->
+
+#parse("footer.vm")

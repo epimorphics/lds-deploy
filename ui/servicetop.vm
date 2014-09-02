@@ -1,0 +1,61 @@
+#set($pageTitle = "DMS - " + $service.label)
+#set($extraCSS="jquery.fileupload.css")
+#parse("header.vm")
+#parse("navbar.vm")
+<div id="page-wrapper" role="main">
+    <div class="container-fluid">
+        <ol class="breadcrumb" role="menubar">
+            <li><a href="$root/services"><i class="fa fa-bars"></i></a></li>
+            <li class="active"><a href="$root/services/$service.shortID">$service.label</a></li>
+        </ol>
+
+        <h1 class="page-header">$service.label</h1>
+
+        <p>$service.description</p>
+
+        <h2>Data Components</h2>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr><th>Component</th><th>Operations</th></tr>
+            </thead>
+            <tbody>
+                #foreach($component in $mman.listDataComponents($service))
+                #set($link="$root/services/$service.shortID/components/$component.shortID")
+                    <tr>
+                        #if($subject.isPermitted("Upload:$service.shortID:$component.shortID"))
+                            <td><a href="$link">$component.label</a></td>
+                            <td><a class="btn btn-default btn-sm" role="button" href="$link/upload">Upload</a></td>
+                        #else
+                            <td>$component.label</td>
+                            <td></td>
+                        #end
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+        <h2>Environments</h2>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr><th>Environment</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                #foreach($pset in $service.listPublicationSets())
+                #set($link="$root/services/$service.shortID/publicationSets/$pset.shortID")
+                    <tr>
+                        #if($subject.isPermitted("ManageServers:$service.shortID:$pset.shortID"))
+                            <td><a href="$link">$pset.label</a></td>
+                        #else
+                            <td>$pset.label</td>
+                        #end
+                        <td><i class="fa fa-check text-success"></i></td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+
+    </div> <!-- /.container-fluid -->
+</div> <!-- /#page-wrapper -->
+
+#set($extraJS="vendor/jquery.ui.widget.js, jquery.iframe-transport.js, jquery.fileupload.js, upload.js")
+#parse("footer.vm")

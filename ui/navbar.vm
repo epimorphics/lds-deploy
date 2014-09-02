@@ -1,0 +1,86 @@
+
+        #parse("logout-dialog.vm")
+
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation" >
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="$root/services">Data Management System</a>
+            </div>
+            <!-- /.navbar-header -->
+
+##            #if($service)
+##            <a class="navbar-brand" href="$root/services/$service.shortID">$service.label</a>
+##            #end
+
+            <ul class="nav navbar-top-links navbar-right">
+                ## #parse("nav-messages.vm")
+                #parse("nav-login.vm")
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default navbar-static-side" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="$root/services"><i class="fa fa-bars fa-fw"></i> Services</a>
+                        </li>
+                        #if($service)
+                            <li>
+                                <a href="$root/services/$service.shortID"><i class="fa fa-dashboard fa-fw"></i> Service Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-sitemap fa-fw"></i> Data Components<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                #foreach($component in $mman.listDataComponents($service))
+                                    <li>
+                                        #if($subject.isPermitted("Upload:$service.shortID:$component.shortID"))
+                                            <a href="$root/services/$service.shortID/components/$component.shortID">$component.label</a>
+                                        #else
+                                            <p>$component.label</p>
+                                        #end
+                                    </li>
+                                #end
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-cloud fa-fw"></i> Environments<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                #foreach($pset in $service.listPublicationSets())
+                                    <li>
+                                        #if($subject.isPermitted("ManageServers:$service.shortID"))
+                                            <a href="$root/services/$service.shortID/publicationSets/$pset.shortID">$pset.label</a>
+                                        #else
+                                            <p>$pset.label</p>
+                                        #end
+                                    </li>
+                                #end
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="$uiroot/actionHistory?serviceID=$service.shortID"><i class="fa fa-gears fa-fw"></i> Recent actions</a>
+                            </li>
+                            #if($subject.isPermitted("Admin"))
+                            <li>
+                                <a href="$uiroot/service-admin?serviceID=$service.shortID"><i class="fa fa-wrench fa-fw"></i> Adminstration</a>
+                            </li>
+                            #end
+                        #end
+                        #if($subject.isPermitted("Admin"))
+                        <li>
+                            <a href="$uiroot/resource#if($component)?resource=$lib.pathEncode($component.uRI)#elseif($service)?resource=$lib.pathEncode($service.uRI)#end"><i class="fa fa-bug fa-fw"></i> Browse RDF</a>
+                        </li>
+                        #end
+                    </ul>
+                    <!-- /#side-menu -->
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>

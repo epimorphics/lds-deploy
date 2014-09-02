@@ -1,0 +1,13 @@
+[
+  {
+    "@name" : "hidden-dataserver/testServer",
+    "@type" : "script",
+    "@script" : "dataserver-test.sh",
+    "@args" : ["serverDir"]
+  },
+  {
+    "@name" : "dataserver/testServer",
+    "@javaclass" : "com.epimorphics.dms.util.PrintAction",
+    "message" : "Dummy server test"
+  }
+]

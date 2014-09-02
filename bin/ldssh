@@ -1,0 +1,17 @@
+#!/bin/bash
+# Open an interative shell to an AWS instance
+#       ldssh [serverDir]
+# If no argument is given assumes running in the server directory
+
+set -o nounset
+set -o errexit
+
+readonly serverDir=${1:-$(pwd)}
+readonly inst_file=$serverDir/aws-instance.json
+
+if [[ -f $inst_file ]]; then
+    readonly IP=$(jq -r ".Instances[0].PublicDnsName" < $inst_file)
+    ssh -4 -t -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP
+else
+    echo "No instance configuration found in $serverDir" 1>&2
+fi

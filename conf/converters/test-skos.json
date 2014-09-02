@@ -1,0 +1,18 @@
+{       
+    "name" : "test-skos",
+    "description" : "Template to convert labeled codes to skos at fixed base location",
+    "type" : "Composite",
+    "required" : ["label"],
+    "optional" : ["description", "note", "definition"],
+    "bind" : { "$base" : "http://localhost/def/test" },
+    "oneOffs" : {
+        "@id" : "{$dataset}",
+        "<rdf:type>" : "<skos:ConceptScheme>"
+    },
+    "templates" : {
+        "bind" : { 
+            "notation" : "{label.toSegment()}"
+            },
+        "template" : "simple-skos"
+    }
+}

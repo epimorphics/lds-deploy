@@ -1,0 +1,44 @@
+[
+  {
+      "@name" : "default/makeDB",
+      "@type" : "script",
+      "@script" : "dbutil/makeDB.sh",
+      "@args" : [ "source", "dest" ]
+  },
+  {
+      "@name" : "default/makeDump",
+      "@type" : "script",
+      "@script" : "dbutil/makeDump.sh",
+      "@args" : [ "source", "dest" ]
+  },
+  {
+      "@name" : "default/packDB",
+      "@type" : "script",
+      "@script" : "dbutil/packDB.sh",
+      "@args" : [ "source", "dest" ]
+  },
+  {
+      "@name" : "default/unpackDB",
+      "@type" : "script",
+      "@script" : "dbutil/unpackDB.sh",
+      "@args" : [ "source", "dest" ]
+  },
+  {
+      "@name" : "default/load",
+      "@type" : "script",
+      "@script" : "dbutil/load-db.sh",
+      "@args" : [ "serverDir", "image" ]
+  },
+  {
+      "@name" : "default/countDump",
+      "@type" : "script",
+      "@script" : "dbutil/countDump.sh",
+      "@args" : [ "source" ]
+  },
+  {
+      "@name" : "default/runBackupServer",
+      "@type" : "script",
+      "@script" : "ops/backup-server.sh",
+      "@args" : [ "serverDir" ]
+  }
+]

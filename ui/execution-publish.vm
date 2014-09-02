@@ -1,0 +1,9 @@
+## Customized action page start for a publication action
+## Assumes run in context of execution.vm so $parameters have been bound to the execution parameters
+        #set($psURI = $parameters.target)
+        #set($ps = $mm.getPublicationSet($psURI))        
+
+        <h1 class="page-header">Publishing to $ps.label</h1>
+
+        #listExecutionPublishes( $parameters.publishes, "Publishes" )
+        #listExecutionPublishes( $parameters.unpublishes, "Unpublishes" )

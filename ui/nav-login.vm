@@ -1,0 +1,27 @@
+## Drop down menu for user login/logout
+            #if($subject.isAuthenticated())
+                #set($user=$subject.principal)
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" rol="menu" href="#">
+                        <i class="fa fa-user fa-fw"></i> $user.name <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="$root/system/security/userSettings" role="menuitem"><i class="fa fa-key fa-fw"></i> Change settings</a>
+                        </li>
+                        #if($subject.isPermitted("Admin"))
+                            <li><a href="$uiroot/register-user"><i class="fa fa-plus-circle fa-fw"></i> Register user</a></li>
+                            <li><a href="$root/system/security/listUsers"><i class="fa fa-gear fa-fw"></i> User admin</a></li>
+                        #end
+                        <li class="divider"></li>
+                        <li><a href="#logout-dialog" data-target="#logout-dialog" role="menuitem" data-toggle="modal"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            #else
+                <li>
+                    <i class="fa fa-user fa-fw"></i> Not logged in
+                </li>
+            #end

@@ -1,0 +1,22 @@
+<p>
+    Preview by class (switch to <a href="?mode=byinstance">by instances</a>)
+</p>
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <td>Class</td><td>Instances</td>
+        </tr>
+    </thead>
+    <tbody>
+        #foreach($row in $source.label( $source.select("SELECT ?c (COUNT(?i) AS ?count) WHERE { ?i a ?c } GROUP BY ?c") ))
+        <tr>
+            #if($row.c.label)
+                <td><a href="?class=$lib.pathEncode($row.c.uRI)">$row.c.label</a></td>
+            #else
+                <td>No classes found</td>
+            #end
+            <td>$row.count.label</td>
+        </tr>
+        #end
+    </tbody>
+</table>

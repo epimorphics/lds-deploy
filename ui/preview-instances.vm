@@ -1,0 +1,22 @@
+#set($res = $source.getNode($class))
+
+<h2>Instances of: #linkfor($res)</h2>
+
+<table class="table table-condensed">
+ <thead>
+   <tr>
+     <td>Instance</td>
+   </tr>
+ </thead>
+ <tbody>
+    #foreach($row in $source.label( $source.select("SELECT ?i WHERE {?i a ?c} ORDER BY ?i LIMIT 1000", "c", $class) ))
+      <tr>
+        <td>#render($row.i)</td>
+      </tr>
+      #if( $foreach.count > 999 )
+         <tr><td>...</td></tr> 
+        #break  
+      #end
+    #end
+ </tbody>
+</table>

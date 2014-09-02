@@ -1,0 +1,68 @@
+#set($pageTitle = "DMS - setPassword")
+#parse("header.vm")
+#parse("navbar.vm")
+
+<div id="page-wrapper" role="main">
+    <div class="container-fluid">   
+
+        #if($error)
+            <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <p><strong>Problem with last request</strong></p>
+                <p>$error</p>
+            </div>
+        #end
+
+        <h1>Change user settings</h1>
+        #if($subject.isAuthenticated())
+            <h2>Change password</h2>
+                <div class="row">
+                    <form class="form-horizontal" role="form"  action="$root/system/security/setpassword" method="post">
+                        <div class="form-group">
+                            <label for="currentPassword" class="col-md-offset-1 col-md-2 control-label">Current password</label>
+                            <div class="col-md-4">
+                                <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Current password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword" class="col-md-offset-1 col-md-2 control-label">New password</label>
+                            <div class="col-md-4">
+                                <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword2" class="col-md-offset-1 col-md-2 control-label">Repeat new password</label>
+                            <div class="col-md-4">
+                                <input type="password" class="form-control" id="newPassword2" name="newPassword2" placeholder="New password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-10">
+                                <button type="submit" class="btn btn-default">Change password</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            <h2>Register for notifications</h2>
+            <p>You can ask for notification to be sent when a long running task completes or fails. To enable this you must register an email address. </p>
+
+            <p>
+            <form class="form-inline" role="form"  action="$root/system/security/setNotification" method="post">
+                <div class="form-group">
+                    <label for="email" class="control-label">Send notifications to:</label>
+                    <input type="email" class="form-control" id="email" name="email" value="#if($notifier.registeredEmail)$notifier.registeredEmail#else$notifier.user.id#end">
+                    <button type="submit" class="btn btn-default">#if($notifier.canNotify()) Change email #else Set email #end</button>
+                </div>
+            </form>
+            </p>
+            <p>You will be sent an email requesting that you confirm registration of your address.</p>
+        #else
+            <p class="text-danger">Sorry you must be logged in to access this page</p>
+        #end
+
+    </div> <!-- /.container-fluid -->
+</div>
+<!-- /#page-wrapper -->
+
+#parse("footer.vm")

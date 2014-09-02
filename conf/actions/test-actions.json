@@ -1,0 +1,39 @@
+[
+  {
+    "@name" : "testAction",
+    "@javaclass" : "com.epimorphics.dms.test.TestAction",
+    "count" : 10
+  }, 
+  {
+    "@name" : "api/test",
+    "@javaclass" : "com.epimorphics.dms.test.TestAction",
+    "message" : "Test operation called",
+    "count" : 3
+  },
+  {
+    "@name" : "test/publish",
+    "@javaclass" : "com.epimorphics.dms.test.TestAction",
+    "message" : "simulated publishing",
+    "count" : 2
+  },
+  {
+    "@name" : "test/testTierOnly",
+    "@javaclass" : "com.epimorphics.dms.tasks.NotifyAction",
+    "message" : "Notification invoked successfully.",
+    "userid" : "dave@epimorphics.com"
+  },
+  {
+    "@name" : "api/testPublish",
+    "@type" : "sequence",
+    "@actions" : [
+      {"@javaclass" : "com.epimorphics.dms.tasks.AllocateUploadFile", "extension" : "csv"},
+      {"@type": "script", "@script" : "dummyData.sh", "@args" : ["filename"] },
+      {"@javaclass" : "com.epimorphics.dms.tasks.UploadAction"},
+      {"@javaclass" : "com.epimorphics.dms.tasks.EmbeddedPublishAction"},
+      {"@javaclass" : "com.epimorphics.dms.tasks.NotifyAction", 
+        "message" : "test publish run", 
+        "notifyuser" : "dave@epimorphics.com"
+      }
+     ]
+  }
+]

@@ -1,0 +1,16 @@
+#!/bin/bash
+# Re-load the AWS instance information e.g. after a stop/start cycle
+#       lds-aws-refresh [serverDir]
+# If no argument is given assumes running in the server directory
+
+set -o errexit
+
+readonly serverDir=${1:-$(pwd)}
+readonly inst_file=$serverDir/aws-instance.json
+
+if [[ -f $inst_file ]]; then
+    instanceID=$( jq -r '.Instances[0].InstanceId' < $inst_file )
+    aws ec2 describe-instances --instance-ids $instanceID | jq .Reservations[0] > $inst_file
+else
+    echo "No instance configuration found in $serverDir" 1>&2
+fi

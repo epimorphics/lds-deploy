@@ -1,0 +1,52 @@
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix version:  <http://purl.org/linked-data/version#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qb:   <http://purl.org/linked-data/cube#> .
+@prefix org:  <http://www.w3.org/ns/org#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+
+@prefix dms: <http://www.epimorphics.com/public/vocabulary/dms#> .
+
+@prefix : <http://localhost/dms/metadata/bwq/> .
+
+:bwq a dms:DataService;
+    rdfs:label "Bathing water quality"@en;
+    rdfs:comment "Data service providing information on bathing water profiles, in-season measurements, annual assesments and associated events and forecasts"@en;
+    skos:notation "bwq";
+    .
+
+:annual a dms:DataComponent;
+    rdfs:label "Annual assessments"@en;
+    rdfs:comment "Data cube describing historic and current annual Bathing Water quality assessments."@en;
+    skos:notation "annual";
+    dct:isPartOf :bwq;
+    dms:dataConverter "tbd";
+    dms:postPublishScript "tbd";
+    dms:updatePolicy dms:series;
+    .
+
+:reference a dms:DataComponent;
+    rdfs:label "Site reference data"@en;
+    rdfs:comment "Reference data giving identifiers for Bathing Waters and asssociated sampling points."@en;
+    skos:notation "reference";
+    dct:isPartOf :bwq;
+    dms:dataConverter "tbd";
+    dms:updatePolicy dms:single;
+    .
+
+:vocabularies a dms:DataComponent;
+    rdfs:label "Vocabularies"@en;
+    rdfs:comment "Collection of vocabularies used to publish Bathing Water quality information."@en;
+    skos:notation "reference";
+    dct:isPartOf :bwq;
+    dms:updatePolicy dms:multiple;
+    .
