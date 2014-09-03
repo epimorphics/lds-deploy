@@ -18,9 +18,9 @@ filename="$server-$( basename $remoteFile )"
 
 echo "Finished, transfering file to control server"
 cd $serverDir/../../../../images
-scp -4Cq -o BatchMode=yes -o StrictHostKeyChecking=no -i /var/opt/dms/.ssh/lds.pem ubuntu@${IP}:$remoteFile $filename
+scp -Cq $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem ubuntu@${IP}:$remoteFile $filename
 
 echo "Removing backup from server $server"
-ssh -4 -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP "sudo rm $remoteFile"
+ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP "sudo rm $remoteFile"
 
 echo $PWD/$filename

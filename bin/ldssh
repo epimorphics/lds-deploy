@@ -11,7 +11,7 @@ readonly inst_file=$serverDir/aws-instance.json
 
 if [[ -f $inst_file ]]; then
     readonly IP=$(jq -r ".Instances[0].PublicDnsName" < $inst_file)
-    ssh -4 -t -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP
+    ssh -4 -t -i /var/opt/dms/.ssh/lds-user.pem -l ubuntu $IP
 else
     echo "No instance configuration found in $serverDir" 1>&2
 fi

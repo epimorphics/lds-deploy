@@ -21,4 +21,4 @@ readonly IP=$(jq -r ".Instances[0].PublicDnsName" < aws-instance.json)
 readonly serverDir=$(pwd)
 cd /opt/dms/conf/chef
 
-knife solo cook ubuntu@$IP $serverDir/node.json --identity-file /var/opt/dms/.ssh/lds.pem --yes $ARG
+knife solo cook ubuntu@$IP $serverDir/node.json --identity-file /var/opt/dms/.ssh/lds-user.pem --yes $ARG

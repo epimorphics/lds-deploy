@@ -10,4 +10,4 @@ if [[ ! -a aws-instance.json ]]; then
 fi
 
 readonly IP=$(jq -r ".Instances[0].PublicDnsName" < aws-instance.json)
-ssh -i /var/opt/dms/.ssh/lds.pem ubuntu@$IP sudo chef-client -F min --no-color
+ssh -i /var/opt/dms/.ssh/lds-user.pem ubuntu@$IP sudo chef-client -F min --no-color

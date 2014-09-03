@@ -5,6 +5,7 @@
 set -o errexit
 
 [[ $# = 2 ]] || { echo "Internal error calling load_db.sh" 1>&2 ; exit 1 ; }
+. ./config.sh
 
 readonly serverDir=$1
 readonly imageFile=$2
