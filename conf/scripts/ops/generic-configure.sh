@@ -15,4 +15,4 @@ IP=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
 #knife solo cook ubuntu@$IP $serverDir/node.json --identity-file /var/opt/dms/.ssh/lds.pem --yes --no-color
 
 # Kick chef into action, assumes not already registered with server
-ssh -i /var/opt/dms/.ssh/lds.pem ubuntu@$IP sudo chef-client -F min --no-color
+ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem ubuntu@$IP sudo chef-client -F min --no-color

@@ -10,3 +10,5 @@ readonly SG_FRONT_END=sg-b815c7dd           # security group for lds-front-end
 readonly VPC_PUBLIC_B=subnet-5b73601d       # public subnet for LDS VPC
 readonly VPC_PUBLIC_C=subnet-345c8d51       # public subnet for LDS VPC
 readonly VPC_PUBLIC=( $VPC_PUBLIC_B $VPC_PUBLIC_C )
+
+SSH_FLAGS="-4 -o BatchMode=yes -o StrictHostKeyChecking=no"

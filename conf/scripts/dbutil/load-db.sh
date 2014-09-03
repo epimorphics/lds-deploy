@@ -13,6 +13,6 @@ readonly fileName=$(basename $imageFile)
 IP=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
 
 echo "Uploading $fileName to server $IP"
-scp -4Cq -o BatchMode=yes -o StrictHostKeyChecking=no -i /var/opt/dms/.ssh/lds.pem $imageFile ubuntu@${IP}:/tmp
+scp -Cq $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem $imageFile ubuntu@${IP}:/tmp
 
-ssh -4 -t -t -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP "sudo bash /usr/local/bin/dbinstall /tmp/$fileName"
+ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP "sudo bash /usr/local/bin/dbinstall /tmp/$fileName"
