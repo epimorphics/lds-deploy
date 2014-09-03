@@ -172,7 +172,7 @@ InstallChef() {
     local serverDir=$1
 
 	IP=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
-	knife bootstrap -i /var/opt/dms/.ssh/lds.pem -x ubuntu --sudo \
+	knife bootstrap -c /var/opt/dms/.chef/knife.rb -i /var/opt/dms/.ssh/lds.pem -x ubuntu --sudo \
                 -E dms-test -r "$CHEF_ROLE" \
                 -j "{\"epi_server_base\":{\"system_name\":\"$FULL_NAME\"}}" \
                 -N $FULL_NAME "$IP" -F min --no-color
