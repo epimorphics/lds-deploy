@@ -46,7 +46,7 @@ ShellProvision() {
 	echo " - syncing provisioning data"
 	rsync -avz -e "ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem"  --rsync-path="sudo rsync" $source "ubuntu@$IP:/dmsprovision/"
 	echo " - running provisioning script"
-	ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP "sudo sh /dmsprovision/bootstrap.sh"
+	ssh $SSH_FLAGS -t -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP "sudo sh /dmsprovision/bootstrap.sh"
 }
 
 # Wait for ssh connection to become available on the aws instance
