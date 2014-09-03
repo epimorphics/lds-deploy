@@ -3,6 +3,7 @@
 #     send-message topic  message
 set -o errexit
 [[ $# = 2 ]] || { echo "Internal error calling send-message.sh" 1>&2 ; exit 1 ; }
+. ./config.sh
 
 readonly TOPIC_ARN=$1
 readonly MESSAGE=$2

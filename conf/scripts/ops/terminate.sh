@@ -3,6 +3,7 @@
 set -o nounset
 set -o errexit
 
+. ./config.sh
 . ./lib.sh
 CheckInstalls
 

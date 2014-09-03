@@ -4,8 +4,7 @@
     "@type" : "script",
     "@script" : "ops/generic-allocate.sh",
     "@args" : ["serverDir"],
-    "@env"  : { "AWS_DEFAULT_REGION" : "eu-west-1",
-                "AWS_INSTANCE_TYPE" : "t2.micro", 
+    "@env"  : { "AWS_INSTANCE_TYPE" : "t2.micro", 
                 "AWS_AMI" : "ami-fd6cbd8a",
                 "CHEF_ROLE" : "dms_data_server" }
   },
@@ -14,8 +13,7 @@
     "@type" : "script",
     "@script" : "ops/generic-allocate.sh",
     "@args" : ["serverDir"],
-    "@env"  : { "AWS_DEFAULT_REGION" : "eu-west-1",
-                "AWS_EBS" : 6, 
+    "@env"  : { "AWS_EBS" : 6, 
                 "AWS_INSTANCE_STORE" : "yes",
                 "AWS_INSTANCE_TYPE" : "m3.medium", 
                 "AWS_AMI" : "ami-096cbd7e",
@@ -26,42 +24,36 @@
     "@name" : "default/terminate",
     "@type" : "script",
     "@script" : "ops/terminate.sh",
-    "@args" : ["serverDir"],
-    "@env"  : { "AWS_DEFAULT_REGION" : "eu-west-1" }
+    "@args" : ["serverDir"]
   },
   {
     "@name" : "default/configure",
     "@type" : "script",
     "@script" : "ops/generic-configure.sh",
-    "@args" : ["serverDir"],
-    "@env"  : { "AWS_DEFAULT_REGION" : "eu-west-1" }
+    "@args" : ["serverDir"]
   },
   {
     "@name" : "default/allocateLB",
     "@type" : "script",
     "@script" : "ops/allocate-lb.sh",
-    "@args" : ["tier"],
-    "@env"  : { "AWS_DEFAULT_REGION" : "eu-west-1" }
+    "@args" : ["tier"]
   },  
   {
     "@name" : "default/terminateLB",
     "@type" : "script",
     "@script" : "ops/delete-lb.sh",
-    "@args" : ["tier"],
-    "@env"  : { "AWS_DEFAULT_REGION" : "eu-west-1" }
+    "@args" : ["tier"]
   },  
   {
     "@name" : "default/addServer",
     "@type" : "script",
     "@script" : "ops/addserver-lb.sh",
-    "@args" : ["serverDir"],
-    "@env"  : { "AWS_DEFAULT_REGION" : "eu-west-1" }
+    "@args" : ["serverDir"]
   },  
   {
     "@name" : "default/removeServer",
     "@type" : "script",
     "@script" : "ops/removeserver-lb.sh",
-    "@args" : ["serverDir"],
-    "@env"  : { "AWS_DEFAULT_REGION" : "eu-west-1" }
+    "@args" : ["serverDir"]
   }
 ]

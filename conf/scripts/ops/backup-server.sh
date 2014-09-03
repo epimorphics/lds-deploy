@@ -5,6 +5,7 @@
 set -o errexit
 
 [[ $# = 1 ]] || { echo "Internal error calling backup-server.sh" 1>&2 ; exit 1 ; }
+. ./config.sh
 
 readonly serverDir=$1
 readonly server=$( basename $serverDir )

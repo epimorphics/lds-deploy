@@ -4,6 +4,7 @@
 
 set -o errexit
 
+. ./config.sh
 . ./lib.sh
 CheckInstalls
 

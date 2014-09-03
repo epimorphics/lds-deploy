@@ -4,6 +4,7 @@
 # Returns the the unique id (arn) of the topic as a line on stdout
 set -o errexit
 [[ $# = 1 ]] || { echo "Internal error calling create-topic.sh" 1>&2 ; exit 1 ; }
+. ./config.sh
 
 readonly TOPICNAME=$1
 

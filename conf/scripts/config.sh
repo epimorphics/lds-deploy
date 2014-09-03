@@ -1,5 +1,7 @@
 #!/bin/bash
 
+AWS_DEFAULT_REGION=eu-west-1
+
 readonly AMI_UBUNTU_EBS=ami-096cbd7e        # ubuntu 14.04, 64bit, ebs root
 readonly AMI_UBUNTU_INSTANCE=ami-3b69b84c   # ubuntu 14.04, 64bit, instance root
 readonly AMI_UBUNTU_HVM=ami-fd6cbd8a        # ubuntu 14.04, 64bit, HVM (for use with t2)
