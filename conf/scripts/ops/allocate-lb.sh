@@ -28,7 +28,7 @@ if [[ $LB_BACK_END == yes ]]; then
 fi
 
 # Check if there is already an allocated LB here
-if [[ -f $tierDir/aws-lb.json ]]; then
+if [[ -f $tierDir/aws-lb.json && $tierDir/lb-name ]]; then
     echo "Load balancer config already exists, skipping allocation" 1>&2
     exit 0
 else
