@@ -18,4 +18,4 @@ state=$(aws ec2 terminate-instances --instance-ids $instanceID | jq -r ".Termina
 echo "Instance is $state"
 
 # Remove node from chef server (can be very slow)
-knife node delete $nodeName -y
+knife -c /var/opt/dms/.chef/knife.rb node delete $nodeName -y
