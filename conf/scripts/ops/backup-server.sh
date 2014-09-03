@@ -13,7 +13,7 @@ readonly server=$( basename $serverDir )
 IP=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
 
 echo "Starting backup on server $server"
-remoteFile=$( ssh -4 -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP "bash /usr/local/bin/dbbackup" )
+remoteFile=$( ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP "bash /usr/local/bin/dbbackup" )
 filename="$server-$( basename $remoteFile )"
 
 echo "Finished, transfering file to control server"

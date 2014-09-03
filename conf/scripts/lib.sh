@@ -1,7 +1,7 @@
 #!/bin/bash
 # Library of utilities used in DMS automation
 
-readonly SSH_FLAGS="-4 -o BatchMode=yes -o StrictHostKeyChecking=no"
+## Note for ssh operations the SSH flags are specified externally in config.sh
 
 # Wait until an aws operation reaches a target state
 # WaitFor $command $jqpattern $target
