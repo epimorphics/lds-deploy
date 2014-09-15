@@ -205,3 +205,50 @@ InstallChefSolo() {
 }
 !!
 }
+
+# Run a nagrestconf command
+#   NRCAction json target
+NRCAction() {
+    [[ $# = 2 ]] || { echo "Internal error calling NRCAction" 1>&2 ; exit 1 ; }
+    local json=$1
+    local target=$2
+    curl --data "json=$json" "http://${NRC_HOST}/rest$target"
+}
+
+# Apply nagrestconf changes to the running nagios 
+# Assumes conf.sh has been loaded or $NRC_HOST defined elsewhere
+ApplyNRC() {
+    NRCAction '{"folder":"local"}' /apply/nagiosconfig
+    NRCAction '{"folder":"local"}' /restart/nagios    
+}
+
+# Run a nagrestconf command and then apply the result to the rrunning nagios
+#   NRCCommand json target
+NRCCommand() {
+    NRCAction "$1" "$2"
+    ApplyNRC
+}
+
+# Register a new host with nagios
+#   NRCAddHost fullname shortname ipaddress hostgroup serviceset
+NRCAddHost() {
+    [[ $# = 5 ]] || { echo "Internal error calling NRCAddHost" 1>&2 ; exit 1 ; }
+    local fullname="$1"
+    local shortname="$2"
+    local ipaddress="$3"
+    local hostgroup="$4"
+    local serviceset="$5"
+    json="{\"folder\":\"local\", \"name\":\"$fullname\",\"alias\":\"$shortname\",\"ipaddress\":\"$ipaddress\",\"template\":\"hsttmpl-base\",\"hostgroup\":\"$hostgroup\",\"servicesets\":\"$serviceset\"}"
+    NRCCommand $json /add/hosts    
+}
+
+# Delete a host from nagios (must also delete any associated service)
+#   NRCDeleteHost fullname service
+NRCDeleteHost() {
+    [[ $# = 2 ]] || { echo "Internal error calling NRCDeleteHost" 1>&2 ; exit 1 ; }
+    local fullname="$1"
+    local service="$2"
+    NRCAction "{\"folder\":\"local\", \"name\":\"$fullname\",\"svcdesc\":\"$service\"}" /delete/services
+    NRCAction "{\"folder\":\"local\", \"name\":\"$fullname\"}" /delete/hosts
+    ApplyNRC
+}

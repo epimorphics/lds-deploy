@@ -11,4 +11,6 @@ readonly VPC_PUBLIC_B=subnet-5b73601d       # public subnet for LDS VPC
 readonly VPC_PUBLIC_C=subnet-345c8d51       # public subnet for LDS VPC
 readonly VPC_PUBLIC=( $VPC_PUBLIC_B $VPC_PUBLIC_C )
 
+readonly NRC_HOST=127.0.0.1                 # Nagrestconf, normally on DMS controller machine
+
 export SSH_FLAGS="-4 -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
