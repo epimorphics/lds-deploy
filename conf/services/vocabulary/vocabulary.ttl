@@ -124,6 +124,11 @@
     dms:queryEndpoint  "http://{address}:3030/ds/query";
 #    dms:operation :tierOnlyTestOp, :testOp;
     dms:loadBalancer  :dataLBt;
+    dms:configureAction "test/configure";
+    dms:allocateAction "test/allocate";
+    dms:terminateAction "test/terminate";
+    dms:allocateLBAction "test/allocateLB";
+    dms:terminateLBAction "test/terminateLB";
     .
 
 :dataLBt a dms:LoadBalancer;
