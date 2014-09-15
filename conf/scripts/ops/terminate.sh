@@ -20,3 +20,6 @@ echo "Instance is $state"
 
 # Remove node from chef server (can be very slow)
 knife node delete $nodeName -y -c /var/opt/dms/.chef/knife.rb 
+
+FULL_NAME=$(jq -r .name < $serverDir/config.json)
+NRCDeleteHost "$FULL_NAME" check_http_ping

@@ -20,11 +20,8 @@ IP=$(jq -r ".Instances[0].PublicIpAddress" < $serverDir/aws-instance.json)
 ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem ubuntu@$server sudo chef-client -F min --no-color
 
 # Install in nagios
-if [[ $serverDir =~ .*/services/(.*)/publicationSets/(.*)/tiers/(.*)/servers/(.*) ]]; then
-    readonly FULL_NAME="${BASH_REMATCH[1]}-${BASH_REMATCH[2]}-${BASH_REMATCH[3]}-${BASH_REMATCH[4]}"
-    readonly NAME="${BASH_REMATCH[4]}"
-else
-    echo "Badly formed server directory: $serverDir" 1>&2
-    exit 99;
-fi
+FULL_NAME=$(jq -r .name < $serverDir/config.json)
+NAME="$FULL_NAME"
+if [[ $NAME =~ -([^-]*)$ ]] ; then NAME="${BASH_REMATCH[1]}"; fi
+
 NRCAddHost "$FULL_NAME" "$NAME" $IP  "BWQ-data" "BWQ-data-ss"
