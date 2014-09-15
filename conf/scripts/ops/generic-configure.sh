@@ -10,12 +10,14 @@ CheckInstalls
 
 readonly serverDir=$1
 
-IP=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
+server=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
+IP=$(jq -r ".Instances[0].PublicIpAddress" < $serverDir/aws-instance.json)
+
 #cd ../chef
 #knife solo cook ubuntu@$IP $serverDir/node.json --identity-file /var/opt/dms/.ssh/lds.pem --yes --no-color
 
 # Kick chef into action, assumes not already registered with server
-ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem ubuntu@$IP sudo chef-client -F min --no-color
+ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem ubuntu@$server sudo chef-client -F min --no-color
 
 # Install in nagios
 if [[ $serverDir =~ .*/services/(.*)/publicationSets/(.*)/tiers/(.*)/servers/(.*) ]]; then

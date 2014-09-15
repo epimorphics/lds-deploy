@@ -239,6 +239,7 @@ NRCAddHost() {
     local hostgroup="$4"
     local serviceset="$5"
     json="{\"folder\":\"local\", \"name\":\"$fullname\",\"alias\":\"$shortname\",\"ipaddress\":\"$ipaddress\",\"template\":\"hsttmpl-base\",\"hostgroup\":\"$hostgroup\",\"servicesets\":\"$serviceset\"}"
+    echo "Registering host $1 with nagios"
     NRCCommand "$json" /add/hosts    
 }
 
@@ -248,6 +249,7 @@ NRCDeleteHost() {
     [[ $# = 2 ]] || { echo "Internal error calling NRCDeleteHost" 1>&2 ; exit 1 ; }
     local fullname="$1"
     local service="$2"
+    echo "Remove host $1 from nagios"
     NRCAction "{\"folder\":\"local\", \"name\":\"$fullname\",\"svcdesc\":\"$service\"}" /delete/services
     NRCAction "{\"folder\":\"local\", \"name\":\"$fullname\"}" /delete/hosts
     ApplyNRC
