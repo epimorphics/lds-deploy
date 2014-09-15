@@ -1,4 +1,9 @@
 #!/bin/bash
+# Terminate a server
+#    script serverDir
+#
+# Environment settings:
+#    NRC_SERVICE      - list of nagios service names, used when terminating
 
 set -o nounset
 set -o errexit
@@ -22,4 +27,4 @@ echo "Instance is $state"
 knife node delete $nodeName -y -c /var/opt/dms/.chef/knife.rb 
 
 FULL_NAME=$(jq -r .name < $serverDir/config.json)
-NRCDeleteHost "$FULL_NAME" check_http_ping
+NRCDeleteHost "$FULL_NAME" "$NRC_SERVICE" || echo "Nagios service not responding"

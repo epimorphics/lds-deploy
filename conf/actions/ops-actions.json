@@ -18,19 +18,26 @@
                 "AWS_INSTANCE_TYPE" : "m3.medium", 
                 "AWS_AMI" : "ami-096cbd7e",
                 "AWS_SG" : "sg-761ac813",
-                "CHEF_ROLE" : "dms_data_server" }
+                "CHEF_ROLE" : "dms_data_server"
+                 }
   },
   {
     "@name" : "default/terminate",
     "@type" : "script",
     "@script" : "ops/terminate.sh",
-    "@args" : ["serverDir"]
+    "@args" : ["serverDir"],
+    "@env"  : { "NRC_SERVICE"    : "check_http_ping"
+                 }
   },
   {
     "@name" : "default/configure",
     "@type" : "script",
     "@script" : "ops/generic-configure.sh",
-    "@args" : ["serverDir"]
+    "@args" : ["serverDir"],
+    "@env"  : { "NRC_HOSTGROUP"  : "BWQ-data",
+                "NRC_SERVICESET" : "BWQ-data-ss",
+                "NRC_SERVICE"    : "check_http_ping"
+                 }
   },
   {
     "@name" : "default/allocateLB",

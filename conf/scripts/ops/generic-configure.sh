@@ -1,6 +1,12 @@
 #!/bin/bash
 # Experimental shell provisioning for pubservers
 #    script  $serverDir
+
+# Environment settings:
+#    NRC_HOSTGROUP    - nagios host group to join
+#    NRC_SERVICESET   - set of services to be checked by nagios
+#    NRC_SERVICE      - list of nagios service names, used when terminating
+
 set -o nounset
 set -o errexit
 
@@ -11,7 +17,7 @@ CheckInstalls
 readonly serverDir=$1
 
 server=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
-IP=$(jq -r ".Instances[0].PublicIpAddress" < $serverDir/aws-instance.json)
+IP=$(jq -r ".Instances[0].PrivateIpAddress" < $serverDir/aws-instance.json)
 
 #cd ../chef
 #knife solo cook ubuntu@$IP $serverDir/node.json --identity-file /var/opt/dms/.ssh/lds.pem --yes --no-color
@@ -24,4 +30,4 @@ FULL_NAME=$(jq -r .name < $serverDir/config.json)
 NAME="$FULL_NAME"
 if [[ $NAME =~ -([^-]*)$ ]] ; then NAME="${BASH_REMATCH[1]}"; fi
 
-NRCAddHost "$FULL_NAME" "$NAME" $IP  "BWQ-data" "BWQ-data-ss"
+NRCAddHost "$FULL_NAME" "$NAME" $IP  "$NRC_HOSTGROUP" "$NRC_SERVICESET"  || echo "Nagios service not responding"

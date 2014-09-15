@@ -19,9 +19,9 @@
 @prefix : <http://localhost/dms/metadata/vocabulary/> .
 
 :vocabulary a dms:DataService;
-    rdfs:label "Vocabulary service"@en;
+    rdfs:label "Test service"@en;
     rdfs:comment "Test service for development purposes. There is no real data here, move along."@en;
-    skos:notation "vocabulary";
+    skos:notation "test";
     dms:defaultPublicationSet :production;
     dms:publicationSet :production, :testing;
     .

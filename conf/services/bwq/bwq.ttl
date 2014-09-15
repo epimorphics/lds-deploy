@@ -22,12 +22,26 @@
     rdfs:label "Bathing water quality"@en;
     rdfs:comment "Data service providing information on bathing water profiles, in-season measurements, annual assesments and associated events and forecasts"@en;
     skos:notation "bwq";
-    .
+    dms:defaultPublicationSet :production;
+    dms:publicationSet :production, :testing;
+     .
+
+# -- Data components --------------------------------
 
 :annual a dms:DataComponent;
     rdfs:label "Annual assessments"@en;
     rdfs:comment "Data cube describing historic and current annual Bathing Water quality assessments."@en;
     skos:notation "annual";
+    dct:isPartOf :bwq;
+    dms:dataConverter "tbd";
+    dms:postPublishScript "tbd";
+    dms:updatePolicy dms:series;
+    .
+
+:inseason a dms:DataComponent;
+    rdfs:label "0 In-season assessments"@en;
+    rdfs:comment "Data cube describing historic and current in-season Bathing Water quality assessments."@en;
+    skos:notation "in-season";
     dct:isPartOf :bwq;
     dms:dataConverter "tbd";
     dms:postPublishScript "tbd";
@@ -43,10 +57,145 @@
     dms:updatePolicy dms:single;
     .
 
+:profiles a dms:DataComponent;
+    rdfs:label "BW profiles"@en;
+    rdfs:comment "Profiles describing attributes of bathing waters."@en;
+    skos:notation "profiles";
+    dct:isPartOf :bwq;
+    dms:dataConverter "tbd";
+    dms:postPublishScript "tbd";
+    dms:updatePolicy dms:series;
+    .
+
+:features a dms:DataComponent;
+    rdfs:label "BW features"@en;
+    rdfs:comment "Spatial features associated with bathing waters."@en;
+    skos:notation "features";
+    dct:isPartOf :bwq;
+    dms:dataConverter "tbd";
+    dms:postPublishScript "tbd";
+    dms:updatePolicy dms:series;
+    .
+
+:suspensions a dms:DataComponent;
+    rdfs:label "Suspensions"@en;
+    rdfs:comment "Records of suspensions of monitoring."@en;
+    skos:notation "suspensions";
+    dct:isPartOf :bwq;
+    dms:dataConverter "tbd";
+    dms:postPublishScript "tbd";
+    dms:updatePolicy dms:series;
+    .
+
+:forecasts a dms:DataComponent;
+    rdfs:label "Forecasts/STP"@en;
+    rdfs:comment "Forecasts of short term pollution risk."@en;
+    skos:notation "forecasts";
+    dct:isPartOf :bwq;
+    dms:dataConverter "tbd";
+    dms:postPublishScript "tbd";
+    dms:updatePolicy dms:series;
+    .
+
 :vocabularies a dms:DataComponent;
     rdfs:label "Vocabularies"@en;
-    rdfs:comment "Collection of vocabularies used to publish Bathing Water quality information."@en;
-    skos:notation "reference";
+    rdfs:comment "Collection of vocabularies/ontologies used to publish Bathing Water quality information."@en;
+    skos:notation "vocabularies";
     dct:isPartOf :bwq;
     dms:updatePolicy dms:multiple;
     .
+
+# -- Publication sets --------------------------------
+
+:production a dms:PublicationSet;
+    rdfs:label "Production"@en;
+    skos:notation "production";
+    dct:description "The publications released to the production service."@en;
+#    dms:publishAction "default/publish";
+    dms:publicationTier :productionPubServers;
+    dms:tier :pPresServers;
+    dms:consolidatedUpdates false;
+#    dms:image  :baseline;
+    .
+
+:testing a dms:PublicationSet;
+    rdfs:label "Testing"@en;
+    skos:notation "testing";
+    dct:description "The publications released to the testing service."@en;
+    dms:publicationTier :testingPubServers;
+    dms:tier :tPresServers;
+    dms:consolidatedUpdates false;
+    dms:image  :baseline;
+    .
+
+# -- Tiers --------------------------------
+
+:productionPubServers a dms:Tier;
+    rdfs:label "Data servers in production"@en;
+    dct:description "Data servers holding published data for the production service."@en;
+    skos:notation "ppubservers";
+    dms:tierRole "dataServers";
+    dms:graphEndpoint   "http://{address}:3030/ds/data";
+    dms:updateEndpoint  "http://{address}:3030/ds/update";
+    dms:queryEndpoint  "http://{address}:3030/ds/query";
+    dms:loadBalancer  :pdataLB;
+    dms:testServerAction "dataserver/testServer";
+    dms:configureAction "bwq/dataserver/configure";
+    dms:allocateAction "bwq/dataserver/allocate";
+    dms:terminateAction "bwq/dataserver/terminate";
+    .
+
+:pdataLB a dms:LoadBalancer;
+    rdfs:label "Production Data LB"@en;
+    rdfs:comment "Load balancer for the production data server tier"@en;
+    # Use only the default actions
+    .
+
+:testingPubServers a dms:Tier;
+    rdfs:label "Data servers in testing"@en;
+    dct:description "Data servers holding published data for the testing service."@en;
+    skos:notation "tpubservers";
+    dms:tierRole "dataServers";
+    dms:graphEndpoint   "http://{address}:3030/ds/data";
+    dms:updateEndpoint  "http://{address}:3030/ds/update";
+    dms:queryEndpoint  "http://{address}:3030/ds/query";
+    dms:loadBalancer  :tdataLB;
+    dms:testServerAction "dataserver/testServer";
+    dms:configureAction "bwq/dataserver/configure";
+    dms:allocateAction "bwq/dataserver/allocate";
+    dms:terminateAction "bwq/dataserver/terminate";
+    .
+
+:tdataLB a dms:LoadBalancer;
+    rdfs:label "Testing Data LB"@en;
+    rdfs:comment "Load balancer for the testing data server tier"@en;
+    # Use only the default actions
+    .    
+
+:pPresServers a dms:Tier;
+    rdfs:label "Presentation servers in production"@en;
+    skos:notation "pPresServers";
+    dms:tierRole "presentationServers";
+    dms:loadBalancer  :pPresLB;
+    .    
+
+:pPresLB a dms:LoadBalancer;
+    rdfs:label "Production Presentation LB"@en;
+    rdfs:comment "Load balancer for the production presentation tier"@en;
+    .    
+
+:tPresServers a dms:Tier;
+    rdfs:label "Presentation servers in testing"@en;
+    skos:notation "tPresServers";
+    dms:tierRole "presentationServers";
+    dms:loadBalancer  :tPresLB;
+    .    
+
+:tPresLB a dms:LoadBalancer;
+    rdfs:label "Testing presentation LB"@en;
+    rdfs:comment "Load balancer for the testing presentation tier"@en;
+    .    
+
+# -- Base images --------------------------------
+
+

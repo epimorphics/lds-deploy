@@ -1,0 +1,36 @@
+# Actions customized for the LDS BWQ service
+
+# Data server allocation
+"@name" : bwq/dataserver/allocate
+"@type" : script
+"@script" : "ops/generic-allocate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+#    "AWS_EBS" : 8
+    "AWS_INSTANCE_STORE" : "yes"
+    "AWS_INSTANCE_TYPE" : "m3.large"
+    "AWS_AMI" : "ami-096cbd7e"
+    "AWS_SG" : "sg-761ac813"
+    "CHEF_ROLE" : "dms_data_server"
+
+---
+# Data server termination  
+"@name" : bwq/dataserver/terminate
+"@type" : script
+"@script" : "ops/terminate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "NRC_SERVICE"    : "check_http_ping"
+---
+# Data server configuration  
+"@name" : bwq/dataserver/configure
+"@type" : script
+"@script" : "ops/generic-configure.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "NRC_HOSTGROUP"  : "BWQ-data"
+    "NRC_SERVICESET" : "BWQ-data-ss"
+    "NRC_SERVICE"    : "check_http_ping"
