@@ -6,7 +6,7 @@
 # Wait until an aws operation reaches a target state
 # WaitFor $command $jqpattern $target
 WaitFor() {
-	[[ $# = 3 ]] || { echo "Internal error calling wait-for" 1>&2 ; exit 99 ; }
+    [[ $# = 3 ]] || { echo "Internal error calling wait-for" 1>&2 ; exit 99 ; }
 	local cmd=$1
 	local pattern=$2
 	local target=$3
@@ -239,7 +239,7 @@ NRCAddHost() {
     local hostgroup="$4"
     local serviceset="$5"
     json="{\"folder\":\"local\", \"name\":\"$fullname\",\"alias\":\"$shortname\",\"ipaddress\":\"$ipaddress\",\"template\":\"hsttmpl-base\",\"hostgroup\":\"$hostgroup\",\"servicesets\":\"$serviceset\"}"
-    NRCCommand $json /add/hosts    
+    NRCCommand "$json" /add/hosts    
 }
 
 # Delete a host from nagios (must also delete any associated service)
