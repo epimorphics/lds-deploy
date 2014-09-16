@@ -159,7 +159,7 @@ AllocateServer() {
 
     # Format the disk if necessary
     WaitForSsh $serverDir
-    ShellProvision $serverDir provision/base/	
+    ShellProvision $serverDir provision/base/bootstrap.sh
 }
 
 # Configure Chef on a newly allocated machines

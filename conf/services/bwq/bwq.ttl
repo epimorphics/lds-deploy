@@ -133,7 +133,7 @@
 :productionPubServers a dms:Tier;
     rdfs:label "Data servers in production"@en;
     dct:description "Data servers holding published data for the production service."@en;
-    skos:notation "ppubservers";
+    skos:notation "dataservers";
     dms:tierRole "dataServers";
     dms:graphEndpoint   "http://{address}:3030/ds/data";
     dms:updateEndpoint  "http://{address}:3030/ds/update";
@@ -154,7 +154,7 @@
 :testingPubServers a dms:Tier;
     rdfs:label "Data servers in testing"@en;
     dct:description "Data servers holding published data for the testing service."@en;
-    skos:notation "tpubservers";
+    skos:notation "dataservers";
     dms:tierRole "dataServers";
     dms:graphEndpoint   "http://{address}:3030/ds/data";
     dms:updateEndpoint  "http://{address}:3030/ds/update";
@@ -174,7 +174,7 @@
 
 :pPresServers a dms:Tier;
     rdfs:label "Presentation servers in production"@en;
-    skos:notation "pPresServers";
+    skos:notation "presServers";
     dms:tierRole "presentationServers";
     dms:loadBalancer  :pPresLB;
     .    
@@ -186,7 +186,7 @@
 
 :tPresServers a dms:Tier;
     rdfs:label "Presentation servers in testing"@en;
-    skos:notation "tPresServers";
+    skos:notation "presServers";
     dms:tierRole "presentationServers";
     dms:loadBalancer  :tPresLB;
     .    
