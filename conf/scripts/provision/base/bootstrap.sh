@@ -21,7 +21,7 @@ if blkid $INST_DEV > /dev/null; then
   fi
   echo "Mount instance disk"
   mkdir -p /mnt/ephemeral0
-  mount /mnt/ephemeral0
+  mount /mnt/ephemeral0 || true          # May fail if already mounted and busy, which occurs during retry
 fi 
 
 # Check for possible EBS disk
