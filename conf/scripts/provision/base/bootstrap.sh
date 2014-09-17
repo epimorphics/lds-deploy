@@ -14,8 +14,13 @@ readonly EBS_DEV=/dev/xvdf
 # Check for instance disk
 if blkid $INST_DEV > /dev/null; then
   if grep -q $INST_DEV /etc/fstab ; then
-    umount $INST_DEV || true
-    sed -i "s!$INST_DEV.*\$!$INST_DEV  /mnt/ephemeral0  auto  defaults,nobootwait 0 2!" /etc/fstab
+    # Check if mounted in right place, AWS doesn't always respect request
+    if grep -q "$INST_DEV.*/mnt/ephemeral0" /etc/fstab; then
+        echo "/mnt/ephmeral0 already set up"
+    else
+        umount $INST_DEV || true
+        sed -i "s!$INST_DEV.*\$!$INST_DEV  /mnt/ephemeral0  auto  defaults,nobootwait 0 2!" /etc/fstab
+    fi
   else
     echo "$INST_DEV  /mnt/ephemeral0  auto  defaults,nobootwait 0 2" | tee -a /etc/fstab > /dev/null
   fi
