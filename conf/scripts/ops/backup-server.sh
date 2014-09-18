@@ -18,6 +18,7 @@ remoteFile=$( ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP "bash /u
 filename="$server-$( basename $remoteFile )"
 
 echo "Finished, transfering file to control server"
+mkdir -p $serverDir/../../../../images
 cd $serverDir/../../../../images
 scp -Cq $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem ubuntu@${IP}:$remoteFile $filename
 
@@ -32,6 +33,6 @@ if [[ $serverDir =~ .*/services/(.*)/publicationSets/(.*)/tiers/(.*)/servers/(.*
 else
     echo "Badly formed server directory: $serverDir" 1>&2
 fi
-SendMetric "dms.${tiername}.quadcount.max" $size
+SendMetric "dms.${tiername}.quadcount.max" $size || true
 
 echo $PWD/$filename
