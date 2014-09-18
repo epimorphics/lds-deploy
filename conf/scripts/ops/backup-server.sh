@@ -6,6 +6,7 @@ set -o errexit
 
 [[ $# = 1 ]] || { echo "Internal error calling backup-server.sh" 1>&2 ; exit 1 ; }
 . ./config.sh
+. ./lib.sh
 
 readonly serverDir=$1
 readonly server=$( basename $serverDir )
@@ -22,5 +23,15 @@ scp -Cq $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem ubuntu@${IP}:$remoteFile $filena
 
 echo "Removing backup from server $server"
 ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP "sudo rm $remoteFile"
+
+echo "Counting backup size to record in metrics"
+size=$( gunzip -c $filename | wc -l)
+echo "Counted $size quads"
+if [[ $serverDir =~ .*/services/(.*)/publicationSets/(.*)/tiers/(.*)/servers/(.*) ]]; then
+    tiername="${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.${BASH_REMATCH[3]}"
+else
+    echo "Badly formed server directory: $serverDir" 1>&2
+fi
+SendMetric "dms.${tiername}.quadcount.max" $size
 
 echo $PWD/$filename

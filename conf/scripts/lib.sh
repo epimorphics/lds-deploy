@@ -256,3 +256,13 @@ NRCDeleteHost() {
     NRCAction "{\"folder\":\"local\", \"name\":\"$fullname\"}" /delete/hosts
     ApplyNRC
 }
+
+# Send a metric to the graphite/carbon instance running on the DMS host
+# Timestamp will be now
+#    SendMetric name Value
+SendMetric() {
+    [[ $# = 2 ]] || { echo "Internal error calling SendMetric" 1>&2 ; exit 1 ; }
+    local name="$1"
+    local value="$2"
+    echo "$name" "$value" `date +%s`" | nc -q0 127.0.0.1 2003
+}
