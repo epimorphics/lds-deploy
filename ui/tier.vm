@@ -112,6 +112,23 @@
                 #end
             </tbody>
         </table>
+
+        <h2>Monitoring</h2>
+
+        #set($lbID = "${lib.strLimit($service.shortID,8)}.${lib.strLimit($pset.shortID,8)}.${lib.strLimit($tier.shortID,8)}")
+        #set($tierID = "${service.shortID}.${pset.shortID}.${tier.shortID}")
+
+        <img src="http://lds-monitor.epimorphics.net/render/?width=400&height=240&_salt=$lib.now()&target=AWScloudwatch.ELB.${lbID}.LB.HealthyHostCount.count&target=AWScloudwatch.ELB.${lbID}.LB.UnHealthyHostCount.count&areaMode=stacked&lineMode=staircase&title=Host%20count&yMin=0&colorList=green,red">
+
+        <img src="http://lds-monitor.epimorphics.net/render/?width=400&height=240&_salt=$lib.now()&lineMode=staircase&areaMode=all&title=LB%20Requests%20and%20failures&target=AWScloudwatch.ELB.${lbID}.LB.RequestCount.count&target=AWScloudwatch.ELB.bwq.testing.dataserv.LB.HTTPCode_Backend_2XX.count&target=AWScloudwatch.ELB.${lbID}.LB.HTTPCode_Backend_4XX.count&target=AWScloudwatch.ELB.${lbID}.LB.HTTPCode_Backend_5XX.count&yMin=0">
+
+        <img src="http://lds-monitor.epimorphics.net/render/?width=400&height=240&_salt=$lib.now()&target=serverMetrics.${tierID}.*.load.load.shortterm&yMin=0&title=Server%20load">
+
+        <div>
+            <a class="btn btn-default btn-sml" href="http://lds-monitor.epimorphics.net">Metrics dashboard</a>
+            <a class="btn btn-default btn-sml" href="http://lds-monitor.epimorphics.net/nagios3/">Status monitor</a>
+        </div>
+
     </div> <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
