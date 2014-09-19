@@ -125,7 +125,8 @@
         <img src="http://lds-monitor.epimorphics.net/render/?width=400&height=240&_salt=$lib.now()&target=serverMetrics.${tierID}.*.load.load.shortterm&yMin=0&title=Server%20load">
 
         <div>
-            <a class="btn btn-default btn-sml" href="http://lds-monitor.epimorphics.net">Metrics dashboard</a>
+            <a class="btn btn-default btn-sml" href="http://lds-monitor.epimorphics.net/grafana/">Metrics dashboard</a>
+            <a class="btn btn-default btn-sml" href="http://lds-monitor.epimorphics.net/">Metrics raw</a>
             <a class="btn btn-default btn-sml" href="http://lds-monitor.epimorphics.net/nagios3/">Status monitor</a>
         </div>
 
