@@ -13,7 +13,6 @@
     "AWS_AMI" : "ami-096cbd7e"
     "AWS_SG" : "sg-761ac813"
     "CHEF_ROLE" : "dms_data_server"
-
 ---
 # Data server termination  
 "@name" : bwq/dataserver/terminate
@@ -33,4 +32,38 @@
 "@env"  :
     "NRC_HOSTGROUP"  : "BWQ-data"
     "NRC_SERVICESET" : "BWQ-data-ss"
+    "NRC_SERVICE"    : "check_http_ping"
+---
+# Presentation server allocation
+"@name" : bwq/presserver/allocate
+"@type" : script
+"@script" : "ops/pres-allocate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+#    "AWS_EBS" : 8
+    "AWS_INSTANCE_STORE" : "yes"
+    "AWS_INSTANCE_TYPE" : "m3.large"
+    "AWS_AMI" : "ami-096cbd7e"
+    "AWS_SG" : "sg-761ac813"
+    "CHEF_ROLE" : "dms_pres_server"
+---
+# Presentation server termination  
+"@name" : bwq/presserver/terminate
+"@type" : script
+"@script" : "ops/terminate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "NRC_SERVICE"    : "check_http_ping"
+---
+# Presentation server configuration  
+"@name" : bwq/presserver/configure
+"@type" : script
+"@script" : "ops/generic-configure.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "NRC_HOSTGROUP"  : "BWQ-pres"
+    "NRC_SERVICESET" : "BWQ-pres-ss"
     "NRC_SERVICE"    : "check_http_ping"

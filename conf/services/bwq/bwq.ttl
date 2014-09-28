@@ -177,6 +177,9 @@
     skos:notation "presServers";
     dms:tierRole "presentationServers";
     dms:loadBalancer  :pPresLB;
+    dms:configureAction "bwq/presserver/configure";
+    dms:allocateAction "bwq/presserver/allocate";
+    dms:terminateAction "bwq/presserver/terminate";
     .    
 
 :pPresLB a dms:LoadBalancer;
