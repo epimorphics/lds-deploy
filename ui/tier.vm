@@ -120,7 +120,7 @@
 
         <img src="http://lds-monitor.epimorphics.net/render/?width=400&height=240&_salt=$lib.now()&target=AWScloudwatch.ELB.${lbID}.LB.HealthyHostCount.Minimum&target=AWScloudwatch.ELB.${lbID}.LB.UnHealthyHostCount.Maximum&areaMode=stacked&lineMode=staircase&title=Host%20count&yMin=0&colorList=green,red">
 
-        <img src="http://lds-monitor.epimorphics.net/render/?width=400&height=240&_salt=$lib.now()&lineMode=staircase&areaMode=all&title=LB%20Requests%20and%20failures&target=AWScloudwatch.ELB.${lbID}.LB.RequestCount.Sum&target=AWScloudwatch.ELB.bwq.testing.dataserv.LB.HTTPCode_Backend_2XX.Sum&target=AWScloudwatch.ELB.${lbID}.LB.HTTPCode_Backend_4XX.Sum&target=AWScloudwatch.ELB.${lbID}.LB.HTTPCode_Backend_5XX.Sum&yMin=0">
+        <img src="http://lds-monitor.epimorphics.net/render/?width=400&height=240&_salt=$lib.now()&lineMode=staircase&areaMode=all&title=LB%20Requests%20and%20failures&target=AWScloudwatch.ELB.${lbID}.LB.RequestCount.Sum&target=AWScloudwatch.ELB.${lbID}.LB.HTTPCode_Backend_2XX.Sum&target=AWScloudwatch.ELB.${lbID}.LB.HTTPCode_Backend_4XX.Sum&target=AWScloudwatch.ELB.${lbID}.LB.HTTPCode_Backend_5XX.Sum&yMin=0">
 
         <img src="http://lds-monitor.epimorphics.net/render/?width=400&height=240&_salt=$lib.now()&target=serverMetrics.${tierID}.*.load.load.shortterm&yMin=0&title=Server%20load">
 

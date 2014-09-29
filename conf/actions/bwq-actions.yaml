@@ -12,6 +12,7 @@
     "AWS_INSTANCE_TYPE" : "m3.large"
     "AWS_AMI" : "ami-096cbd7e"
     "AWS_SG" : "sg-761ac813"
+    "CHEF_ENV"  : "dms-test"
     "CHEF_ROLE" : "dms_data_server"
 ---
 # Data server termination  
@@ -46,7 +47,8 @@
     "AWS_INSTANCE_TYPE" : "m3.large"
     "AWS_AMI" : "ami-096cbd7e"
     "AWS_SG" : "sg-761ac813"
-    "CHEF_ROLE" : "dms_pres_server"
+    "CHEF_ENV"  : "ea-bwq-pres-staging"
+    "CHEF_ROLE" : "ea-bwq-pres"
 ---
 # Presentation server termination  
 "@name" : bwq/presserver/terminate

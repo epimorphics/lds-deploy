@@ -1,0 +1,7 @@
+{ 
+   "@id"              : "<{region}>" ,
+   "<rdf:type>"       : "<org:OrganizationalUnit>",
+   "<rdfs:comment>"   : "{{code.matches('...+') ? value('Environment Agency Region - ').append(code).append('@en') : null}}",  
+   "<skos:prefLabel>" : "{{code.matches('...+') ? code.append('@en') : null}}",  
+   "<rdfs:label>" : "{{code.matches('...+') ? code.append('@en') : null}}"  
+}

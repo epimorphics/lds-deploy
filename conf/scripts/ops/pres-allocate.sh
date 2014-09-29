@@ -27,12 +27,12 @@ else
     exit 99;
 fi
 
-# AllocateServer "$serverDir"
+AllocateServer "$serverDir"
 
 # Work out query endpoint for corresonding data tier (assumes called dataservers)
-LB_DNS=$( jq .DNSName $serverDir/../../../dataservers/aws-lb.json )
-LB_QUERY="$LB_DNS/ds/query"
-CHEF_PARAMS="{\"node\"{\"epi_presentation_server\"{\"services\"{\"environment\"{\"data_server_query_endpoint\":\"$LB_QUERY\"},\"location\":{\"data_server_query_endpoint\":\"$LB_QUERY\"}}}}}"
-echo "CHEF_PARAMS = $CHEF_PARAMS"
-# InstallChef "$serverDir"
+LB_DNS=$( jq -r .DNSName $serverDir/../../../dataservers/aws-lb.json )
+LB_QUERY="http://$LB_DNS/ds/query"
+CHEF_PARAMS="\"epi_presentation_server\":{\"services\":{\"environment\":{\"data_server_query_endpoint\":\"$LB_QUERY\"},\"location\":{\"data_server_query_endpoint\":\"$LB_QUERY\"}}}"
+InstallChef "$serverDir"
+
 #InstallChefSolo "$serverDir" "../chef"

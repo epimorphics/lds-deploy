@@ -20,12 +20,19 @@
             <div class="col-md-6">
                 #set($upload = $update.upload)
                 <div class="row">
-                    <span class="col-md-6"><h2>Upload</h2></span>
-                    <span class="col-md-6">
+                    <span class="col-md-5"><h2>Upload</h2></span>
+                    <span class="col-md-3">
                         #if( $upload.isRDFTripleFile() )
                             <a class="btn btn-default btn-sm space-above" role="button" href="$root/$uri/preview">View data</a>
                         #end
                     </span>
+                    #if( ! $update.convertActivityRecord && $update.upload.isCSV() )
+                    <div class="col-md-3">
+                        <form class="form-inline" role="form"  action="$updateRoot/reconvert" method="post">
+                            <button type="submit" class="btn btn-sm btn-default">try convert</button>
+                        </form>
+                    </div> 
+                    #end                       
                 </div>
                 
                 <table class="table table-condensed table-bordered">

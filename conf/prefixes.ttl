@@ -15,3 +15,22 @@
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
 
 @prefix dms: <http://www.epimorphics.com/public/vocabulary/dms#> .
+
+@prefix geo:      <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix admingeo: <http://data.ordnancesurvey.co.uk/ontology/admingeo/> . 
+@prefix spatialrelations: <http://data.ordnancesurvey.co.uk/ontology/spatialrelations/> .
+@prefix onsadmingeo: <http://statistics.data.gov.uk/def/administrative-geography/> .
+@prefix geometry: <http://data.ordnancesurvey.co.uk/ontology/geometry/> .
+
+@prefix def-bw:  <http://environment.data.gov.uk/def/bathing-water/> .
+@prefix def-bwp: <http://environment.data.gov.uk/def/bathing-water-profile/> .
+@prefix def-bwq: <http://environment.data.gov.uk/def/bathing-water-quality/> .
+@prefix def-sp: <http://location.data.gov.uk/def/ef/SamplingPoint/> .
+@prefix def-stp: <http://environment.data.gov.uk/def/bwq-stp/> .
+@prefix def-zoi: <http://location.data.gov.uk/def/ef/ZoneOfInfluence/> .
+@prefix id-bw:   <http://environment.data.gov.uk/id/bathing-water/> .
+@prefix dgu:     <http://reference.data.gov.uk/def/reference/> .
+@prefix status:  <http://reference.data.gov.uk/def/status/> .
+@prefix def-geom: <http://location.data.gov.uk/def/common/Geometry/> .
+
+@prefix so-sp:   <http://location.data.gov.uk/so/ef/SamplingPoint/bwsp.eaew/> .

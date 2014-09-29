@@ -168,20 +168,22 @@ AllocateServer() {
 # Environment settings:
 #    NAME                     short name for the server
 #    FULL_NAME                full, unique name for the server
-#    CHEF_ROLE  name of the top level role for this instance
-#    CHEF_PARAMS  option additional chef parameters in json syntax
+#    CHEF_ENV     chef environment for the node
+#    CHEF_ROLE    name of the top level role for this node
+#    CHEF_PARAMS  optional additional chef parameters in json syntax
 InstallChef() {
     [[ $# = 1 ]] || { echo "Internal error calling AllocateServer" 1>&2 ; exit 1 ; }
     local serverDir=$1
 
-    param=""
-    if [[ -n $CHEF_PARAMS ]] then
-        param=",$CHEF_PARAMS"
+    config="\"epi_server_base\":{\"system_name\":\"$FULL_NAME\"}"
+    if [[ -n $CHEF_PARAMS ]] ; then
+        config="$config,$CHEF_PARAMS"
     fi
     IP=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
+    echo "Bootstrapping chef: env=$CHEF_ENV role=$CHEF_ROLE config={$config}"
     knife bootstrap -c /var/opt/dms/.chef/knife.rb -i /var/opt/dms/.ssh/lds.pem -x ubuntu --sudo \
-                -E dms-test -r "$CHEF_ROLE" \
-                -j "{\"epi_server_base\":{\"system_name\":\"$FULL_NAME\"}%param}" \
+                -E "$CHEF_ENV" -r "$CHEF_ROLE" \
+                -j "{$config}" \
                 -N $FULL_NAME "$IP" -F min --no-color
 }
 

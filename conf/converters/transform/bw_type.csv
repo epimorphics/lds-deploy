@@ -1,0 +1,5 @@
+code,bw_type
+"Lake","http://environment.data.gov.uk/def/bathing-water/LakeBathingWater"
+"Coastal","http://environment.data.gov.uk/def/bathing-water/CoastalBathingWater"
+"River","http://environment.data.gov.uk/def/bathing-water/RiverBathingWater"
+"Transitional","http://environment.data.gov.uk/def/bathing-water/TransitionalBathingWater"

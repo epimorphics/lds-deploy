@@ -53,7 +53,7 @@
     rdfs:comment "Reference data giving identifiers for Bathing Waters and asssociated sampling points."@en;
     skos:notation "reference";
     dct:isPartOf :bwq;
-    dms:dataConverter "tbd";
+    dms:dataConverter "sites";
     dms:updatePolicy dms:single;
     .
 
@@ -192,6 +192,9 @@
     skos:notation "presServers";
     dms:tierRole "presentationServers";
     dms:loadBalancer  :tPresLB;
+    dms:configureAction "bwq/presserver/configure";
+    dms:allocateAction "bwq/presserver/allocate";
+    dms:terminateAction "bwq/presserver/terminate";
     .    
 
 :tPresLB a dms:LoadBalancer;
