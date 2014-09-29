@@ -183,6 +183,7 @@ InstallChef() {
     echo "Bootstrapping chef: env=$CHEF_ENV role=$CHEF_ROLE config={$config}"
     knife bootstrap -c /var/opt/dms/.chef/knife.rb -i /var/opt/dms/.ssh/lds.pem -x ubuntu --sudo \
                 -E "$CHEF_ENV" -r "$CHEF_ROLE" \
+#                --secret-file "/var/opt/dms/.chef/data_bag_key" \
                 -j "{$config}" \
                 -N $FULL_NAME "$IP" -F min --no-color
 }
