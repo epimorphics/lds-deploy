@@ -10,7 +10,7 @@
 {
     type : "Composite",
     "name" : "short-term-pollution-risk-prediction",
-    "required" : [ 
+    "required" : [
          "site",
          "datetime",
          "prediction",
@@ -35,7 +35,7 @@
             "$predictionDateTime" : "{datetime.asDate('YYYY-MM-dd\\'T\\'hh:mm:ss|YYYY-MM-dd\\'T\\'hh:mm:ssZZ|YYYY-MM-dd\\'T\\'hh:mm:ssZ','xsd:dateTime').toLocalTime()}",
             "$expiresDateTime"    : "{$predictionDateTime.plus(23,59,0)}",
             "$ns"                 : "{= asResource($$).replaceAll('#$','') }"
-        }, 
+        },
         {
 ############################################################################################################            
 # The following expression is a monster because I couldn't get format('%1tY%1tM%1td-%1tH%1tm%1ts') to work.
@@ -49,34 +49,18 @@
             "$incrementalStpDataset" : "{$bodyStpDataset}/dataset-increment/{$pubDateTimeSlug}"
         }
     ],
-############################################################################################################
-# Temporary Map source for mapping sampling-point codes to bathing water URI
-############################################################################################################
-
-# @@TODO 5: Possibly replace with some LDS-BWQ infrastructure map (several transforms will need it).
- 
-    "sources" : [
-       { "name"       : "sp-to-bw",
-         "sourceType" : "RDF",
-         "source"     : "sites.ttl",
-         "key"        : "<skos:notation>",
-         "value"      : "<def-bw:bathingWater>",
-         "type"       : "<def-sp:SamplingPoint>",
-         "makeURI"    : true
-       }
-    ],
     "oneOffs" : [
        { "name"              : "stp-dataset" ,
-         "@id"               : "$stpDataset" ,
+         "@id"               : "<{$stpDataset}>" ,
          "<rdf:type>"        : ["<void:Dataset>", "<qb:DataSet>", "<def-stp:RiskPredictionDataSet>" ],
          "<rdfs:label>"      : "Bathing Water Quality Short Term Pollution Risk Prediction@en" ,
          "<dct:description>" : "Top level dataset recording predictions of short term pollution risk, typically due to rainfall, associated with designated bathing waters in the UK.@en",
          "<dct:license>"     : "<http://reference.data.gov.uk/id/open-government-licence>",
          "<qb:structure>"    : "<def-stp:riskDsd>",
-         "<void:subset>"     : "<{$bodyStpDataset>",
+         "<void:subset>"     : "<{$bodyStpDataset}>",
          "<void:uriRegexPattern>" : "http://environment.data.gov.uk/data/bathing-water-quality/stp-risk-prediction/(.*)",
-         "<void:vocabulary>"      : [ "<{$ns.apply('dgu:'     )}>", 
-                                      "<{$ns.apply('def-bwq:' )}>", 
+         "<void:vocabulary>"      : [ "<{$ns.apply('dgu:'     )}>",
+                                      "<{$ns.apply('def-bwq:' )}>",
                                       "<{$ns.apply('skos:'    )}>",
                                       "<{$ns.apply('def-bw:'  )}>",
                                       "<{$ns.apply('def-sp:'  )}>",
@@ -92,8 +76,8 @@
          "<qb:structure>"    : "<def-stp:riskDsd>",
          "<void:uriRegexPattern>" : "http://environment.data.gov.uk/data/bathing-water-quality/stp-risk-prediction/(.*)",
          "<dct:publisher>"   : "<{$body_org}>",
-         "<void:vocabulary>" : [ "<{$ns.apply('dgu:')}>", 
-                                   "<{$ns.apply('def-bwq:')}>", 
+         "<void:vocabulary>" : [ "<{$ns.apply('dgu:')}>",
+                                   "<{$ns.apply('def-bwq:')}>",
                                    "<{$ns.apply('skos:'   )}>",
                                    "<{$ns.apply('def-bw:' )}>",
                                    "<{$ns.apply('def-sp:' )}>",
@@ -109,8 +93,8 @@
          "<dct:description>" : "Incremental short-term pollution risk prediction dataset - ({$body_slug}  {$pubDateTime})@en",
          "<dct:license>"     : "<http://reference.data.gov.uk/id/open-government-licence>",
          "<dct:publisher>"   : "<{$body_org}>",
-         "<void:vocabulary>" : [ "<{$ns.apply('dgu:')}>", 
-                                   "<{$ns.apply('def-bwq:')}>", 
+         "<void:vocabulary>" : [ "<{$ns.apply('dgu:')}>",
+                                   "<{$ns.apply('def-bwq:')}>",
                                    "<{$ns.apply('skos:'   )}>",
                                    "<{$ns.apply('def-bw:' )}>",
                                    "<{$ns.apply('def-sp:' )}>",
@@ -119,7 +103,7 @@
          "<dct:modified>"    : "{$pubDateTime}",
 # @@TODO 3: rationalise dump file name
          "<void:datadump>"   : "<{$source_base}/{$body_slug}/output/{$filebasename}-{$pubDateTime}.ttl>"
-       }         
+       }
     ],
  ##########################################################################################################
  # Main STP conversion template.
@@ -138,7 +122,7 @@
                                        prediction.value == 1 ? $def_stp.append('/normal')  :
                                        prediction.value == 2 ? $def_stp.append('/increased') : null}>",
          "<def-stp:samplingPoint>": "<{$so_sp}/{$bwspid}>",
-         "<def-stp:bathingWater>" : "<{$bwspid.map('sp-to-bw')}",
+         "<def-stp:bathingWater>" : "<{$bwspid.map('sp-to-bw')}>",
          "<rdfs:comment>"         : [ "{prediction_text_en.lang('en')}", "{prediction_text_cy.lang('cy')}" ],
  # @@TODO 4: check source file referencing
          "<dct:source>"           : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%04d')}>",

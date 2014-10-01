@@ -55,6 +55,7 @@
     dct:isPartOf :bwq;
     dms:dataConverter "sites";
     dms:updatePolicy dms:single;
+    dms:asMapSource  "sp-to-bw.yaml";
     .
 
 :profiles a dms:DataComponent;
@@ -92,7 +93,7 @@
     rdfs:comment "Forecasts of short term pollution risk."@en;
     skos:notation "forecasts";
     dct:isPartOf :bwq;
-    dms:dataConverter "tbd";
+    dms:dataConverter "short-term-pollution-risk-prediction";
     dms:postPublishScript "tbd";
     dms:updatePolicy dms:series;
     .

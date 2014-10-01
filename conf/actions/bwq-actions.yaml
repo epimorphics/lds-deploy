@@ -11,7 +11,7 @@
     "AWS_INSTANCE_STORE" : "yes"
     "AWS_INSTANCE_TYPE" : "m3.large"
     "AWS_AMI" : "ami-096cbd7e"
-    "AWS_SG" : "sg-761ac813"
+    "AWS_SG" : "sg-761ac813"    # lds-back-end
     "CHEF_ENV"  : "dms-test"
     "CHEF_ROLE" : "dms_data_server"
 ---
@@ -46,7 +46,7 @@
     "AWS_INSTANCE_STORE" : "yes"
     "AWS_INSTANCE_TYPE" : "m3.large"
     "AWS_AMI" : "ami-096cbd7e"
-    "AWS_SG" : "sg-b815c7dd"
+    "AWS_SG" : "sg-b815c7dd"   # lds-front-end
     "CHEF_ENV"  : "ea-bwq-pres-staging"
     "CHEF_ROLE" : "ea-bwq-pres"
 ---

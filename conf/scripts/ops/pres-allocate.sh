@@ -32,7 +32,7 @@ AllocateServer "$serverDir"
 # Work out query endpoint for corresonding data tier (assumes called dataservers)
 LB_DNS=$( jq -r .DNSName $serverDir/../../../dataservers/aws-lb.json )
 LB_QUERY="http://$LB_DNS/ds/query"
-CHEF_PARAMS="\"epi_presentation_server\":{\"services\":{\"environment\":{\"data_server_query_endpoint\":\"$LB_QUERY\"},\"location\":{\"data_server_query_endpoint\":\"$LB_QUERY\"}}}"
+CHEF_PARAMS="\"epi_presentation_server\":{\"services\":{\"environment\":{\"data_server_query_endpoint\":\"$LB_QUERY\",\"service_dns_name\":\"lds-test-environment.epimorphics.net\"},\"location\":{\"data_server_query_endpoint\":\"$LB_QUERY\",\"service_dns_name\":\"lds-test-location.epimorphics.net\"}}}"
 InstallChef "$serverDir"
 
 #InstallChefSolo "$serverDir" "../chef"
