@@ -1,7 +1,11 @@
 name       : 'sp-to-bw'
-sourceType : RDF
-key        : "<skos:notation>"
-value      : "<def-bw:bathingWater>"
-type       : "<def-sp:SamplingPoint>"
-makeURI    : true
+sourceType : RDFSparql
 sourceComponent  : 'http://localhost/dms/metadata/bwq/reference'
+query      : >
+    SELECT ?key ?value ?eubwid WHERE
+    {
+        [] a def-sp:SamplingPoint; skos:notation ?key;
+             def-bw:bathingWater ?value .
+        ?value skos:notation ?eubwidT .
+        BIND(str($eubwidT) AS $eubwid)
+    }
