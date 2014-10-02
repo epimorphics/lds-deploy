@@ -55,7 +55,7 @@
     dct:isPartOf :bwq;
     dms:dataConverter "sites";
     dms:updatePolicy dms:single;
-    dms:asMapSource  "sp-to-bw.yaml";
+    dms:asMapSource  "sp-to-bw";
     .
 
 :profiles a dms:DataComponent;

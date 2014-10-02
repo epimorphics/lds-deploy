@@ -1,7 +1,7 @@
 name       : 'sp-to-bw'
 sourceType : RDF
-source     : "set by caller"
 key        : "<skos:notation>"
 value      : "<def-bw:bathingWater>"
 type       : "<def-sp:SamplingPoint>"
 makeURI    : true
+sourceComponent  : 'http://localhost/dms/metadata/bwq/reference'
