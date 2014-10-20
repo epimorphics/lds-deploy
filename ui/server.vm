@@ -103,7 +103,7 @@
 
             <img src="http://lds-monitor.epimorphics.net/render/?width=400&height=240&_salt=$lib.now()&target=serverMetrics.${sID}.load.load.shortterm&yMin=0&title=Server%20load">
 
-            <img src="http://lds-monitor.epimorphics.net/render/?width=400&height=240&_salt=$lib.now()&target=serverMetrics.bwq.testing.dataservers.s1.memory.memory-used&target=serverMetrics.${sID}.memory.memory-free&areaMode=stacked&yMin=0&title=Memory">
+            <img src="http://lds-monitor.epimorphics.net/render/?width=400&height=240&_salt=$lib.now()&target=serverMetrics.${sID}.memory.memory-used&target=serverMetrics.${sID}.memory.memory-free&areaMode=stacked&yMin=0&title=Memory">
 
         </div>
         <div>
