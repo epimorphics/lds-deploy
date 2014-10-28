@@ -126,7 +126,7 @@
     dms:publicationTier :testingPubServers;
     dms:tier :tPresServers;
     dms:consolidatedUpdates false;
-#    dms:image  :baseline;
+    dms:image  :baseline;
     .
 
 # -- Tiers --------------------------------
@@ -205,4 +205,8 @@
 
 # -- Base images --------------------------------
 
-
+:baseline a dms:image;
+    dms:dumpFile   "/var/opt/dms/services/bwq/publicationSets/testing/images/baseline-2014-10-02.nq.gz";
+    dms:dbLocation "/var/opt/dms/services/bwq/publicationSets/testing/images/baseline-2014-10-02.DB.tgz";
+    dms:effectiveDate "2014-10-02T10:18:00Z"^^xsd:dateTime;
+    .
