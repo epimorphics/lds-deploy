@@ -10,7 +10,7 @@
 {
     type : "Composite",
     "name" : "short-term-pollution-risk-prediction",
-    "required" : [
+    "required" : [ 
          "site",
          "datetime",
          "prediction",
@@ -32,22 +32,39 @@
             "$so_zoi"             : "http://location.data.gov.uk/so/ef/ZoneOfInfluence/bwzoi.eaew",
             "$bwspid"             : "{site.format('%05d')}",
             "$pubDateTime"        : "{$exectime.asDate('xsd:dateTime').toWholeSeconds().toLocalTime()}",
-            "$predictionDateTime" : "{datetime.asDate('YYYY-MM-dd\\'T\\'hh:mm:ss|YYYY-MM-dd\\'T\\'hh:mm:ssZZ|YYYY-MM-dd\\'T\\'hh:mm:ssZ','xsd:dateTime').toLocalTime()}",
+            "$predictionDateTime" : "{datetime.asDate('yyyy-MM-dd\\'T\\'hh:mm:ss|yyyy-MM-dd\\'T\\'hh:mm:ssZZ|yyyy-MM-dd\\'T\\'HH:mm:ssZ','xsd:dateTime').toLocalTime()}",
             "$expiresDateTime"    : "{$predictionDateTime.plus(23,59,0)}",
             "$ns"                 : "{= asResource($$).replaceAll('#$','') }"
-        },
+        }, 
         {
 ############################################################################################################            
 # The following expression is a monster because I couldn't get format('%1tY%1tM%1td-%1tH%1tm%1ts') to work.
 ############################################################################################################
 #            "$pubDateTimeSlug" : 
 #                 "{$pubDateTime.year.format('%04d')}{$pubDateTime.month.format('%02d')}{$pubDateTime.day.format('%02d')}-{$pubDateTime.hour.format('%02d')}{$pubDateTime.minute.format('%02d')}{$pubDateTime.fullSecond.format('%02d')}",
-            "$pubDateTimeSlug" : "{$pubDateTime.format('YYYYMMdd-hhmmss')}",
+            "$pubDateTimeSlug" : "{$pubDateTime.format('yyyyMMdd-HHmmss')}",
             "$stpDataset"      : "{$data_base}/stp-risk-prediction",
             "$bodyStpDataset"  : "{$data_base}/{$body_slug}/stp-risk-prediction"
         },{
-            "$incrementalStpDataset" : "{$bodyStpDataset}/dataset-increment/{$pubDateTimeSlug}"
+            "$incrementalStpDataset" : "{$bodyStpDataset}/dataset-increment/{$pubDateTimeSlug}",
+            "$bathing-water"   : "<{$bwspid.map('sp-to-bw', 'value', true)}>"
         }
+    ],
+############################################################################################################
+# Temporary Map source for mapping sampling-point codes to bathing water URI
+############################################################################################################
+
+# @@TODO 5: Possibly replace with some LDS-BWQ infrastructure map (several transforms will need it).
+ 
+    "sources" : [
+       # { "name"       : "sp-to-bw",
+       #   "sourceType" : "RDF",
+       #   "source"     : "sites.ttl",
+       #   "key"        : "<skos:notation>",
+       #   "value"      : "<def-bw:bathingWater>",
+       #   "type"       : "<def-sp:SamplingPoint>",
+       #   "makeURI"    : true
+       # }
     ],
     "oneOffs" : [
        { "name"              : "stp-dataset" ,
@@ -59,8 +76,8 @@
          "<qb:structure>"    : "<def-stp:riskDsd>",
          "<void:subset>"     : "<{$bodyStpDataset}>",
          "<void:uriRegexPattern>" : "http://environment.data.gov.uk/data/bathing-water-quality/stp-risk-prediction/(.*)",
-         "<void:vocabulary>"      : [ "<{$ns.apply('dgu:'     )}>",
-                                      "<{$ns.apply('def-bwq:' )}>",
+         "<void:vocabulary>"      : [ "<{$ns.apply('dgu:'     )}>", 
+                                      "<{$ns.apply('def-bwq:' )}>", 
                                       "<{$ns.apply('skos:'    )}>",
                                       "<{$ns.apply('def-bw:'  )}>",
                                       "<{$ns.apply('def-sp:'  )}>",
@@ -76,8 +93,8 @@
          "<qb:structure>"    : "<def-stp:riskDsd>",
          "<void:uriRegexPattern>" : "http://environment.data.gov.uk/data/bathing-water-quality/stp-risk-prediction/(.*)",
          "<dct:publisher>"   : "<{$body_org}>",
-         "<void:vocabulary>" : [ "<{$ns.apply('dgu:')}>",
-                                   "<{$ns.apply('def-bwq:')}>",
+         "<void:vocabulary>" : [ "<{$ns.apply('dgu:')}>", 
+                                   "<{$ns.apply('def-bwq:')}>", 
                                    "<{$ns.apply('skos:'   )}>",
                                    "<{$ns.apply('def-bw:' )}>",
                                    "<{$ns.apply('def-sp:' )}>",
@@ -93,8 +110,8 @@
          "<dct:description>" : "Incremental short-term pollution risk prediction dataset - ({$body_slug}  {$pubDateTime})@en",
          "<dct:license>"     : "<http://reference.data.gov.uk/id/open-government-licence>",
          "<dct:publisher>"   : "<{$body_org}>",
-         "<void:vocabulary>" : [ "<{$ns.apply('dgu:')}>",
-                                   "<{$ns.apply('def-bwq:')}>",
+         "<void:vocabulary>" : [ "<{$ns.apply('dgu:')}>", 
+                                   "<{$ns.apply('def-bwq:')}>", 
                                    "<{$ns.apply('skos:'   )}>",
                                    "<{$ns.apply('def-bw:' )}>",
                                    "<{$ns.apply('def-sp:' )}>",
@@ -103,7 +120,7 @@
          "<dct:modified>"    : "{$pubDateTime}",
 # @@TODO 3: rationalise dump file name
          "<void:dataDump>"   : "<{$source_base}/{$body_slug}/output/{$filebasename}-{$pubDateTime}.ttl>"
-       }
+       }         
     ],
  ##########################################################################################################
  # Main STP conversion template.
@@ -112,21 +129,21 @@
     "referenced" : [
        { "name" : "stp",
          "@id"  : "<{$stpDataset}/point/{$bwspid}/dateTime/{$pubDateTimeSlug}>",
-         "<rdf:type>"            : "<{$def_stp}/RiskPrediction>",
+         "<rdf:type>"             : "<{$def_stp}/RiskPrediction>",
          "<def-stp:publishedAt>"  : "{$pubDateTime}",
          "<def-stp:predictedAt>"  : "{$predictionDateTime}",
- # There may be a better way to extract date from dateTime, but a simple .asDate('xsd:date') doesn't do it
-         "<def-stp:predictedOn>"  : "{$predictionDateTime.year.format('%04d').append('-').append($predictionDateTime.month.format('%02d')).append('-').append($predictionDateTime.day.format('%02d')).asDate('YYYY-MM-dd','xsd:date')}",
+         "<def-stp:predictedOn>"  : "{$predictedOnDateTime.format('yyyy-MM-dd').asDate('yyyy-MM-dd','xsd:date')}",
          "<def-stp:expiresAt>"    : "{$expiresDateTime}",
          "<def-stp:riskLevel>"    : "<{prediction.value == 0 ? $def_stp.append('/unknown') :
                                        prediction.value == 1 ? $def_stp.append('/normal')  :
                                        prediction.value == 2 ? $def_stp.append('/increased') : null}>",
          "<def-stp:samplingPoint>": "<{$so_sp}/{$bwspid}>",
-         "<def-stp:bathingWater>" : "<{$bwspid.map('sp-to-bw')}>",
+         "<def-stp:bathingWater>" : "$bathing-water",
          "<rdfs:comment>"         : [ "{prediction_text_en.lang('en')}", "{prediction_text_cy.lang('cy')}" ],
  # @@TODO 4: check source file referencing
          "<dct:source>"           : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%04d')}>",
-         "<qb:dataSet>"           : [ "<{$stpDataset}>", "<{$bodyStpDataset}>" ]
+         "<qb:dataSet>"           : [ "<{$stpDataset}>", "<{$bodyStpDataset}>" ],
+         "^<def-stp:latestRiskPrediction>" : "$bathing-water"
        }
    ]
 }

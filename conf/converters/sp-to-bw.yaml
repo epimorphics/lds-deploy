@@ -2,10 +2,18 @@ name       : 'sp-to-bw'
 sourceType : RDFSparql
 sourceComponent  : 'http://localhost/dms/metadata/bwq/reference'
 query      : >
-    SELECT ?key ?value ?eubwid WHERE
-    {
-        [] a def-sp:SamplingPoint; skos:notation ?key;
-             def-bw:bathingWater ?value .
-        ?value skos:notation ?eubwidT .
+      SELECT ?key ?value ?eubwid ?label ?district ?gss
+      WHERE
+      {
+        [] a def-sp:SamplingPoint; 
+            skos:notation ?key;
+            def-bw:bathingWater ?value .
+        ?value 
+            skos:notation ?eubwidT ;
+            skos:prefLabel ?label ;
+            onsadmingeo:district ?district .
+        ?district 
+            admingeo:gssCode ?gss .
         BIND(str($eubwidT) AS $eubwid)
-    }
+        FILTER( lang(?label) = 'en' )
+      }

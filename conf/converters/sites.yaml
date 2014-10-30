@@ -56,7 +56,7 @@
             "$eubwid"  : "{eubwid.trim().toLowerCase().replaceAll('\\s+','-')}", # replace running whitespace with a single '-'
             "$altBwId" : "{description_english.replaceAll('[-#$&?]+',' ').replaceAll('[\\'`(),]','').trim().replaceAll('\\s+','-').toLowerCase()}",
             "$s_bwt"   : "{bathing_water_type.toLowerCase()}",
-            "$eaRegion" : "{ea_region.map('region')}",
+            "$eaRegion" : "{ea_region.map('ea-region')}",
             "$sediment" : "{sediment_types.toLowerCase().replaceAll('\\\\sand\\\\s',',')}",
             "$srsDim"  : "2",
             "$srs"     : "http://www.opengis.net/def/crs/EPSG/0/27700",
@@ -246,13 +246,13 @@
         }
     ],
     "sources" : [
-        {
-            "name"       : "region",
-            "sourceType" : "CSV",
-            "source"     : "transform/ea-region.csv",
-            "key"        : "code",
-            "value"      : "region"
-        },
+        # {
+        #     "name"       : "region",
+        #     "sourceType" : "CSV",
+        #     "source"     : "transform/ea-region.csv",
+        #     "key"        : "code",
+        #     "value"      : "region"
+        # },
         {
             "name"       : "sediment",
             "sourceType" : "CSV",
@@ -274,10 +274,9 @@
                     "sampling-point",  "os-district", "ons-district" ],
     "referenced" : [
     #############################################################################################################################
+    #
     # Bathing-water reference data
     # 
-    # @@TODO@@ : resolve county references and import OS linked data fragments
-    #
     #############################################################################################################################
         {   "name"                                     : "bathing-water",
             "@id"                                      : "<{$id_bw}/{$eubwid}>",

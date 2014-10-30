@@ -1,0 +1,5 @@
+name       : ea-region
+sourceType : CSV
+source     : "transform/ea-region.csv"
+key        : code
+value      : region

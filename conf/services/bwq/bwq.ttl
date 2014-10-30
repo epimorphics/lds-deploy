@@ -33,8 +33,8 @@
     rdfs:comment "Data cube describing historic and current annual Bathing Water quality assessments."@en;
     skos:notation "annual";
     dct:isPartOf :bwq;
-    dms:dataConverter "tbd";
-    dms:postPublishScript "tbd";
+    dms:dataConverter "compliance-assessment";
+    dms:postPublishScript "bwq/updates/inseason-rebuild.ru";
     dms:updatePolicy dms:series;
     .
 
@@ -43,8 +43,8 @@
     rdfs:comment "Data cube describing historic and current in-season Bathing Water quality assessments."@en;
     skos:notation "in-season";
     dct:isPartOf :bwq;
-    dms:dataConverter "tbd";
-    dms:postPublishScript "tbd";
+    dms:dataConverter "in-season-assessment";
+    dms:postPublishScript "bwq/updates/inseason-rebuild.ru";
     dms:updatePolicy dms:series;
     .
 
@@ -63,8 +63,8 @@
     rdfs:comment "Profiles describing attributes of bathing waters."@en;
     skos:notation "profiles";
     dct:isPartOf :bwq;
-    dms:dataConverter "tbd";
-    dms:postPublishScript "tbd";
+    dms:dataConverter "bw-profile";
+    dms:postPublishScript "bwq/updates/profile-rebuild.ru";
     dms:updatePolicy dms:series;
     .
 
@@ -73,8 +73,7 @@
     rdfs:comment "Spatial features associated with bathing waters."@en;
     skos:notation "features";
     dct:isPartOf :bwq;
-    dms:dataConverter "tbd";
-    dms:postPublishScript "tbd";
+    dms:dataConverter "bw-profile-feature";
     dms:updatePolicy dms:series;
     .
 
@@ -83,8 +82,8 @@
     rdfs:comment "Records of suspensions of monitoring."@en;
     skos:notation "suspensions";
     dct:isPartOf :bwq;
-    dms:dataConverter "tbd";
-    dms:postPublishScript "tbd";
+    dms:dataConverter "suspension-of-monitoring";
+    dms:postPublishScript "bwq/updates/som-rebuild.ru";
     dms:updatePolicy dms:series;
     .
 
@@ -94,7 +93,7 @@
     skos:notation "forecasts";
     dct:isPartOf :bwq;
     dms:dataConverter "short-term-pollution-risk-prediction";
-    dms:postPublishScript "tbd";
+    dms:postPublishScript "bwq/updates/stp-rebuild.ru";
     dms:updatePolicy dms:series;
     .
 

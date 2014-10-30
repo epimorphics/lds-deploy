@@ -1,0 +1,167 @@
+###############################################################################################################
+#
+# Template for profile features
+#
+# regTODO's
+#
+# * move mapSource spec to the environment
+# * check source file referencing
+#
+###############################################################################################################
+
+type : Composite
+name : bw-profile-feature
+required :
+  - ea_region 
+  - samplingpoint 
+  - name 
+  - map_category 
+  - easting 
+  - northing
+  - lat 
+  - long
+  - eUBWID
+
+bind :
+  - "$source_base"        : "http://environment.data.gov.uk/sources/bwq"
+    "$data_base"          : "http://location.data.gov.uk/so/ef/BathingWaterProfileFeature"
+    "$body_slug"          : "eaew"
+    "$sp"                 : "{samplingpoint.format('%05d')}"
+    "$pubDateTime"        : "{$exectime.asDate('xsd:dateTime').toWholeSeconds().toLocalTime()}"
+    "$filestub"           : "{$filename.replaceAll('\\.csv$','')}"
+    "$defaultYear"        : "2011"
+
+  - "$eubwid"             : "{$sp.map('sp-to-bw', 'eubwid', true)}"
+    "$outfile"            : "{$source_base}/{$body_slug}/output/{$filestub}.ttl"
+    "$infile"             : "{$source_base}/{$body_slug}/input/{$filename}"
+    "$datasetURI"         : "{$data_base}/bwpf.{$body_slug}/"
+
+  - "$bw"                 : "{$sp.map('sp-to-bw')}"
+
+sources :
+###############################################################################
+# Source for testing only, replace in live service
+###############################################################################
+#   - name       : 'sp-to-bw'
+#     sourceType : RDFSparql
+#     source     : 'data/expected/bw-site-sample.ttl'
+# #    source     : 'data/output/bw_sites.ttl'
+#     query      : >
+#       SELECT ?key ?value ?eubwid ?label ?district ?gss
+#       WHERE
+#       {
+#         [] a def-sp:SamplingPoint; 
+#             skos:notation ?key;
+#             def-bw:bathingWater ?value .
+#         ?value 
+#             skos:notation ?eubwidT ;
+#             skos:prefLabel ?label ;
+#             onsadmingeo:district ?district .
+#         ?district 
+#             admingeo:gssCode ?gss .
+#         BIND(str($eubwidT) AS $eubwid)
+#         FILTER( lang(?label) = 'en' )
+#       }
+
+  # - name       : region
+  #   sourceType : CSV
+  #   source     : "transform/ea-region.csv"
+  #   key        : code
+  #   value      : region
+
+  - name       : feature-types
+    sourceType : CSV
+    source     : "transform/feature-types.csv"
+    key        : name
+    value      : uri
+
+oneOffs :
+  - name              : bw-profile-dataset
+    type              : Composite
+    bind :
+    - "$ns"                    : "{= asResource($$).replaceAll('#$','') }"
+
+    templates :
+###############################################################################
+# Void data set info
+###############################################################################
+    - "@id"                    : "<{$datasetURI}>"
+      "<rdf:type>"             : ["<void:Dataset>", "<dgu:URIset>"]
+      "<rdfs:label>"           : "Features that may influence water quality of bathing waters monitored by the Environment Agency for England and Wales.@en"
+      "<dct:description>"      : "URI Set of features that may influence water quality of bathing waters in England and Wales monitored by the Environment Agency for compliance with the EU Bathing Water Directive@en"
+      "<dgu:itemType>"         : "<def-bw:BathingWater>"
+      "<dgu:status>"           : "<status:draft>"
+      "<foaf:isPrimaryTopicOf>" : "<{$outfile}>"
+      "<dct:license>"          : "<http://reference.data.gov.uk/id/open-government-licence>"
+      "<dct:modified>"         : "{$pubDateTime}"
+      "<dct:source>"           : "<{$infile}>"
+      "<void:dataDump>"        : "<{$outfile}>"
+      "<void:uriRegexPattern>" : ["{$data_base}/.*", "{$data_base}Endurant/.*"]
+      "<void:vocabulary>"      : ["<{$ns.apply('dgu:')}>", "<{$ns.apply('def-bw:')}>", "<{$ns.apply('time:')}>", "<{$ns.apply('dct:')}>", "<{$ns.apply('void:')}>", "<{$ns.apply('def-ver:')}>", "<{$ns.apply('foaf:')}>", "<{$ns.apply('spatialrelations:')}>", "<{$ns.apply('def-sp:')}>", "<{$ns.apply('geowgs84:')}>", "<{$ns.apply('def-feat:')}>"]
+
+templates : 
+  - bw-profile-core
+  - bw-profile-dummy
+
+referenced :
+
+###############################################################################
+# Main template, creates feature, enduring feature and associated intervals
+###############################################################################
+
+  - name                         : bw-profile-core
+    type                         : Composite
+    required:
+    # TODO how to validate the case where there is no feature_id but the type isn't a sample point
+    - feature_id
+
+    bind :
+    - "$fid"                     : "{feature_id.replaceAll('\\s+','-')}"
+    - "$fURI"                    : "{$datasetURI}{$fid}:{feature_version}"
+    - "$efURI"                   : "{$data_base}Endurant/bwpf.{$body_slug}/{$fid}"
+      "$intervalRes"             : "<{$fURI}/intervals/interval>"
+      "$interval_dt"             : "<http://reference.data.gov.uk/id/gregorian-instant/{$defaultYear}-01-01T00:00:00>"
+
+    templates :
+    - name                       : bw-profile-interval-dt
+      "@id"                      : "{$interval_dt}"
+      "<time:inXSDDateTime>"     : "{$defaultYear}-01-01T00:00:00^^xsd:dateTime"
+
+    - name                       : bw-profile-interval
+      "@id"                      : "{$intervalRes}"
+      "<time:hasBeginning>"      : "{$interval_dt}"
+
+    - name                       : bw-profile-feature-template
+      "@id"                      : "<{$fURI}>"
+      "<rdf:type>"               : "<def-feat:Feature>"
+      "<rdfs:label>"             : "Feature {feature_id}"
+      "<def-bw:bathingWater>"    : "{$bw}"
+      "<spatialrelations:easting>"  : "{easting}^^xsd:decimal"
+      "<spatialrelations:northing>" : "{northing}^^xsd:decimal"
+      "<geowgs84:lat>"           : "{lat}^^xsd:decimal"
+      "<geowgs84:long>"          : "{long}^^xsd:decimal"
+      "<def-bw:regionalOrganization>" : "<{ea_region.map('ea-region')}>"
+      "<def-ver:versionString>"  : "{feature_version.toString()}"
+      "<def-ver:interval>"       : "{$intervalRes}"
+      "<dgu:uriSet>"             : "<{$datasetURI}>"
+      "<dct:isVersionOf>"        : "<{$efURI}>"
+      "<dct:source>"             : "<{$infile}#line={value($row.number).format('%06d')}>"
+
+    - name                       : bw-profile-feature-type
+      "@id"                      : "<{$fURI}>"
+      "<rdf:type>"              : "<def-feat:{map_category.map('feature-types',true)}>"
+
+    - name                       : bw-profile-enduring-feature
+      "@id"                      : "<{$efURI}>"
+      "<rdf:type>"               : "<def-feat:EnduringFeature>"
+      "<dct:hasVersion>"         : "<{$fURI}>"
+      "<def-ver:currentVersion>" : "<{$fURI}>"
+      "<dgu:uriSet>"             : "<{$datasetURI}>"
+
+###############################################################################
+# Just here to ensure there is a matching template for each row, 
+# some rows (sampling points) have no output
+###############################################################################
+
+  - name                         : bw-profile-dummy
+    "@id"                        : "<http://example.com>"
