@@ -25,14 +25,14 @@ bind :
     "$pubDateTime"        : "{$exectime.asDate('xsd:dateTime').toWholeSeconds().toLocalTime()}"
     "$filestub"           : "{$filename.replaceAll('\\.csv$','')}"
 
-  - "$eubwid"             : "{$sp.map('sp-to-bw', 'eubwid', true)}"
+  - "$eubwid"             : "{$sp.map('bwq-sp-to-bw', 'eubwid', true)}"
     "$outfile"            : "{$source_base}/{$body_slug}/output/{$filestub}.ttl"
     "$infile"             : "{$source_base}/{$body_slug}/input/{$filename}"
 
   - "$profileURI"         : "{$data_base}/{$eubwid}/{profile_year}:{$version}"
     "$slcRes"             : "<{$data_base}-standard-language/{profile_year}-{$sp}:{$version}>"
     "$endurantRes"        : "<{$data_base}-endurant/{$eubwid}/{profile_year}>"
-    "$bw"                 : "{$sp.map('sp-to-bw')}"
+    "$bw"                 : "{$sp.map('bwq-sp-to-bw')}"
 
 sources :
 ###############################################################################
@@ -60,7 +60,7 @@ sources :
 #       }
 
 oneOffs :
-  - name              : bw-profile-dastaset
+  - name              : bwq-profile-dataset
     type              : Composite
     bind :
     - "$void_profiles"           : "<{$data_base}-dataset>"
@@ -106,20 +106,20 @@ oneOffs :
       "<void:subset>"          : "<{$void_profiles_eaew}>"
 
 templates : 
-  - bw-profile-common
-  - bw-profile-eng
-  - bw-profile-wales
+  - bwq-profile-common
+  - bwq-profile-eng
+  - bwq-profile-wales
 
 referenced :
 ###############################################################################
 # Core temlate common to both england and wales
 ###############################################################################
-  - name                         : bw-profile-common
+  - name                         : bwq-profile-common
     type                         : Composite
     bind :
       "$intervalRes"             : "<{$profileURI}/intervals/interval>"
       "$interval_dt"             : "<http://reference.data.gov.uk/id/gregorian-instant/{profile_year}-01-01T00:00:00>"
-      "$laRes"                   : "<http://location.data.gov.uk/id/au/localAuthority/ons:gss/{$sp.map('sp-to-bw', 'gss', true)}>"
+      "$laRes"                   : "<http://location.data.gov.uk/id/au/localAuthority/ons:gss/{$sp.map('bwq-sp-to-bw', 'gss', true)}>"
 
     templates :
 
@@ -130,13 +130,13 @@ referenced :
       "<time:hasBeginning>"      : "{$interval_dt}"
 
     - "@id"                      : "{$laRes}"
-      "<onsadmingeo:district>"   : "{$sp.map('sp-to-bw', 'district', true)}"
+      "<onsadmingeo:district>"   : "{$sp.map('bwq-sp-to-bw', 'district', true)}"
       "<rdfs:label>"             : "{la}@en"
 
     - "@id"                      : "<{$profileURI}>"
       "<rdf:type>"               : "<def-bwp:BathingWaterProfile>"
-      "<rdfs:label>"             : "{profile_year} Bathing Water Profile for {$sp.map('sp-to-bw', 'label', true)}@en"
-      "<skos:prefLabel>"         : "{profile_year} Bathing Water Profile for {$sp.map('sp-to-bw', 'label', true)}@en"
+      "<rdfs:label>"             : "{profile_year} Bathing Water Profile for {$sp.map('bwq-sp-to-bw', 'label', true)}@en"
+      "<skos:prefLabel>"         : "{profile_year} Bathing Water Profile for {$sp.map('bwq-sp-to-bw', 'label', true)}@en"
       "<def-bwp:standardLanguageCollection>" : "{$slcRes}"
       "<def-bw:bathingWater>"    : "{$bw}"
       "<def-bwp:applicableYear>" : "<http://reference.data.gov.uk/id/year/{profile_year}>"
@@ -172,7 +172,7 @@ referenced :
 ###############################################################################
 # Template for English profiles
 ###############################################################################
-  - name      : bw-profile-eng
+  - name      : bwq-profile-eng
     type      : Composite
     required  : 
         - la
@@ -206,7 +206,7 @@ referenced :
 ###############################################################################
 # Template for Welsh profiles
 ###############################################################################
-  - name      : bw-profile-wales
+  - name      : bwq-profile-wales
     type      : Composite
     required  : ["w_la", "w_bw_description", "w_c_description", "w_pollution_man_sl",
                  "w_stw_outfall_sl", "w_emerg_storm_sl","w_working_la_sl","w_algae_sl"]

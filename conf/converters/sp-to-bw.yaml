@@ -1,4 +1,4 @@
-name       : 'sp-to-bw'
+name       : 'bwq-sp-to-bw'
 sourceType : RDFSparql
 sourceComponent  : 'http://localhost/dms/metadata/bwq/reference'
 query      : >

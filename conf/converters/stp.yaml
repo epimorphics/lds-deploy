@@ -9,7 +9,7 @@
 
 {
     type : "Composite",
-    "name" : "short-term-pollution-risk-prediction",
+    "name" : "bwq-short-term-pollution-risk-prediction",
     "required" : [ 
          "site",
          "datetime",
@@ -47,7 +47,7 @@
             "$bodyStpDataset"  : "{$data_base}/{$body_slug}/stp-risk-prediction"
         },{
             "$incrementalStpDataset" : "{$bodyStpDataset}/dataset-increment/{$pubDateTimeSlug}",
-            "$bathing-water"   : "<{$bwspid.map('sp-to-bw', 'value', true)}>"
+            "$bathing-water"   : "<{$bwspid.map('bwq-sp-to-bw', 'value', true)}>"
         }
     ],
 ############################################################################################################
@@ -67,7 +67,7 @@
        # }
     ],
     "oneOffs" : [
-       { "name"              : "stp-dataset" ,
+       { "name"              : "bwq-stp-dataset" ,
          "@id"               : "<{$stpDataset}>" ,
          "<rdf:type>"        : ["<void:Dataset>", "<qb:DataSet>", "<def-stp:RiskPredictionDataSet>" ],
          "<rdfs:label>"      : "Bathing Water Quality Short Term Pollution Risk Prediction@en" ,
@@ -84,7 +84,7 @@
                                       "<{$ns.apply('def-stp:' )}>",
                                       "<{$ns.apply('qb:'      )}>" ]
        },{
-         "name"              : "body-stp-dataset",
+         "name"              : "bwq-body-stp-dataset",
          "@id"               : "<{$bodyStpDataset}>",
          "<rdf:type>"        : [ "<void:Dataset>", "<qb:DataSet>", "<def-stp:RiskPredictionDataSet>" ],
          "<rdfs:label>"      : "Bathing Water Quality Short Term Pollution Risk Prediction Dataset - ({$body_slug})@en" ,
@@ -103,7 +103,7 @@
          "<dct:modified>"    : "{$pubDateTime}",
          "<void:subset>"     : "<{$incrementalStpDataset}>"
        },{
-         "name"              : "incremental-stp-dataset",
+         "name"              : "bwq-incremental-stp-dataset",
          "@id"               : "<{$incrementalStpDataset}>",
          "<rdf:type>"        : [ "<void:Dataset>" ],
          "<rdfs:label>"      : "Bathing Water Quality - short-term pollution risk prediction incremental dataset - ({$body_slug} {$pubDateTime})@en" ,
@@ -125,9 +125,9 @@
  ##########################################################################################################
  # Main STP conversion template.
  ##########################################################################################################
-    "templates" : [ "stp" ] ,
+    "templates" : [ "bwq-stp" ] ,
     "referenced" : [
-       { "name" : "stp",
+       { "name" : "bwq-stp",
          "@id"  : "<{$stpDataset}/point/{$bwspid}/dateTime/{$pubDateTimeSlug}>",
          "<rdf:type>"             : "<{$def_stp}/RiskPrediction>",
          "<def-stp:publishedAt>"  : "{$pubDateTime}",

@@ -1,6 +1,6 @@
 {
     type : "Composite",
-    "name" : "sites",
+    "name" : "bwq-sites",
     "required" : [ 
         "samplingpoint", 
         "ncsx",
@@ -103,7 +103,7 @@
         }
     ],
     "oneOffs" : [
-        { "name"                   : "bathing-water-uriset",
+        { "name"                   : "bwq-bathing-water-uriset",
           "@id"                    : "<{$id_bw}/>",
           "<rdf:type>"             : [ "<dgu:URIset>", "<void:Dataset>" ],
 # [SPATIALREL, GEOWGS84, SKOS, GEOMETRY, SP, BW, ADMINGEO, AGEO, DGU, ORG],
@@ -118,7 +118,7 @@
           "<dgu:itemType>"         : "<def-bw:BathingWater>",
           "<dgu:status>"           : "<status:draft>"         
         },
-        { "name"                   : "bathing-water-bounding-box-uriset",
+        { "name"                   : "bwq-bathing-water-bounding-box-uriset",
           "@id"                    : "<{$so_env}/>",
           "<rdf:type>"             : [ "<dgu:URIset>", "<void:Dataset>" ],
 # [SPATIALREL, GEOWGS84, SKOS, GEOMETRY, SP, BW]
@@ -133,7 +133,7 @@
           "<dgu:itemType>"         : "<def-geom:Envelope>",
           "<dgu:status>"           : "<status:draft>"         
         },
-        { "name"                   : "bathing-water-zoi-uriset",
+        { "name"                   : "bwq-bathing-water-zoi-uriset",
           "@id"                    : "<{$so_zoi}/>",
           "<rdf:type>"             : [ "<dgu:URIset>", "<void:Dataset>" ],
 # [ADMINGEO, SPATIALREL, GEOWGS84, SKOS, GEOMETRY, ZOI, BW]
@@ -148,7 +148,7 @@
           "<dgu:itemType>"         : "<def-zoi:ZoneOfInfluence>",
           "<dgu:status>"           : "<status:draft>"         
         },
-        { "name"                   : "bathing-water-samplingpoint-uriset",
+        { "name"                   : "bwq-bathing-water-samplingpoint-uriset",
           "@id"                    : "<{$so_sp}/>",
           "<rdf:type>"             : [ "<dgu:URIset>", "<void:Dataset>" ],
  # [QB, VOID, TIME, BWQ, DCTERMS, DGU, SP, BW, ZOI, GEOMETRY, LOCGEOM, SPATIALREL, GEOWGS84, AGEO, SKOS, ADMINGEO],
@@ -163,7 +163,7 @@
           "<dgu:itemType>"         : "<def-sp:SamplingPoint>",
           "<dgu:status>"           : "<status:draft>"         
         },
-        { "name"                 : "public-body-import",
+        { "name"                 : "bwq-public-body-import",
           "@id"                  : 
              "<{{
                   var r_ea = $EA.fetch().asRDFNode() ;               
@@ -175,21 +175,21 @@
 #######################################################################################################################
 # OS Country reference data
 #######################################################################################################################
-        { "name"                  : "os-england",
+        { "name"                  : "bwq-os-england",
            "@id"                  : "<{$england.fetch()}>",
            "<rdf:type>"           : "<onsadmingeo:Country>",
            "<owl:sameAs>"         : [ "<{$snac_england}>", "<{$gss_england}>" ],
            "<rdfs:label>"         : [ "England@en","Lloegr@cy" ],
            "<skos:prefLabel>"     : [ "England@en","Lloegr@cy" ]
         },
-        { "name"                  : "os-wales",
+        { "name"                  : "bwq-os-wales",
            "@id"                  : "<{$wales.fetch()}>",
            "<rdf:type>"           : "<onsadmingeo:Country>",
            "<owl:sameAs>"         : [ "<{$snac_wales}>", "<{$gss_wales}>" ],
            "<rdfs:label>"         : [ "Wales@en","Cymru@cy" ],
            "<skos:prefLabel>"     : [ "Wales@en","Cymru@cy" ]
         },
-        { "name"                  : "os-scotland",
+        { "name"                  : "bwq-os-scotland",
            "@id"                  : "<{$scotland.fetch()}>",
            "<rdf:type>"           : "<onsadmingeo:Country>",
            "<owl:sameAs>"         : [ "<{$snac_scotland}>", "<{$gss_scotland}>" ],
@@ -199,21 +199,21 @@
 #######################################################################################################################
 # ONS SNAC coded Country reference data
 #######################################################################################################################
-        { "name"                  : "snac-england",
+        { "name"                  : "bwq-snac-england",
            "@id"                  : "<{$snac_england}>",
            "<rdf:type>"           : "<onsadmingeo:Country>",
            "<owl:sameAs>"         : [ "<{$england}>", "<{$gss_england}>" ],
            "<rdfs:label>"         : [ "England@en","Lloegr@cy" ],
            "<skos:prefLabel>"     : [ "England@en","Lloegr@cy" ]
         },
-        { "name"                  : "snac-wales",
+        { "name"                  : "bwq-snac-wales",
            "@id"                  : "<{$snac_wales}>",
            "<rdf:type>"           : "<onsadmingeo:Country>",
            "<owl:sameAs>"         : [ "<{$wales}>", "<{$gss_wales}>" ],
            "<rdfs:label>"         : [ "Wales@en","Cymru@cy" ],
            "<skos:prefLabel>"     : [ "Wales@en","Cymru@cy" ]
         },
-        { "name"                  : "snac-scotland",
+        { "name"                  : "bwq-snac-scotland",
            "@id"                  : "<{$snac_scotland}>",
            "<rdf:type>"           : "<onsadmingeo:Country>",
            "<owl:sameAs>"         : [ "<{$scotland}>", "<{$gss_scotland}>" ],
@@ -223,21 +223,21 @@
 #######################################################################################################################
 # ONS GSS coded Country reference data
 #######################################################################################################################
-        { "name"                  : "gss-england",
+        { "name"                  : "bwq-gss-england",
            "@id"                  : "<{$gss_england}>",
            "<rdf:type>"           : "<onsadmingeo:Country>",
            "<owl:sameAs>"         : [ "<{$england}>", "<{$snac_england}>" ],
            "<rdfs:label>"         : [ "England@en","Lloegr@cy" ],
            "<skos:prefLabel>"     : [ "England@en","Lloegr@cy" ]
         },
-        { "name"                  : "gss-wales",
+        { "name"                  : "bwq-gss-wales",
            "@id"                  : "<{$gss_wales}>",
            "<rdf:type>"           : "<onsadmingeo:Country>",
            "<owl:sameAs>"         : [ "<{$wales}>", "<{$snac_wales}>" ],
            "<rdfs:label>"         : [ "Wales@en","Cymru@cy" ],
            "<skos:prefLabel>"     : [ "Wales@en","Cymru@cy" ]
         },
-        { "name"                  : "gss-scotland",
+        { "name"                  : "bwq-gss-scotland",
            "@id"                  : "<{$gss_scotland}>",
            "<rdf:type>"           : "<onsadmingeo:Country>",
            "<owl:sameAs>"         : [ "<{$scotland}>", "<{$snac_scotland}>" ],
@@ -254,7 +254,7 @@
         #     "value"      : "region"
         # },
         {
-            "name"       : "sediment",
+            "name"       : "bwq-sediment",
             "sourceType" : "CSV",
             "source"     : "transform/sediment.csv",
             "key"        : "code",
@@ -262,7 +262,7 @@
             "makeURI"    : "true"
         },
         {
-            "name"       : "bw_type",
+            "name"       : "bwq-bw_type",
             "sourceType" : "CSV",
             "source"     : "transform/bw_type.csv",
             "key"        : "code",
@@ -270,18 +270,26 @@
             "makeURI"    : "true"
         }
     ],
-    "templates" : [ "bathing-water", "alt-bathing-water", "envelope", "envelope-lower", "envelope-upper", "zone-of-influence",
-                    "sampling-point",  "os-district", "ons-district" ],
+    "templates" : [ 
+        "bwq-sites-bathing-water", 
+        "bwq-sites-alt-bathing-water", 
+        "bwq-sites-envelope", 
+        "bwq-sites-envelope-lower", 
+        "bwq-sites-envelope-upper", 
+        "bwq-sites-zone-of-influence",
+        "bwq-sites-sampling-point",  
+        "bwq-sites-os-district", 
+        "bwq-sites-ons-district" ],
     "referenced" : [
     #############################################################################################################################
     #
     # Bathing-water reference data
     # 
     #############################################################################################################################
-        {   "name"                                     : "bathing-water",
+        {   "name"                                     : "bwq-sites-bathing-water",
             "@id"                                      : "<{$id_bw}/{$eubwid}>",
             "<dgu:uriSet>"                             : "<{$id_bw}/>",
-            "<rdf:type>"                               : [ "<def-bw:BathingWater>", "<{bathing_water_type.map('bw_type')}>" ],
+            "<rdf:type>"                               : [ "<def-bw:BathingWater>", "<{bathing_water_type.map('bwq-bw_type')}>" ],
             "<rdfs:label>"                             : [ "{description_english.lang('en')}", 
                                                            "{empty(description_welsh) ? null : description_welsh.lang('cy') }" ],
             "<skos:prefLabel>"                         : [ "{description_english.lang('en')}", 
@@ -298,7 +306,7 @@
             "<def-bw:yearDesignated>"                  : "{empty(des_year)    ? null : des_year.asDate('xsd:gYear').referenceTime()}",
             "<def-bw:yearDedesignated>"                : "{empty(de_des_year) ? null : de_des_year.asDate('xsd:gYear').referenceTime()}",
             "<def-bw:regionalOrganization>"            : "<{$eaRegion}>",
-            "<def-bw:sedimentTypesPresent>"            : "<{$sediment.split(',').map('sediment')}>",
+            "<def-bw:sedimentTypesPresent>"            : "<{$sediment.split(',').map('bwq-sediment')}>",
             "<def-bw:waterQualityImpactedByHeavyRain>" : "{impact_from_heavy_rainfall.toLowerCase()=='yes' ? true :
                                                            impact_from_heavy_rainfall.toLowerCase()=='no'  ? false : null }",
             "<def-geom:envelope>"                      : "<{$so_env}/{$eubwid}:1>",
@@ -308,7 +316,7 @@
                                                                          'http://statistics.data.gov.uk/id/statistical-geography/' + gss}>"
                                                         ],
              "<onsadmingeo:county>"                   : 
-                "{ { var r_district = os_uri.asRDFNode().fetch('rdf:type','rdfs:label','skos:prefLabel','skos:altLabel','admingeo:inCounty', 'admingeo:gssCode') ;
+                "{ { print('>> ' + os_uri) ;  var r_district = os_uri.asRDFNode().fetch('rdf:type','rdfs:label','skos:prefLabel','skos:altLabel','admingeo:inCounty', 'admingeo:gssCode') ;
                      var inCounty = r_district.getPropertyValue('admingeo:inCounty') ;
                      var label    = r_district.getPropertyValue('rdfs:label') ;
                      var county = 
@@ -328,7 +336,7 @@
     # However, should supress generation of the whole Zoi thing. This will affect bathing waters too
     # and could affect bwdx if implemented (skw 9/9/2014)
     #############################################################################################################################
-        {   "name"                                    : "zone-of-influence",
+        {   "name"                                    : "bwq-sites-zone-of-influence",
              "type"                                   : "Composite",
              
              "bind"                                   : [ {"$extent" : "<{$so_zoi}/{$eubwid}:1/extent>" } ],
@@ -360,9 +368,9 @@
     #############################################################################################################################
     # Alternate bathing water URI (vestigial)
     #############################################################################################################################
-        {   "name"                                    : "alt-bathing-water",
+        {   "name"                                    : "bwq-sites-alt-bathing-water",
             "@id"                                     : "<{$id_bw}/{$altBwId}>",
-            "<rdf:type>"                               : [ "<def-bw:BathingWater>", "<{bathing_water_type.map('bw_type')}>" ],
+            "<rdf:type>"                               : [ "<def-bw:BathingWater>", "<{bathing_water_type.map('bwq-bw_type')}>" ],
             "<owl:sameAs>"                            : "<{$id_bw}/{$eubwid}>",
             "<rdfs:label>"                            : [ 
 #                                                          "{description_english.lang('en')}",
@@ -375,7 +383,7 @@
     #############################################################################################################################
     # Map-bound envelope for a bathing-water
     #############################################################################################################################
-       {    "name"                                    : "envelope",
+       {    "name"                                    : "bwq-sites-envelope",
             "@id"                                     : "<{$so_env}/{$eubwid}:1>",
             "<rdf:type>"                              : [ "<def-geom:Envelope>", 
                                                           "<geometry:AbstractGeometry>", 
@@ -393,7 +401,7 @@
     #############################################################################################################################
     # Map-bound envelope lower corner
     #############################################################################################################################
-        {   "name"                                    : "envelope-lower",
+        {   "name"                                    : "bwq-sites-envelope-lower",
             "@id"                                     : "<{$so_env}/{$eubwid}:1/lowerCorner>",
             "<rdf:type>"                              : "<def-geom:Point>",
             "<def-geom:dimensions>"                   : "{$srsDim}^^xsd:integer",
@@ -406,7 +414,7 @@
     #############################################################################################################################
     # Map-bound envelope upper corner
     #############################################################################################################################
-        {   "name"                                    : "envelope-upper",
+        {   "name"                                    : "bwq-sites-envelope-upper",
             "@id"                                     : "<{$so_env}/{$eubwid}:1/upperCorner>",
             "<rdf:type>"                              : "<def-geom:Point>",
             "<def-geom:dimensions>"                   : "{$srsDim}^^xsd:integer",
@@ -419,7 +427,7 @@
     #############################################################################################################################
     # Bathing Water Sampling Point
     #############################################################################################################################
-        {   "name"                                    : "sampling-point",
+        {   "name"                                    : "bwq-sites-sampling-point",
             "@id"                                     : "<{$so_sp}/{$bwspid}>",
             "<rdf:type>"                              : "<{$def_sp}/SamplingPoint>",
             "<dgu:uriSet>"                            : "<{$so_sp}/>",
@@ -443,7 +451,7 @@
     #############################################################################################################################
     # Vestiguial ONS and OS Admin geo entries for districts
     #############################################################################################################################
-        { "name"                                      : "os-district",
+        { "name"                                      : "bwq-sites-os-district",
           "@id"                                       : "<{os_uri}>",
           "<rdf:type>"                                : "<admingeo:CivilAdministrativeArea>",
           "<admingeo:gssCode>"                        : "{gss}"

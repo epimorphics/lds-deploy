@@ -10,7 +10,7 @@
 ###############################################################################################################
 
 type : Composite
-name : bw-profile-feature
+name : bwq-profile-feature
 required :
   - ea_region 
   - samplingpoint 
@@ -31,12 +31,12 @@ bind :
     "$filestub"           : "{$filename.replaceAll('\\.csv$','')}"
     "$defaultYear"        : "2011"
 
-  - "$eubwid"             : "{$sp.map('sp-to-bw', 'eubwid', true)}"
+  - "$eubwid"             : "{$sp.map('bwq-sp-to-bw', 'eubwid', true)}"
     "$outfile"            : "{$source_base}/{$body_slug}/output/{$filestub}.ttl"
     "$infile"             : "{$source_base}/{$body_slug}/input/{$filename}"
     "$datasetURI"         : "{$data_base}/bwpf.{$body_slug}/"
 
-  - "$bw"                 : "{$sp.map('sp-to-bw')}"
+  - "$bw"                 : "{$sp.map('bwq-sp-to-bw')}"
 
 sources :
 ###############################################################################
@@ -69,14 +69,14 @@ sources :
   #   key        : code
   #   value      : region
 
-  - name       : feature-types
+  - name       : bwq-feature-types
     sourceType : CSV
     source     : "transform/feature-types.csv"
     key        : name
     value      : uri
 
 oneOffs :
-  - name              : bw-profile-dataset
+  - name              : bwq-feature-dataset
     type              : Composite
     bind :
     - "$ns"                    : "{= asResource($$).replaceAll('#$','') }"
@@ -100,8 +100,8 @@ oneOffs :
       "<void:vocabulary>"      : ["<{$ns.apply('dgu:')}>", "<{$ns.apply('def-bw:')}>", "<{$ns.apply('time:')}>", "<{$ns.apply('dct:')}>", "<{$ns.apply('void:')}>", "<{$ns.apply('def-ver:')}>", "<{$ns.apply('foaf:')}>", "<{$ns.apply('spatialrelations:')}>", "<{$ns.apply('def-sp:')}>", "<{$ns.apply('geowgs84:')}>", "<{$ns.apply('def-feat:')}>"]
 
 templates : 
-  - bw-profile-core
-  - bw-profile-dummy
+  - bwq-feature-core
+  - bwq-feature-dummy
 
 referenced :
 
@@ -109,7 +109,7 @@ referenced :
 # Main template, creates feature, enduring feature and associated intervals
 ###############################################################################
 
-  - name                         : bw-profile-core
+  - name                         : bwq-feature-core
     type                         : Composite
     required:
     # TODO how to validate the case where there is no feature_id but the type isn't a sample point
@@ -123,15 +123,15 @@ referenced :
       "$interval_dt"             : "<http://reference.data.gov.uk/id/gregorian-instant/{$defaultYear}-01-01T00:00:00>"
 
     templates :
-    - name                       : bw-profile-interval-dt
+    - name                       : bwq-feature-interval-dt
       "@id"                      : "{$interval_dt}"
       "<time:inXSDDateTime>"     : "{$defaultYear}-01-01T00:00:00^^xsd:dateTime"
 
-    - name                       : bw-profile-interval
+    - name                       : bwq-feature-interval
       "@id"                      : "{$intervalRes}"
       "<time:hasBeginning>"      : "{$interval_dt}"
 
-    - name                       : bw-profile-feature-template
+    - name                       : bwq-feature-template
       "@id"                      : "<{$fURI}>"
       "<rdf:type>"               : "<def-feat:Feature>"
       "<rdfs:label>"             : "Feature {feature_id}"
@@ -147,11 +147,11 @@ referenced :
       "<dct:isVersionOf>"        : "<{$efURI}>"
       "<dct:source>"             : "<{$infile}#line={value($row.number).format('%06d')}>"
 
-    - name                       : bw-profile-feature-type
+    - name                       : bwq-feature-type
       "@id"                      : "<{$fURI}>"
-      "<rdf:type>"              : "<def-feat:{map_category.map('feature-types',true)}>"
+      "<rdf:type>"              : "<def-feat:{map_category.map('bwq-feature-types',true)}>"
 
-    - name                       : bw-profile-enduring-feature
+    - name                       : bwq-enduring-feature
       "@id"                      : "<{$efURI}>"
       "<rdf:type>"               : "<def-feat:EnduringFeature>"
       "<dct:hasVersion>"         : "<{$fURI}>"
@@ -163,5 +163,5 @@ referenced :
 # some rows (sampling points) have no output
 ###############################################################################
 
-  - name                         : bw-profile-dummy
+  - name                         : bwq-feature-dummy
     "@id"                        : "<http://example.com>"
