@@ -40,7 +40,7 @@
                                 <span class="text-danger"><i class="fa fa-times"></i> failed</span>
                             #end
                         </td>
-                        <td>$ae.duration ms</td>
+                        <td>$ae.formattedDuration</td>
                         <td><a href="$root/services/$service.shortID/execution/$ae.id">view</a></td>
                     </tr>
                     #end

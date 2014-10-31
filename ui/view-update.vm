@@ -118,7 +118,7 @@
                         #if( $finished )
                         <tr>
                             <td><strong>Duration:</strong></td>
-                            <td>$ae.duration ms</td>
+                            <td>$ae.formattedDuration</td>
                         </tr>
                         <tr>
                             <td><strong>File:</strong></td>
