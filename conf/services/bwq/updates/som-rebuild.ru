@@ -11,7 +11,7 @@ PREFIX ugraph:  <http://environment.data.gov.uk/bwq/graph/updates/>
 #
 # Delete all dct:replaces/dct:/isReplacedBy links between SoM records 
 #
-DELETE { GRAPH ugraph:som {
+DELETE { GRAPH ugraph:in-season {
     ?update      dct:replaces     ?predecessor .
     ?predecessor dct:isReplacedBy ?update . } }
 WHERE {
@@ -22,10 +22,10 @@ WHERE {
 #
 # Build dct:replaces/dct:/isReplacedBy links between SoM records
 #
-INSERT { GRAPH ugraph:som {
+INSERT { GRAPH ugraph:in-season {
     ?update      dct:replaces     ?predecessor .
-    ?predecessor dct:isReplacedBy ?update . }
-} WHERE {
+    ?predecessor dct:isReplacedBy ?update . 
+} } WHERE {
    ?update a                         def-som:SuspensionOfMonitoring ;
            def-bw:bathingWater      ?bw;
            def-sp:samplingPoint     ?sp;
@@ -60,7 +60,7 @@ INSERT { GRAPH ugraph:som {
 # Delete all links between suspensions and neighbouring sample assessments.
 # (Use CONSTRUCT or SELECT instead of DELETE to debug WHERE body.)
 #
-DELETE { GRAPH ugraph:som {
+DELETE { GRAPH ugraph:in-season {
     ?suspension def-som:priorAssessment ?priorAssessment;
               def-som:followingAssessment ?followingAssessment;
               def-som:relatedAssessment ?priorAssessment, ?followingAssessment;
@@ -84,7 +84,7 @@ WHERE {
 # Re-insert links between suspensions and neighbouring sample assessments.
 # (Use CONSTRUCT or SELECT instead of INSERT to debug WHERE body.)
 #
-INSERT{ GRAPH ugraph:som {
+INSERT{ GRAPH ugraph:in-season {
   ?suspension def-som:priorAssessment ?priorAssessment;
               def-som:followingAssessment ?followingAssessment;
               def-som:relatedAssessment ?priorAssessment, ?followingAssessment;
@@ -114,7 +114,7 @@ WHERE {
          def-bwq:samplingPoint            ?sp;
          .       
    # Make sure that its the most recent record for the given suspension
-   OPTIONAL {
+   FILTER NOT EXISTS {
       ?probeSuspension 
             def-som:startOfSuspension        ?startOfSuspension;
             def-sp:samplingPoint             ?sp; 
@@ -123,46 +123,43 @@ WHERE {
             .
       FILTER(?pRecordDateTime > ?recordDateTime)
    }
-   FILTER(!bound(?probeSuspension))
+
    # Pick an unwithdrawn prior sample assessment.
-   OPTIONAL {
+   OPTIONAL { 
       ?slice qb:observation   ?priorAssessment .
-      ?priorAssessment  def-bwq:sampleDateTime  [ time:inXSDDateTime ?pSampleDateTime ];
-                        def-bwq:recordDate      ?pRecordDate . 
-     FILTER NOT EXISTS { ?priorAssessment dct:isReplacedBy [] }
-     FILTER NOT EXISTS { ?priorAssessment def-bwq:recordStatus def-bwq:withdrawal }
-     FILTER(?pSampleDateTime<?startOfSuspension) 
-   }
-   # probe for a subsequent prior assessment record
-   OPTIONAL {
+      ?priorAssessment
+             def-bwq:sampleDateTime  [ time:inXSDDateTime ?pSampleDateTime ] .
+      FILTER NOT EXISTS { ?priorAssessment dct:isReplacedBy [] }
+      FILTER NOT EXISTS { ?priorAssessment def-bwq:recordStatus def-bwq:withdrawal }
+      FILTER (?pSampleDateTime<?startOfSuspension) 
+    }
+    # probe for a subsequent prior assessment record
+    FILTER NOT EXISTS {
       ?slice qb:observation   ?probePriorAssessment .
       ?probePriorAssessment
-                        def-bwq:sampleDateTime  [ time:inXSDDateTime ?ppSampleDateTime ];
-                        def-bwq:recordDate      ?ppRecordDate . 
-     FILTER NOT EXISTS { ?probePriorAssessment dct:isReplacedBy [] }
-     FILTER NOT EXISTS { ?probePriorAssessment def-bwq:recordStatus def-bwq:withdrawal }
-     FILTER( ?ppSampleDateTime<?startOfSuspension &&  ?ppSampleDateTime > ?pSampleDateTime ) 
-   }
-   FILTER(!bound(?probePriorAssessment))
+          def-bwq:sampleDateTime  [ time:inXSDDateTime ?ppSampleDateTime ] . 
+      FILTER NOT EXISTS { ?probePriorAssessment dct:isReplacedBy [] }
+      FILTER NOT EXISTS { ?probePriorAssessment def-bwq:recordStatus def-bwq:withdrawal }
+      FILTER (?ppSampleDateTime<?startOfSuspension &&  ?ppSampleDateTime > ?pSampleDateTime ) 
+    }
+
+
    # probe for a following sample assessment
-   OPTIONAL {
+   OPTIONAL { 
      ?slice qb:observation    ?followingAssessment .
      ?followingAssessment
-                        def-bwq:sampleDateTime  [ time:inXSDDateTime ?fSampleDateTime ];
-                        def-bwq:recordDate      ?fRecordDate . 
+            def-bwq:sampleDateTime  [ time:inXSDDateTime ?fSampleDateTime ] . 
      FILTER NOT EXISTS { ?followingAssessment dct:isReplacedBy [] }
      FILTER NOT EXISTS { ?followingAssessment def-bwq:recordStatus def-bwq:withdrawal }
-     FILTER(?fSampleDateTime>?startOfSuspension) 
+     FILTER (?fSampleDateTime>?startOfSuspension) 
    }
    # probe for a earlier following sample assessment or a more recent record
-   OPTIONAL {
+   FILTER NOT EXISTS {
      ?slice qb:observation    ?probeFollowingAssessment .
      ?probeFollowingAssessment
-                        def-bwq:sampleDateTime  [ time:inXSDDateTime ?pfSampleDateTime ];
-                        def-bwq:recordDate      ?pfRecordDate . 
+            def-bwq:sampleDateTime  [ time:inXSDDateTime ?pfSampleDateTime ] . 
      FILTER NOT EXISTS { ?probeFollowingAssessment dct:isReplacedBy [] }
      FILTER NOT EXISTS { ?probeFollowingAssessment def-bwq:recordStatus def-bwq:withdrawal }
-     FILTER( ?pfSampleDateTime>?startOfSuspension && ?pfSampleDateTime < ?fSampleDateTime )
-   }
-   FILTER(!bound(?probeFollowingAssessment))
+     FILTER (?pfSampleDateTime>?startOfSuspension && ?pfSampleDateTime < ?fSampleDateTime )
+   } 
 }

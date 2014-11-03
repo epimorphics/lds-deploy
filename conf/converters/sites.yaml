@@ -316,7 +316,7 @@
                                                                          'http://statistics.data.gov.uk/id/statistical-geography/' + gss}>"
                                                         ],
              "<onsadmingeo:county>"                   : 
-                "{ { print('>> ' + os_uri) ;  var r_district = os_uri.asRDFNode().fetch('rdf:type','rdfs:label','skos:prefLabel','skos:altLabel','admingeo:inCounty', 'admingeo:gssCode') ;
+                "{ { var r_district = os_uri.asRDFNode().fetch('rdf:type','rdfs:label','skos:prefLabel','skos:altLabel','admingeo:inCounty', 'admingeo:gssCode') ;
                      var inCounty = r_district.getPropertyValue('admingeo:inCounty') ;
                      var label    = r_district.getPropertyValue('rdfs:label') ;
                      var county = 
@@ -456,7 +456,7 @@
           "<rdf:type>"                                : "<admingeo:CivilAdministrativeArea>",
           "<admingeo:gssCode>"                        : "{gss}"
         },
-        { "name"                                      : "ons-district",
+        { "name"                                      : "bwq-sites-ons-district",
           "@id"                                       : "<{empty(gss) ? null : 
                                                                        'http://statistics.data.gov.uk/id/statistical-geography/' + gss}>",
           "<admingeo:gssCode>"                        : "{gss}"
