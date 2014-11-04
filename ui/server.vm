@@ -109,7 +109,7 @@
         <div>
             <img src="http://lds-monitor.epimorphics.net/render/?width=400&height=240&_salt=$lib.now()&areaMode=stacked&yMin=0&title=DB%20Disk&target=serverMetrics.${sID}.df-mnt-ephemeral0.df_complex-used&target=serverMetrics.${sID}.df-mnt-ephemeral0.df_complex-free&from=-14days">
 
-            <img src="http://lds-monitor.epimorphics.net/render/?width=400&height=240&_salt=$lib.now()&areaMode=stacked&yMin=0&title=Root%20Disk&target=serverMetrics.${sID}.df-mnt-ephemeral0.df_complex-used&target=serverMetrics.${sID}.df-root.df_complex-free&from=-14days">
+            <img src="http://lds-monitor.epimorphics.net/render/?width=400&height=240&_salt=$lib.now()&areaMode=stacked&yMin=0&title=Root%20Disk&target=serverMetrics.${sID}.df-root.df_complex-used&target=serverMetrics.${sID}.df-root.df_complex-free&from=-14days">
         </div>
 
         <div>
