@@ -126,6 +126,7 @@
     dms:tier :tPresServers;
     dms:consolidatedUpdates false;
     dms:image  :baseline;
+    dms:publishAction "bwq/publish";
     .
 
 # -- Tiers --------------------------------
