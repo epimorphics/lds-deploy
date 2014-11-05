@@ -36,6 +36,8 @@
     dms:dataConverter "bwq-compliance-assessment";
     dms:postPublishScript "bwq/updates/inseason-rebuild.ru";
     dms:updatePolicy dms:series;
+    dms:sourcePublishDir  "/sources/bwq/eaew/input";
+    dms:dataPublishDir    "/sources/bwq/eaew/output";
     .
 
 :inseason a dms:DataComponent;
@@ -46,6 +48,8 @@
     dms:dataConverter "bwq-in-season-assessment";
     dms:postPublishScript "bwq/updates/inseason-rebuild.ru";
     dms:updatePolicy dms:series;
+    dms:sourcePublishDir  "/sources/bwq/eaew/input";
+    dms:dataPublishDir    "/sources/bwq/eaew/output";
     .
 
 :reference a dms:DataComponent;
@@ -56,6 +60,8 @@
     dms:dataConverter "bwq-sites";
     dms:updatePolicy dms:single;
     dms:asMapSource  "bwq-sp-to-bw";
+    dms:sourcePublishDir  "/sources/bwq/eaew/input";
+    dms:dataPublishDir    "/sources/bwq/eaew/output";
     .
 
 :profiles a dms:DataComponent;
@@ -85,6 +91,8 @@
     dms:dataConverter "bwq-suspension-of-monitoring";
     dms:postPublishScript "bwq/updates/som-rebuild.ru";
     dms:updatePolicy dms:series;
+    dms:sourcePublishDir  "/sources/bwq/eaew/input";
+    dms:dataPublishDir    "/sources/bwq/eaew/output";
     .
 
 :forecasts a dms:DataComponent;
@@ -95,6 +103,8 @@
     dms:dataConverter "bwq-short-term-pollution-risk-prediction";
     dms:postPublishScript "bwq/updates/stp-rebuild.ru";
     dms:updatePolicy dms:series;
+    dms:sourcePublishDir  "/sources/bwq/eaew/input";
+    dms:dataPublishDir    "/sources/bwq/eaew/output";
     .
 
 :vocabularies a dms:DataComponent;
@@ -103,6 +113,8 @@
     skos:notation "vocabularies";
     dct:isPartOf :bwq;
     dms:updatePolicy dms:multiple;
+    dms:sourcePublishDir  "/sources/def";
+    dms:dataPublishDir    "/sources/def";
     .
 
 # -- Publication sets --------------------------------
@@ -126,7 +138,8 @@
     dms:tier :tPresServers;
     dms:consolidatedUpdates false;
     dms:image  :baseline;
-    dms:publishAction "bwq/publish";
+    dms:publishAction "default/publish";
+    dms:postPublishAction "bwq/postPublish";
     .
 
 # -- Tiers --------------------------------

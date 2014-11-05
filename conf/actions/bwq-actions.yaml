@@ -71,8 +71,8 @@
     "NRC_SERVICE"    : "check_http_ping"
 ---
 # General publication processing
-"@name" : bwq/publish
-"@type" : sequence
-"@actions" :
-    - {"@javaclass" : "com.epimorphics.dms.publication.DirectPublishAction"}
-    - {"@type": "script", "@script" : "bwq/post-publish.sh", "@args" : ["server"] }
+"@name" : bwq/postPublish
+"@type" : script
+"@script" : "bwq/post-publish.sh"
+"@args" :
+    -  "servers"
