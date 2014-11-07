@@ -21,6 +21,5 @@ do
 
     echo "Clear caches"
     ssh -t -t $FLAGS -l ubuntu $IP sudo /usr/local/bin/ps_cache_clean 
-    # ssh -t -t $FLAGS -l ubuntu $IP sudo /usr/sbin/htcacheclean -l1b -t -p/var/cache/apache2/mod_cache_disk
 done
 
