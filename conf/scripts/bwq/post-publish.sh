@@ -14,12 +14,15 @@ echo "Synchronizing web content, including source/dump files"
 cd $serversDir/../..
 for server in tiers/presServers/servers/* 
 do
-    FLAGS="$SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem"
-    echo "Sync to $server"
-    IP=$( jq -r .address "$server/config.json" )
-    rsync -a --delete -e "ssh $FLAGS" Web ubuntu@$IP:/var/www/environment/html
+    if grep -qv Terminated $server/status 
+    then
+        FLAGS="$SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem"
+        echo "Sync to $server"
+        IP=$( jq -r .address "$server/config.json" )
+        rsync -a --delete -e "ssh $FLAGS" Web ubuntu@$IP:/var/www/environment/html
 
-    echo "Clear caches"
-    ssh -t -t $FLAGS -l ubuntu $IP sudo /usr/local/bin/ps_cache_clean 
+        echo "Clear caches"
+        ssh -t -t $FLAGS -l ubuntu $IP sudo /usr/local/bin/ps_cache_clean 
+    fi
 done
 
