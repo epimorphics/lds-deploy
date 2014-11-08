@@ -47,7 +47,7 @@
             "$bodyStpDataset"  : "{$data_base}/{$body_slug}/stp-risk-prediction"
         },{
             "$incrementalStpDataset" : "{$bodyStpDataset}/dataset-increment/{$pubDateTimeSlug}",
-            "$bathing-water"   : "<{$bwspid.map('bwq-sp-to-bw', 'value', true)}>"
+            "$bathing_water"   : "<{$bwspid.map('bwq-sp-to-bw', 'value', true)}>"
         }
     ],
 ############################################################################################################
@@ -120,7 +120,7 @@
          "<dct:modified>"    : "{$pubDateTime}",
 # @@TODO 3: rationalise dump file name
          "<void:dataDump>"   : "<{$source_base}/{$body_slug}/output/{$filebasename}-{$pubDateTime}.ttl>"
-       }         
+       }
     ],
  ##########################################################################################################
  # Main STP conversion template.
@@ -132,18 +132,18 @@
          "<rdf:type>"             : "<{$def_stp}/RiskPrediction>",
          "<def-stp:publishedAt>"  : "{$pubDateTime}",
          "<def-stp:predictedAt>"  : "{$predictionDateTime}",
-         "<def-stp:predictedOn>"  : "{$predictedOnDateTime.format('yyyy-MM-dd').asDate('yyyy-MM-dd','xsd:date')}",
+         "<def-stp:predictedOn>"  : "{$predictionDateTime.format('yyyy-MM-dd').asDate('yyyy-MM-dd','xsd:date')}",
          "<def-stp:expiresAt>"    : "{$expiresDateTime}",
          "<def-stp:riskLevel>"    : "<{prediction.value == 0 ? $def_stp.append('/unknown') :
                                        prediction.value == 1 ? $def_stp.append('/normal')  :
                                        prediction.value == 2 ? $def_stp.append('/increased') : null}>",
          "<def-stp:samplingPoint>": "<{$so_sp}/{$bwspid}>",
-         "<def-stp:bathingWater>" : "{$bathing-water}",
+         "<def-stp:bathingWater>" : "{$bathing_water}",
          "<rdfs:comment>"         : [ "{prediction_text_en.lang('en')}", "{prediction_text_cy.lang('cy')}" ],
  # @@TODO 4: check source file referencing
          "<dct:source>"           : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%04d')}>",
          "<qb:dataSet>"           : [ "<{$stpDataset}>", "<{$bodyStpDataset}>" ],
-         "^<def-stp:latestRiskPrediction>" : "{$bathing-water}"
+         "^<def-stp:latestRiskPrediction>" : "{$bathing_water}"
        }
    ]
 }
