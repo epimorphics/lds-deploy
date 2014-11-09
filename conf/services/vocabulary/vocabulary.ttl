@@ -24,6 +24,7 @@
     skos:notation "test";
     dms:defaultPublicationSet :production;
     dms:publicationSet :production, :testing;
+    dms:notifyUser "dave@epimorphics.com";
     .
 
 :reference a dms:DataComponent;

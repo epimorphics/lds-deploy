@@ -24,7 +24,8 @@
     skos:notation "bwq";
     dms:defaultPublicationSet :production;
     dms:publicationSet :production, :testing;
-     .
+    dms:notifyUser "dave@epimorphics.com";
+    .
 
 # -- Data components --------------------------------
 

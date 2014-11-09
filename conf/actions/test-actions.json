@@ -65,5 +65,20 @@
         "notifyuser" : "dave@epimorphics.com"
       }
      ]
+  },
+  {
+    "@name" : "api/testcsv",
+    "@type" : "sequence",
+    "@actions" : [
+      {
+        "@javaclass" : "com.epimorphics.dms.tasks.EmbeddedPublishAction",
+        "publicationSet" : "testing"
+      },
+      {
+        "@javaclass" : "com.epimorphics.dms.test.TestAction",
+        "message" : "Publication done",
+        "count" : 1
+      }
+    ]
   }
 ]

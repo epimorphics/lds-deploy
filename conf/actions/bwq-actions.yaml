@@ -76,3 +76,30 @@
 "@script" : "bwq/post-publish.sh"
 "@args" :
     -  "servers"
+---
+# STP auto-publish endpoint
+"@name" : api/publishTesting
+"@type" : sequence
+"@actions" :
+  - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
+    "publicationSet" : testing
+  - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+    "message" :    "Publications to testing completed"
+    "notifyuser" : "dave@epimorphics.com"
+"@onError" :
+    "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+    "message"    : "publication step FAILED"
+    "notifyuser" : "dave@epimorphics.com"
+---
+# STP auto-publish endpoint - to default publication environment
+"@name" : api/autoPublish
+"@type" : sequence
+"@actions" :
+  - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
+  - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+    "message" :    "Publications to testing completed"
+    "notifyuser" : "dave@epimorphics.com"
+"@onError" :
+    "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+    "message"    : "publication step FAILED"
+    "notifyuser" : "dave@epimorphics.com"
