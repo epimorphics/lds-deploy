@@ -10,7 +10,7 @@
 ###############################################################################################################
 
 type : Composite
-name : bw-profile
+name : bwq-profile
 required :
   - samplingPoint
   - profile_year
