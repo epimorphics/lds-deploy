@@ -128,7 +128,7 @@
     "templates" : [ "bwq-stp" ] ,
     "referenced" : [
        { "name" : "bwq-stp",
-         "@id"  : "<{$stpDataset}/point/{$bwspid}/dateTime/{$pubDateTimeSlug}>",
+         "@id"  : "<{$stpDataset}/point/{$bwspid}/date/{$pubDateTimeSlug}>",
          "<rdf:type>"             : "<{$def_stp}/RiskPrediction>",
          "<def-stp:publishedAt>"  : "{$pubDateTime}",
          "<def-stp:predictedAt>"  : "{$predictionDateTime}",
