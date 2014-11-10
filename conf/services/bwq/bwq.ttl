@@ -226,7 +226,7 @@
 #    .
 
 :baseline a dms:image;
-    dms:dumpFile   "/var/opt/dms/services/bwq/publicationSets/testing/images/baseline-2014-08-01.nq.gz";
-    dms:dbLocation "/var/opt/dms/services/bwq/publicationSets/testing/images/baseline-2014-08-01.DB.tgz";
+    dms:dumpFile   "/var/opt/dms/services/bwq/publicationSets/testing/images/baseline-2014-08-01-noprofile.nq.gz";
+    dms:dbLocation "/var/opt/dms/services/bwq/publicationSets/testing/images/baseline-2014-08-01-noprofile.DB.tgz";
     dms:effectiveDate "2014-08-01T10:18:00Z"^^xsd:dateTime;
     .
