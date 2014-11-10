@@ -248,7 +248,7 @@
         "<rdf:type>"                       : "<def-bw:BathingWater>",
         "<rdfs:label>"                     : "{$bwLabel}"
       },
-      { "name"                             : "bwq-sample-date-during",
+      { "name"                             : "bwq-sa-sample-date-during",
         "@id"                              : "<{$r_sampleDate}>",
         "<time:intervalDuring>"            : [ "<{$r_sampleYear}>","<{$r_sampleWeek}>" ] 
       }
