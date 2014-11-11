@@ -41,9 +41,9 @@
                     <button type="submit" class="btn btn-default">Backup data</button>
                 </form>
                 #end
-                ##<form class="inline form-inline" role="form" action="$server.name/rebuild" method="post">
-                ##    <button type="submit" class="btn btn-default">Rebuild server</button>
-                ##</form>
+                <form class="inline form-inline" role="form" action="$server.name/rebuild" method="post">
+                    <button type="submit" class="btn btn-default">Rebuild server</button>
+                </form>
                 #foreach($op in $tier.listOperations())
                     #if(!$op.isTierOnly())
                         <form class="inline form-inline" role="form" action="$server.name/operate" method="post">
