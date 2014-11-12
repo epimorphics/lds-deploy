@@ -17,3 +17,6 @@ echo "Uploading $fileName to server $IP"
 scp -Cq $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem $imageFile ubuntu@${IP}:/tmp
 
 ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP "sudo bash /usr/local/bin/dbinstall /tmp/$fileName"
+
+# Delay a little to allow remote server to restart
+sleep 8s
