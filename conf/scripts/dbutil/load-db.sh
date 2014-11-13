@@ -15,7 +15,7 @@ readonly remoteDir=/home/ubuntu/deploy/dbload
 IP=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
 
 echo "Uploading $fileName to server $IP"
-scp -Cq $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem $imageFile ubuntu@${IP}:$remoteDir
+scp -Cq $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem $imageFile ubuntu@${IP}:$remoteDir/$fileName
 
 ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP "sudo bash /usr/local/bin/dbinstall $remoteDir/$fileName"
 
