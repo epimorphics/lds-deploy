@@ -71,7 +71,7 @@
                 </tr>
             </thead>
             <tbody>
-                #foreach($le in $server.getRecentLogEntries(20))
+                #foreach($le in $server.getRecentLogEntries(10))
                 <tr>
                     <td><a href="$root/services/$service.shortID/execution/$le.aeID?serviceID=$service.shortID">$le.timestamp</a></td>
                     <td>$le.actionRole</td>
