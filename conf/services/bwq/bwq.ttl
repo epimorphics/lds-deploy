@@ -154,7 +154,7 @@
     dms:updateEndpoint  "http://{address}:3030/ds/update";
     dms:queryEndpoint  "http://{address}:3030/ds/query";
     dms:loadBalancer  :pdataLB;
-    dms:testServerAction "dataserver/testServer";
+#    dms:testServerAction "dataserver/testServer";
     dms:configureAction "bwq/dataserver/configure";
     dms:allocateAction "bwq/dataserver/allocate";
     dms:terminateAction "bwq/dataserver/terminate";
@@ -175,7 +175,7 @@
     dms:updateEndpoint  "http://{address}:3030/ds/update";
     dms:queryEndpoint  "http://{address}:3030/ds/query";
     dms:loadBalancer  :tdataLB;
-    dms:testServerAction "dataserver/testServer";
+#    dms:testServerAction "dataserver/testServer";
     dms:configureAction "bwq/dataserver/configure";
     dms:allocateAction "bwq/dataserver/allocate";
     dms:terminateAction "bwq/dataserver/terminate";
@@ -195,6 +195,7 @@
     dms:configureAction "bwq/presserver/configure";
     dms:allocateAction "bwq/presserver/allocate";
     dms:terminateAction "bwq/presserver/terminate";
+    dms:operation :clearCacheOp;
     .    
 
 :pPresLB a dms:LoadBalancer;
@@ -210,8 +211,16 @@
     dms:configureAction "bwq/presserver/configure";
     dms:allocateAction "bwq/presserver/allocate";
     dms:terminateAction "bwq/presserver/terminate";
+    dms:operation :clearCacheOp;
     .    
 
+:clearCacheOp
+    rdfs:label "Clear caches";
+    rdfs:comment "Clear the caches for this tier";
+    dms:action "bwq/clearCache";
+    skos:notation "clearCacheOp";
+    dms:tierOnly true;
+    .
 :tPresLB a dms:LoadBalancer;
     rdfs:label "Testing presentation LB"@en;
     rdfs:comment "Load balancer for the testing presentation tier"@en;

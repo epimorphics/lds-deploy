@@ -4,6 +4,26 @@
 
 #set($psRoot="$root/services/$service.shortID/publicationSets/$pset.shortID")
 
+
+#if ($tier.state.name() == "Ready")
+<div id="terminate-dialog" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Are you sure you want to terminate this entier tier?</h3>
+            </div>
+            <div class="modal-body">
+                <form class="inline form-inline" role="form" action="$tier.shortID/terminate" method="post">
+                    <button type="submit" class="btn btn-danger">Terminate All</button>
+                </form>
+                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+#end
+
 <div id="page-wrapper" role="main">
     <div class="container-fluid">
         <ol class="breadcrumb" role="menubar">
@@ -29,19 +49,9 @@
                 <button type="submit" class="btn btn-default">Prepare tier</button>
             </form>
             #end
-            <form class="inline form-inline" role="form" action="$tier.shortID/clearState" method="post">
-                <button type="submit" class="btn btn-default">Clear state</button>
+            <form class="inline form-inline" role="form" action="$tier.shortID/clearState" method="post" >
+                <button type="submit" class="btn btn-default">Clear tier state</button>
             </form>
-
-            <form class="inline form-inline" role="form" action="$tier.shortID/addServer" method="post">
-                <button type="submit" class="btn btn-primary">Add server</button>
-            </form>
-
-            #if ($tier.state.name() == "Ready")
-            <form class="inline form-inline" role="form" action="$tier.shortID/terminate" method="post">
-                <button type="submit" class="btn btn-danger">Terminate All</button>
-            </form>
-            #end
             
             #foreach($op in $tier.listOperations())
                 #if($op.isTierOnly())
@@ -50,6 +60,14 @@
                         <button type="submit" class="btn btn-default">$op.label</button>
                     </form>
                 #end
+            #end
+
+            <form class="inline form-inline" role="form" action="$tier.shortID/addServer" method="post">
+                <button type="submit" class="btn btn-default">Add server</button>
+            </form>
+
+            #if ($tier.state.name() == "Ready")
+            <button class="btn btn-danger" href="#terminate-dialog" data-target="#terminate-dialog" data-toggle="modal">Terminate All</button>
             #end
         </div>
 

@@ -6,7 +6,6 @@
 
     <script type="text/javascript" src="$assets/js/jquery.form.js"></script>
     <script src="$assets/js/bootstrap.min.js"></script>
-    <script src="$assets/js/bootbox.min.js"></script>
     <script src="$assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 
     <script src="$assets/js/dms.js"></script>

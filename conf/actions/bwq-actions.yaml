@@ -103,3 +103,10 @@
     "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
     "message"    : "publication step FAILED"
     "notifyuser" : "dave@epimorphics.com"
+---
+# Clear presentation caches
+"@name" : bwq/clearCache
+"@type" : script
+"@script" : "bwq/clear-caches.sh"
+"@args" :
+  - "tier"
