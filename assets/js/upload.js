@@ -50,9 +50,12 @@ $(function () {
         }
     });
 
-    $('#uploads-table').dataTable(
+    if (typeof(dataType) === typeof(Function)) {
+        $('#uploads-table').dataTable(
         {
             "order": []
         } );
+    }
+
 });
 
