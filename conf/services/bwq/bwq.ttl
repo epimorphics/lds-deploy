@@ -158,6 +158,7 @@
     dms:configureAction "bwq/dataserver/configure";
     dms:allocateAction "bwq/dataserver/allocate";
     dms:terminateAction "bwq/dataserver/terminate";
+    dms:parallelPublish true ;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -179,6 +180,7 @@
     dms:configureAction "bwq/dataserver/configure";
     dms:allocateAction "bwq/dataserver/allocate";
     dms:terminateAction "bwq/dataserver/terminate";
+    dms:parallelPublish true ;
     .
 
 :tdataLB a dms:LoadBalancer;
