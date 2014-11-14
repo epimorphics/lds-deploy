@@ -88,7 +88,7 @@
     "notifyuser" : "dave@epimorphics.com"
 "@onError" :
     "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
-    "message"    : "publication step FAILED"
+    "message"    : "publication to testing FAILED"
     "notifyuser" : "dave@epimorphics.com"
 ---
 # STP auto-publish endpoint - to default publication environment
