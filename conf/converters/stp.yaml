@@ -10,7 +10,14 @@
 {
     type : "Composite",
     "name" : "bwq-short-term-pollution-risk-prediction",
-    "required" : [ 
+    "required" : [
+         "site",
+         "datetime",
+         "prediction",
+         "prediction_text_en"
+#         "Prediction_text_cy"
+         ],
+    "requiredColumns" : [
          "site",
          "datetime",
          "prediction",
