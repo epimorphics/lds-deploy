@@ -29,7 +29,7 @@
             </thead>
             <tbody>
                 #foreach ($ae in $aman.listRecentExecutions(200))
-##                    #if($ae.parameters.userid.value() == $userid)
+                    #if($subject.isPermitted("Admin") || $ae.parameters.userid.value() == $userid)
                     <tr>
                         <td>$lib.printDatetime($ae.finishTime)</td>
                         <td>$ae.name</td>
@@ -43,7 +43,7 @@
                         <td>$ae.formattedDuration</td>
                         <td><a href="$root/services/$service.shortID/execution/$ae.id">view</a></td>
                     </tr>
-##                    #end
+                    #end
                 #end
             </tbody>
         </table>
