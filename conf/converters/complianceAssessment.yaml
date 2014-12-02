@@ -5,6 +5,7 @@
 { "name" : "bwq-compliance-assessment",
   "type" : "Composite",
   "requiredColumns": [ "samplingpoint", "year", "qualitycode" ],
+  "onlyIf" : "{empty(fdate) && empty(ftime)}", # Guard against uploading inseason as annual
     "bind" : [
         {
             "$source_base"        : "http://environment.data.gov.uk/sources/bwq",
