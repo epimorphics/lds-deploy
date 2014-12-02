@@ -1,6 +1,6 @@
 { "name" : "bwq-suspension-of-monitoring",
   "type" : "Composite",
-  "required" : [
+  "requiredColumns" : [
       "as_id",
       "date_time_stamp",
       "bw_season",

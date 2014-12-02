@@ -4,7 +4,7 @@
 
 { "name" : "bwq-compliance-assessment",
   "type" : "Composite",
-  "required": [ "samplingpoint", "year", "qualitycode" ],
+  "requiredColumns": [ "samplingpoint", "year", "qualitycode" ],
     "bind" : [
         {
             "$source_base"        : "http://environment.data.gov.uk/sources/bwq",

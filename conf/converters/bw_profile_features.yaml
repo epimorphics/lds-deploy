@@ -11,7 +11,7 @@
 
 type : Composite
 name : bwq-profile-feature
-required :
+requiredColumns :
   - ea_region 
   - samplingpoint 
   - name 

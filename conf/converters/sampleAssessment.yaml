@@ -10,7 +10,7 @@
 #   Expected_Headers_pre12 = %w[totcolind totalcoliform fcolind faecalcoliform fstrepind faecalstreptococci salmonella entvirind enterovirus abnormalweather]
 #   Expected_Headers_12    = %w[concIEind concIE concECind concEC]
 
-  "required" : [
+  "requiredColumns" : [
              "samplingpoint" 
              ,"year" 
              ,"fdate" 

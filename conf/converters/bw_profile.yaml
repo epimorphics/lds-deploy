@@ -11,9 +11,13 @@
 
 type : Composite
 name : bwq-profile
-required :
+requiredColumns :
   - samplingPoint
   - profile_year
+  - bw_description
+  - c_description
+  - la
+  - eubwid
 
 bind :
   - "$source_base"        : "http://environment.data.gov.uk/sources/bwq"

@@ -1,7 +1,7 @@
 {
     type : "Composite",
     "name" : "bwq-sites",
-    "required" : [ 
+    "requiredColumns" : [ 
         "samplingpoint", 
         "ncsx",
         "ncsy",
