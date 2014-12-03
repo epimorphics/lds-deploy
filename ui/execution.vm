@@ -1,3 +1,23 @@
+#if (!execution)
+    ## TODO trap this as an error at DMS level and go direct to error page
+    #set($pageTitle = "DMS - error")
+    #parse("header.vm")
+    #parse("navbar.vm")
+
+    <div id="page-wrapper" role="main">
+        <div class="container-fluid">   
+
+            <h1 class="page-header">Sorry, an error occurred</h1>
+            <div class="alert alert-danger" role="alert">
+                <p>Could not locate action view - has the data been deleted?</p>
+            </div>
+
+        </div> <!-- /.container-fluid -->
+    </div>
+    #parse("footer.vm")
+
+#else
+
 #set($pageTitle = "DMS - Action execution $execution.id")
 #set($parameters= $lib.fromJson($execution.parameters))
 #set($update = $parameters.updateRecord)
@@ -55,3 +75,5 @@
      plugins/dataTables/dataTables.bootstrap.js, 
      dtinit.js")
 #parse("footer.vm")
+
+#end
