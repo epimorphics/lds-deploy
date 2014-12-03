@@ -42,7 +42,7 @@
     .
 
 :inseason a dms:DataComponent;
-    rdfs:label "0 In-season assessments"@en;
+    rdfs:label "In-season assessments"@en;
     rdfs:comment "Data cube describing historic and current in-season Bathing Water quality assessments."@en;
     skos:notation "in-season";
     dct:isPartOf :bwq;
@@ -85,8 +85,8 @@
     .
 
 :suspensions a dms:DataComponent;
-    rdfs:label "Suspensions"@en;
-    rdfs:comment "Records of suspensions of monitoring."@en;
+    rdfs:label "Abnormal situations"@en;
+    rdfs:comment "Records of abnormal situations (which lead to suspensions of monitoring)."@en;
     skos:notation "suspensions";
     dct:isPartOf :bwq;
     dms:dataConverter "bwq-suspension-of-monitoring";
@@ -97,7 +97,7 @@
     .
 
 :forecasts a dms:DataComponent;
-    rdfs:label "Forecasts/STP"@en;
+    rdfs:label "Pollution Risk Forecasts"@en;
     rdfs:comment "Forecasts of short term pollution risk."@en;
     skos:notation "forecasts";
     dct:isPartOf :bwq;

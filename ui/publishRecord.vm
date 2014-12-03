@@ -9,7 +9,7 @@
             <li class="active"><a href="$root/services/$service.shortID">$service.label</a></li>
         </ol>   
 
-        <h1>Publish Record</h1>
+        <h1>Publish/Unpublish Record</h1>
         <div class="row">
             <span class="col-md-2"><strong>Started at:</strong></span>
             <span class="col-md-4">$lib.printDatetime($record.startTime)</span>

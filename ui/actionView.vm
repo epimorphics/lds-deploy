@@ -1,6 +1,10 @@
 ## Displays the body of an action execution, dyanamically updating progress bar and message
 ## Args:     $execution  - the action execution object
 
+#if (!$exection)
+    <p>No log view available</p>
+#else
+
 #set($monitor = $execution.monitor)
 #set($finished = $monitor.state.toString() == "Terminated")
 #set($aeURI="$root/services/$service.shortID/execution/$execution.id")
@@ -88,3 +92,5 @@
     #end
 
 </div>
+
+#end
