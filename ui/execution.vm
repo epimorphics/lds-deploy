@@ -1,23 +1,3 @@
-#if (!$execution)
-    ## TODO trap this as an error at DMS level and go direct to error page
-    #set($pageTitle = "DMS - error")
-    #parse("header.vm")
-    #parse("navbar.vm")
-
-    <div id="page-wrapper" role="main">
-        <div class="container-fluid">   
-
-            <h1 class="page-header">Sorry, an error occurred</h1>
-            <div class="alert alert-danger" role="alert">
-                <p>Could not locate action view - has the data been deleted?</p>
-            </div>
-
-        </div> <!-- /.container-fluid -->
-    </div>
-    #parse("footer.vm")
-
-#else
-
 #set($pageTitle = "DMS - Action execution $execution.id")
 #set($parameters= $lib.fromJson($execution.parameters))
 #set($update = $parameters.updateRecord)
@@ -25,9 +5,11 @@
 #set($mm = $dms.metadataManager)
 #if($update)
     #set($update = $mm.getUpdateRecord($update))
-    #set($component = $mm.getDataComponent( $update.component ) )
-    #set($service = $component.service)
-    #set($componentRoot="$root/services/$service.shortID/components/$component.shortID")
+    #if($update)
+        #set($component = $mm.getDataComponent( $update.component ) )
+        #set($service = $component.service)
+        #set($componentRoot="$root/services/$service.shortID/components/$component.shortID")
+    #end
 #end
 
 #parse("header.vm")
@@ -47,9 +29,9 @@
         </ol>   
         #end
 
-        #if($role == "publish")
+        #if($role == "publish" && $update)
             #parse("execution-publish.vm")
-        #elseif($role == "convert")
+        #elseif($role == "convert" && $update)
             #parse("execution-convert.vm")
         #else
             <h1 class="page-header">Action execution: $execution.name</h1>
@@ -76,4 +58,3 @@
      dtinit.js")
 #parse("footer.vm")
 
-#end
