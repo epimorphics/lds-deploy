@@ -1,4 +1,4 @@
-#if (!execution)
+#if (!$execution)
     ## TODO trap this as an error at DMS level and go direct to error page
     #set($pageTitle = "DMS - error")
     #parse("header.vm")
