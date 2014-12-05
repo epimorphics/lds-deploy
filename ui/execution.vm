@@ -5,7 +5,7 @@
 #set($mm = $dms.metadataManager)
 #if($update)
     #set($update = $mm.getUpdateRecord($update))
-    #if($update)
+    #if($update && $update.component)
         #set($component = $mm.getDataComponent( $update.component ) )
         #set($service = $component.service)
         #set($componentRoot="$root/services/$service.shortID/components/$component.shortID")
