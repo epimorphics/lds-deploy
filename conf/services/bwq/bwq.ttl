@@ -42,8 +42,8 @@
     .
 
 :inseason a dms:DataComponent;
-    rdfs:label "In-season assessments"@en;
-    rdfs:comment "Data cube describing historic and current in-season Bathing Water quality assessments."@en;
+    rdfs:label "In-season samples"@en;
+    rdfs:comment "Data cube describing historic and current in-season Bathing Water quality samples."@en;
     skos:notation "in-season";
     dct:isPartOf :bwq;
     dms:dataConverter "bwq-in-season-assessment";
