@@ -185,6 +185,7 @@ InstallChef() {
                 -E "$CHEF_ENV" -r "$CHEF_ROLE" \
                 -j "{$config}" \
                 -N $FULL_NAME "$IP" -F min --no-color
+                --bootstrap-version 11.14.6  # TODO make this configurable!
 }
 
 # Configure Chef Solo on a newly allocated machine
