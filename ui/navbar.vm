@@ -66,13 +66,11 @@
                             <li>
                                 <a href="$uiroot/actionHistory?serviceID=$service.shortID"><i class="fa fa-gears fa-fw"></i> Recent actions</a>
                             </li>
-                            #if($subject.isPermitted("Admin"))
-                            <li>
-                                <a href="$uiroot/service-admin?serviceID=$service.shortID"><i class="fa fa-wrench fa-fw"></i> Adminstration</a>
-                            </li>
-                            #end
                         #end
                         #if($subject.isPermitted("Admin"))
+                        <li>
+                            <a href="$uiroot/service-admin?serviceID=$service.shortID"><i class="fa fa-wrench fa-fw"></i> Adminstration</a>
+                        </li>
                         <li>
                             <a href="$uiroot/resource#if($component)?resource=$lib.pathEncode($component.uRI)#elseif($service)?resource=$lib.pathEncode($service.uRI)#end"><i class="fa fa-bug fa-fw"></i> Browse RDF</a>
                         </li>
