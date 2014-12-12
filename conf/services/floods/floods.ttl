@@ -90,7 +90,7 @@
     dms:updateEndpoint  "http://{address}:3030/ds/update";
     dms:queryEndpoint  "http://{address}:3030/ds/query";
 #    dms:loadBalancer  :pdataLB;
-    dms:configureAction "floods/dataserver/configure";
+    dms:configureAction "floods/server/configure";
     dms:allocateAction "floods/server/allocate";
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;
