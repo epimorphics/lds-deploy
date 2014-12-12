@@ -184,7 +184,7 @@ InstallChef() {
     knife bootstrap -c /var/opt/dms/.chef/knife.rb -i /var/opt/dms/.ssh/lds.pem -x ubuntu --sudo \
                 -E "$CHEF_ENV" -r "$CHEF_ROLE" \
                 -j "{$config}" \
-                -N $FULL_NAME "$IP" -F min --no-color
+                -N $FULL_NAME "$IP" -F min --no-color \
                 --bootstrap-version 11.14.6  # TODO make this configurable!
 }
 
