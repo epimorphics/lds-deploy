@@ -1,7 +1,7 @@
 # Actions customized for the LDS Flood monitoring service
 
 # Data server allocation
-"@name" : flood/server/allocate
+"@name" : floods/server/allocate
 "@type" : script
 "@script" : "ops/generic-allocate.sh"
 "@args" :
@@ -16,7 +16,7 @@
     "CHEF_ROLE" : "ea-floods-server"
 ---
 # Server configuration  
-"@name" : flood/server/configure
+"@name" : floods/server/configure
 "@type" : script
 "@script" : "ops/generic-configure.sh"
 "@args" :
@@ -27,7 +27,7 @@
     "NRC_SERVICE"    : "check_http_ping"
 ---
 # Clear presentation caches
-"@name" : flood/clearCache
+"@name" : floods/clearCache
 "@type" : script
 "@script" : "bwq/clear-caches.sh"
 "@args" :
