@@ -1,0 +1,127 @@
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix version:  <http://purl.org/linked-data/version#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qb:   <http://purl.org/linked-data/cube#> .
+@prefix org:  <http://www.w3.org/ns/org#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+
+@prefix dms: <http://www.epimorphics.com/public/vocabulary/dms#> .
+
+@prefix : <http://localhost/dms/metadata/floods/> .
+
+:floods a dms:DataService;
+    rdfs:label "Floods monitoring"@en;
+    rdfs:comment "Flood alerts, alert/warning areas, monitoring stations and measurements"@en;
+    skos:notation "floods";
+    dms:defaultPublicationSet :testing;
+    dms:publicationSet :testing;
+    dms:notifyUser "dave@epimorphics.com";
+    .
+
+# -- Data components --------------------------------
+
+:areas a dms:DataComponent;
+    rdfs:label "Flood areas"@en;
+    rdfs:comment "Metadata for flood alert and warning areas"@en;
+    skos:notation "areas";
+    dct:isPartOf :floods;
+    #    dms:dataConverter "";
+    dms:updatePolicy dms:single;
+    .
+
+:situations a dms:DataComponent;
+    rdfs:label "Monitoring stations"@en;
+    rdfs:comment "Metadata for real-time monitoring stations"@en;
+    skos:notation "stations";
+    dct:isPartOf :floods;
+    #    dms:dataConverter "";
+    dms:updatePolicy dms:single;
+    .
+
+:measures a dms:DataComponent;
+    rdfs:label "Measures available"@en;
+    rdfs:comment "Metadata for measure types available from real-time monitoring stations"@en;
+    skos:notation "measures";
+    dct:isPartOf :floods;
+    #    dms:dataConverter "";
+    dms:updatePolicy dms:single;
+    .
+
+:vocabularies a dms:DataComponent;
+    rdfs:label "Vocabularies"@en;
+    rdfs:comment "Collection of vocabularies/ontologies used to publish real-time monitoring information."@en;
+    skos:notation "vocabularies";
+    dct:isPartOf :floods;
+    dms:updatePolicy dms:multiple;
+    dms:sourcePublishDir  "sources/def";
+    dms:dataPublishDir    "sources/def";
+    .
+
+# -- Publication sets --------------------------------
+
+:testing a dms:PublicationSet;
+    rdfs:label "Testing"@en;
+    skos:notation "testing";
+    dct:description "The publications released to the testing service."@en;
+    dms:publishAction "default/publish";
+    dms:publicationTier :testingServers;
+    dms:tier :testingServers;
+    dms:consolidatedUpdates false;
+    dms:image  :baseline;
+    .
+
+# -- Tiers --------------------------------
+
+:testingServers a dms:Tier;
+    rdfs:label "Data servers/pub in testing"@en;
+    dct:description "Data servers holding published data for the testing service."@en;
+    skos:notation "dataservers";
+    dms:tierRole "dataServers";
+    dms:graphEndpoint   "http://{address}:3030/ds/data";
+    dms:updateEndpoint  "http://{address}:3030/ds/update";
+    dms:queryEndpoint  "http://{address}:3030/ds/query";
+    dms:loadBalancer  :pdataLB;
+    dms:configureAction "floods/dataserver/configure";
+    dms:allocateAction "floods/dataserver/allocate";
+    dms:terminateAction "floods/dataserver/terminate";
+    dms:parallelPublish true ;
+    dms:operation :clearCacheOp;
+    .
+
+:pdataLB a dms:LoadBalancer;
+    rdfs:label "Testing Data LB"@en;
+    rdfs:comment "Load balancer for the testing server tier"@en;
+    # Use only the default actions
+    . 
+
+:clearCacheOp
+    rdfs:label "Clear caches";
+    rdfs:comment "Clear the caches for this tier";
+    dms:action "floods/clearCache";
+    skos:notation "clearCacheOp";
+    dms:tierOnly true;
+    .
+
+
+# -- Base images --------------------------------
+
+#:baseline a dms:image;
+#    dms:dumpFile   "/var/opt/dms/services/bwq/publicationSets/testing/images/baseline-2014-10-02.nq.gz";
+#    dms:dbLocation "/var/opt/dms/services/bwq/publicationSets/testing/images/baseline-2014-10-02.DB.tgz";
+#    dms:effectiveDate "2014-10-02T10:18:00Z"^^xsd:dateTime;
+#    .
+
+:baseline a dms:image;
+    dms:dumpFile   "/var/opt/dms/services/floods/publicationSets/testing/images/baseline-2014-12-11.nq.gz";
+    dms:dbLocation "/var/opt/dms/services/floods/publicationSets/testing/images/baseline-2014-12-11.DB.tgz";
+    dms:effectiveDate "2014-12-11T10:00:00Z"^^xsd:dateTime;
+    .
