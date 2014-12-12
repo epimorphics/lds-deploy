@@ -74,7 +74,7 @@
     dct:description "The publications released to the testing service."@en;
     dms:publishAction "default/publish";
     dms:publicationTier :testingServers;
-    dms:tier :testingServers;
+#    dms:tier :testingServers;
     dms:consolidatedUpdates false;
 #    dms:image  :baseline;
     .
@@ -84,7 +84,7 @@
 :testingServers a dms:Tier;
     rdfs:label "Data servers/pub in testing"@en;
     dct:description "Data servers holding published data for the testing service."@en;
-    skos:notation "dataservers";
+    skos:notation "testingServers";
     dms:tierRole "dataServers";
     dms:graphEndpoint   "http://{address}:3030/ds/data";
     dms:updateEndpoint  "http://{address}:3030/ds/update";
