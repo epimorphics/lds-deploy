@@ -38,12 +38,12 @@
     dms:updatePolicy dms:single;
     .
 
-:situations a dms:DataComponent;
+:stations a dms:DataComponent;
     rdfs:label "Monitoring stations"@en;
     rdfs:comment "Metadata for real-time monitoring stations"@en;
     skos:notation "stations";
     dct:isPartOf :floods;
-    #    dms:dataConverter "";
+    dms:dataConverter "flood.rloiImport";
     dms:updatePolicy dms:single;
     .
 
@@ -52,7 +52,7 @@
     rdfs:comment "Metadata for measure types available from real-time monitoring stations"@en;
     skos:notation "measures";
     dct:isPartOf :floods;
-    #    dms:dataConverter "";
+    dms:dataConverter "flood.measureImport";
     dms:updatePolicy dms:single;
     .
 
@@ -76,7 +76,7 @@
     dms:publicationTier :testingServers;
     dms:tier :testingServers;
     dms:consolidatedUpdates false;
-    dms:image  :baseline;
+#    dms:image  :baseline;
     .
 
 # -- Tiers --------------------------------
@@ -89,10 +89,10 @@
     dms:graphEndpoint   "http://{address}:3030/ds/data";
     dms:updateEndpoint  "http://{address}:3030/ds/update";
     dms:queryEndpoint  "http://{address}:3030/ds/query";
-    dms:loadBalancer  :pdataLB;
+#    dms:loadBalancer  :pdataLB;
     dms:configureAction "floods/dataserver/configure";
-    dms:allocateAction "floods/dataserver/allocate";
-    dms:terminateAction "floods/dataserver/terminate";
+    dms:allocateAction "floods/server/allocate";
+    dms:terminateAction "default/terminate";
     dms:parallelPublish true ;
     dms:operation :clearCacheOp;
     .
@@ -111,17 +111,3 @@
     dms:tierOnly true;
     .
 
-
-# -- Base images --------------------------------
-
-#:baseline a dms:image;
-#    dms:dumpFile   "/var/opt/dms/services/bwq/publicationSets/testing/images/baseline-2014-10-02.nq.gz";
-#    dms:dbLocation "/var/opt/dms/services/bwq/publicationSets/testing/images/baseline-2014-10-02.DB.tgz";
-#    dms:effectiveDate "2014-10-02T10:18:00Z"^^xsd:dateTime;
-#    .
-
-:baseline a dms:image;
-    dms:dumpFile   "/var/opt/dms/services/floods/publicationSets/testing/images/baseline-2014-12-11.nq.gz";
-    dms:dbLocation "/var/opt/dms/services/floods/publicationSets/testing/images/baseline-2014-12-11.DB.tgz";
-    dms:effectiveDate "2014-12-11T10:00:00Z"^^xsd:dateTime;
-    .

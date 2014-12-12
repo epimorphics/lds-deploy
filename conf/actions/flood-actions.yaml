@@ -1,0 +1,34 @@
+# Actions customized for the LDS Flood monitoring service
+
+# Data server allocation
+"@name" : flood/server/allocate
+"@type" : script
+"@script" : "ops/generic-allocate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+#    "AWS_EBS" : 8
+    "AWS_INSTANCE_STORE" : "yes"
+    "AWS_INSTANCE_TYPE" : "m3.large"
+    "AWS_AMI" : "ami-096cbd7e"
+    "AWS_SG" : "sg-b815c7dd"   # lds-front-end
+    "CHEF_ENV"  : "lds-flood-server"
+    "CHEF_ROLE" : "ea-floods-server"
+---
+# Server configuration  
+"@name" : flood/server/configure
+"@type" : script
+"@script" : "ops/generic-configure.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "NRC_HOSTGROUP"  : "Flood-server"
+    "NRC_SERVICESET" : "BWQ-data-ss"
+    "NRC_SERVICE"    : "check_http_ping"
+---
+# Clear presentation caches
+"@name" : flood/clearCache
+"@type" : script
+"@script" : "bwq/clear-caches.sh"
+"@args" :
+  - "tier"

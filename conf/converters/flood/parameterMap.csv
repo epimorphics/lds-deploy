@@ -1,0 +1,7 @@
+parameter,type
+"Flow","rt:Flow"
+"Gate Position","rt:GatePosition"
+"Rainfall","rt:Rainfall"
+"Temperature","rt:Temperature"
+"Water Level","rt:WaterLevel"
+"Wind","rt:Wind"

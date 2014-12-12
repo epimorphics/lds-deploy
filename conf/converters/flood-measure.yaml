@@ -1,0 +1,123 @@
+# dclib template for converting FWFW measure data to RDF
+
+type : Composite
+name : flood.measureImport
+requiredColumns:
+  - stationReference
+  - ngr
+  - parameter
+  - qualifier
+  - datatype
+  - period
+  - units
+  - wiski_ref
+  - rloi_id
+
+prefixes:
+  rt : "http://environment.data.gov.uk/flood-monitoring/def/core/"
+  geo: "http://www.w3.org/2003/01/geo/wgs84_pos#"
+  unit : "http://qudt.org/1.1/vocab/unit"
+
+bind :
+    - "$stationbase" : "http://environment.data.gov.uk/flood-monitoring/id/stations"
+      "$measurebase" : "http://environment.data.gov.uk/flood-monitoring/id/measures"
+      "$valueType"   : "{datatype == 'Instantaneous' || empty(datatype) ? 'i' : datatype == 'Total' ? 't' : datatype}"
+      "$parameter"   : "{!empty(parameter) && parameter == 'Water Level' ? 'level' : empty(parameter) ? '' : parameter.toLowerCase().toSegment()}"
+      "$qualifier"   : "{!empty(qualifier) && qualifier == 'Downstream Stage' ? 'downstage' : empty(qualifier) ? '' : qualifier.toLowerCase().toSegment()}"
+      "$point"       : "{(!empty(ngr)) && empty(rloi_id) ?  fromGridRef(ngr) : null }"
+      "$period"      : >
+          {
+            empty(period) ? null :
+              period.matches('([\\d]+) h') ? period.regex('([\\d]+).*').asNumber().value * 60 :
+                period.matches('([\\d]+) min') ? period.regex('([\\d]+).*').asNumber() :
+                  null
+          }
+      "$periodStr"   : "{empty(period) ? '' : period.toSegment()}"
+      "$unitStr"     : "{empty(units) ? '' : units.toSegment()}"
+      "$ok"          : "{parameter != 'Rainfall' && parameter != 'Gate Position'}"
+    - "$name"        : "{$parameter}-{$qualifier}-{$valueType}-{$periodStr}-{$unitStr}"
+    - "$stationReference" : "{stationreference.replaceAll(' ','_')}"
+    - "$stationid"   : "{$stationbase}/{$stationReference}"
+      "$id"          : "{$measurebase}/{$stationReference}/{$name}"
+
+sources:
+  - sourceType : CSV
+    name       : parameterMap
+    source     : "flood/parameterMap.csv"
+    key        : parameter
+    value      : type
+    makeURI    : false
+
+  - sourceType : CSV
+    name       : unitMap
+    source     : "flood/unitMap.csv"
+    key        : label
+    value      : unit
+    makeURI    : false
+
+  - sourceType : CSV
+    name       : datumTypeMap
+    source     : "flood/datumTypeMap.csv"
+    key        : label
+    value      : type
+    makeURI    : false
+
+templates:
+  - flood.measure.base
+  - flood.measure.nonRloiStation
+  - flood.measure.otherType
+  - flood.measure.default
+
+referenced:
+
+  - name : flood.measure.base
+    type : Composite
+    onlyIf: "{$ok}"
+
+    bind:
+      "$datumType"  : "{empty(units) ? null : units.map('datumTypeMap')}"
+
+    templates:
+      - "name"                  : "flood.measure.base.1"
+        "@id"                   : "<{$id}>"
+        "<rdf:type>"            : "<rt:Measure>"
+        "<rt:wiskiID>"          : "{empty(wiski_ref) ? null : wiski_ref.asString()}"
+        "<rt:RLOIid>"           : "{empty(rloi_id) ? null : rloi_id.asString()}"
+        "<rt:stationReference>" : "{stationreference.asString()}"
+        "<rt:station>"          : "<{$stationid}>"
+        "<skos:notation>"       : "{stationreference}/{$name}"
+        "<rt:parameterName>"    : "{parameter}"
+        "<rdfs:label>"          : "{stationname} - {$name}"
+        "<rt:qualifier>"        : "{qualifier}"
+        "<rt:period>"           : "{$period}"
+        "<rt:unit>"             : "<unit:{empty(units) ? null : units.map('unitMap').toString()}>"
+        "<rt:unitName>"         : "{units}"
+        "<rt:valueType>"        : "<rt:{empty(datatype) ? null : datatype.toLowerCase()}>"
+        "<rt:datumType>"        : "<{empty($datumType) ? null : $datumType.toString()}>"
+
+  - name : flood.measure.nonRloiStation
+    type : Composite
+    onlyIf : "{empty(rloi_id) && $ok}"
+    templates :
+      - "name"                  : "flood.measure.nonRloiStation.1"
+        "@id"                   : "<{$stationid}>"
+        "<rdf:type>"            : "<rt:Station>"
+        "<rt:wiskiID>"          : "{empty(wiski_ref) ? null : wiski_ref.asString()}"
+        "<rt:stationReference>" : "{stationreference.asString()}"
+        "<skos:notation>"       : "{stationreference.asString()}"
+        "<rdfs:label>"          : "{stationname}"
+        "<geo:lat>"             : "{empty($point) || qualifier == 'Groundwater' ? null : $point.latLiteral}"
+        "<geo:long>"            : "{empty($point) || qualifier == 'Groundwater' ? null : $point.lonLiteral}"
+        "<rt:gridReference>"    : "{ngr}"
+
+  - name : flood.measure.otherType
+    type : Composite
+    onlyIf: "{$ok}"
+    bind :
+      - "$type" : "{parameter.map('parameterMap').toString()}"
+    templates:
+      - "@id"            : "<{$id}>"
+        "<rdf:type>"     : "<{$type}>"
+
+  - name : "flood.measure.default"
+    "@id" : "<http://example.com/ignore>"
