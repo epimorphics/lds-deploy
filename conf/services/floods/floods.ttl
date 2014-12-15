@@ -74,9 +74,9 @@
     dct:description "The publications released to the testing service."@en;
     dms:publishAction "default/publish";
     dms:publicationTier :testingServers;
-#    dms:tier :testingServers;
     dms:consolidatedUpdates false;
 #    dms:image  :baseline;
+    dms:postPublishAction "floods/postPublish";
     .
 
 # -- Tiers --------------------------------

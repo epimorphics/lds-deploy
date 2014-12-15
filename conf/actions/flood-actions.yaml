@@ -32,3 +32,10 @@
 "@script" : "bwq/clear-caches.sh"
 "@args" :
   - "tier"
+---
+# General publication processing
+"@name" : floods/postPublish
+"@type" : script
+"@script" : "floods/post-publish.sh"
+"@args" :
+    -  "servers"
