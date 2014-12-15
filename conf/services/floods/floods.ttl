@@ -62,8 +62,8 @@
     skos:notation "vocabularies";
     dct:isPartOf :floods;
     dms:updatePolicy dms:multiple;
-    dms:sourcePublishDir  "sources/def";
-    dms:dataPublishDir    "sources/def";
+    dms:sourcePublishDir  "flood-monitoring/sources/def";
+    dms:dataPublishDir    "flood-monitoring/sources/def";
     .
 
 # -- Publication sets --------------------------------
