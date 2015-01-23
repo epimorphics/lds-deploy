@@ -15,7 +15,7 @@ prefixes:
   rt : "http://environment.data.gov.uk/flood-monitoring/def/core/"
 bind :
     - "$base" : "http://environment.data.gov.uk/flood-monitoring/id/stations"
-      "$id"   : "{$base}/{telemetry_id.replaceAll(' ', '_')}"
+      "$id"   : "{$base}/{telemetry_id.replaceAll(' ', '_')}-{region.toLowerCase().replaceAll(' ', '_')}"
       "$point": "{empty(x_coord_actual) || empty(y_coord_actual) ? null : fromEastingNorthing(x_coord_actual, y_coord_actual)}"
     - "$stageScale"     : "{$id}/stageScale"
       "$downstageScale" : "{type == 'M' ? $id.append('/downstageScale') : null}"
@@ -44,11 +44,12 @@ referenced:
         "<rt:catchmentName>"    : "{catchment}"
         "<rt:town>"             : "{location_info}"
         "<rt:riverName>"        : "{wiski_river_name}"
+        "<rt:eaRegionName>"     : "{region}"
         "<rt:eaAreaName>"       : "{region} - {area}"
         "<spatial:easting>"     : "{x_coord_actual}"
         "<spatial:northing>"    : "{y_coord_actual}"
-        "<geo:lat>"             : "{empty($point) ? null : $point.lat}^^xsd:decimal"
-        "<geo:long>"            : "{empty($point) ? null : $point.lon}^^xsd:decimal"
+        "<geo:lat>"             : "{empty($point) ? null : $point.latLiteral}"
+        "<geo:long>"            : "{empty($point) ? null : $point.lonLiteral}"
         "<rt:gridReference>"    : "{actual_ngr}"
         "<rt:dateOpened>"       : "{date_open.asDate('dd/MM/yyyy','xsd:date')}"
         "<rt:stageScale>"       : "<{$stageScale}>"
@@ -99,7 +100,7 @@ referenced:
   - name : flood.rloi.otherType
     type : Composite
     bind :
-      - "$type" : "{type == 'S' ? 'rt:SingleLevel' : type == 'C' ? 'rt:Coastal' : type == 'M' ? 'rt:MuliTraceLevel' : null}"
+      - "$type" : "{type == 'S' ? 'rt:SingleLevel' : type == 'C' ? 'rt:Coastal' : type == 'M' ? 'rt:MultiTraceLevel' : null}"
     templates:
       - "@id"            : "<{$id}>"
         "<rdf:type>"     : "<{$type}>"
