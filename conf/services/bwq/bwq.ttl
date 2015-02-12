@@ -199,7 +199,7 @@
     dms:configureAction "bwq/presserver/configure";
     dms:allocateAction "bwq/presserver/allocate";
     dms:terminateAction "bwq/presserver/terminate";
-    dms:operation :clearCacheOp;
+    dms:operation :clearCacheOp, :webSyncOp;
     .    
 
 :pPresLB a dms:LoadBalancer;
@@ -215,7 +215,7 @@
     dms:configureAction "bwq/presserver/configure";
     dms:allocateAction "bwq/presserver/allocate";
     dms:terminateAction "bwq/presserver/terminate";
-    dms:operation :clearCacheOp;
+    dms:operation :clearCacheOp, :webSyncOp;
     .    
 
 :clearCacheOp
@@ -225,6 +225,15 @@
     skos:notation "clearCacheOp";
     dms:tierOnly true;
     .
+
+:webSyncOp
+    rdfs:label "Web sync";
+    rdfs:comment "Synchronize shared web content";
+    dms:action "bwq/webSync";
+    skos:notation "webSyncOp";
+    dms:tierOnly true;
+    .
+
 :tPresLB a dms:LoadBalancer;
     rdfs:label "Testing presentation LB"@en;
     rdfs:comment "Load balancer for the testing presentation tier"@en;
