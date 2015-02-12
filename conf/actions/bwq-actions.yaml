@@ -114,6 +114,6 @@
 # Synchronize web content
 "@name" : bwq/webSync
 "@type" : script
-"@script" : "bwq/post-publish.sh"
+"@script" : "bwq/web-sync.sh"
 "@args" :
   - "tier"
