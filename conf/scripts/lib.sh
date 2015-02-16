@@ -89,7 +89,7 @@ BlockDeviceMappings() {
     echo $MAPPING
 }
 
-# Allocate and AWS server and bootstrap it
+# Allocate an AWS server and bootstrap it
 # Arguments:
 #    AllocateServer infoDir
 # Environment settings:

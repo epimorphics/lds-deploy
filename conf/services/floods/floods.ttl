@@ -94,6 +94,9 @@
     dms:allocateAction "floods/server/allocate";
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;
+    dms:externalState  true;
+    dms:loadStateAction "floods/loadState";
+    dms:catchupStateAction "floods/catchupState";
     dms:operation :clearCacheOp;
     .
 
