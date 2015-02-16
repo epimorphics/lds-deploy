@@ -10,5 +10,7 @@ set -o errexit
 readonly serverDir=$1
 
 IP=$(jq -r ".address" < $serverDir/config.json)
-echo "Calling dms-update on $serverDir"
-ssh -t -t $FLAGS -l ubuntu $IP /bin/bash /usr/local/bin/dms-update --perform
+FLAGS="$SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem"
+
+echo "Calling db_reset on $serverDir"
+ssh -t -t $FLAGS -l ubuntu $IP /bin/bash /usr/local/bin/db_reset
