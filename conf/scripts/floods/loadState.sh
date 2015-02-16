@@ -4,7 +4,7 @@
 
 set -o errexit
 
-[[ $# = 1 ]] || { echo "Internal error calling catchupState.sh" 1>&2 ; exit 1 ; }
+[[ $# = 1 ]] || { echo "Internal error calling loadState.sh" 1>&2 ; exit 1 ; }
 . ./config.sh
 
 readonly serverDir=$1
