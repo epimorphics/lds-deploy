@@ -1,11 +1,11 @@
 #!/bin/bash
-# Bring server up to date with the configured server state
+# Bring a single server up to date with the configured server state
 # args: serverDir
 
 set -o errexit
 
 [[ $# = 1 ]] || { echo "Internal error calling catchupState.sh" 1>&2 ; exit 1 ; }
-. ./config.sh
+. /opt/dms/conf/scripts/config.sh
 
 readonly serverDir=$1
 
