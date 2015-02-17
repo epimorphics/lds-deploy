@@ -10,7 +10,6 @@ set -o errexit
 
 readonly tierDir=$1
 
-IP=$(jq -r ".address" < $serverDir/config.json)
 FLAGS="$SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem"
 
 for server in $tierDir/servers/*
