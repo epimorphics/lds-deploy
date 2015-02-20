@@ -1,0 +1,28 @@
+#!/bin/bash
+# Backup a server and record the backup in an S3 account
+# Temporary solution to be replace by DMS automation in the future
+#   backupServer  serverDir  [s3folder]
+set -o errexit
+
+if [[ $# == 0 || $# > 2 ]]; then
+    echo "Usage: backupServer serverDir [s3folder]"
+    exit 1
+fi
+readonly serverDir="$1"
+if [[ $# == 2 ]]; then
+    readonly s3folder="$2"
+fi
+
+cd /opt/dms/conf/scripts
+backupFile=$( sudo -u tomcat7 ops/backup-sever.sh )
+
+if [[ -n "$s3folder" ]]; then
+    if [[ $backupFile =~ .*/images/[^-_]+-[^_]+_([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9])_([0-9][0-9]-[0-9][0-9]-[0-9][0-9]).nq.gz ]]; then
+        date=${BASH_REMATCH[1]}
+        time=${BASH_REMATCH[2]}
+        aws s3 cp $backupFile $s3folder/images/$date/$time-0000/backupServer_dump.ng.gz
+    else
+        echo "Badly formed backup file name, omitting S3 publish - $backupFile"
+        exit 1
+    fi
+fi
