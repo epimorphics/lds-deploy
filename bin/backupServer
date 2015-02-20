@@ -2,6 +2,10 @@
 # Backup a server and record the backup in an S3 account
 # Temporary solution to be replace by DMS automation in the future
 #   backupServer  serverDir  [s3folder]
+
+# For example:
+# backupServer /var/opt/dms/services/floods/publicationSets/testing/tiers/testingServers/servers/s3 s3://dms-deploy/images/flood-monitoring
+
 set -o errexit
 
 if [[ $# == 0 || $# > 2 ]]; then
@@ -14,9 +18,11 @@ if [[ $# == 2 ]]; then
 fi
 
 cd /opt/dms/conf/scripts
-backupFile=$( sudo -u tomcat7 ops/backup-sever.sh )
+echo "Starting backup of $serverDir"
+backupFile=$( sudo -u tomcat7 ops/backup-server.sh $serverDir | tail -1 )
 
 if [[ -n "$s3folder" ]]; then
+    echo "Publish to S3 images area"
     if [[ $backupFile =~ .*/images/[^-_]+-[^_]+_([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9])_([0-9][0-9]-[0-9][0-9]-[0-9][0-9]).nq.gz ]]; then
         date=${BASH_REMATCH[1]}
         time=${BASH_REMATCH[2]}
