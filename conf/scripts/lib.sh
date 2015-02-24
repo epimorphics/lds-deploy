@@ -248,7 +248,7 @@ NRCAddHost() {
     local ipaddress="$3"
     local hostgroup="$4"
     local serviceset="$5"
-    json="{\"folder\":\"local\", \"name\":\"$fullname\",\"alias\":\"$shortname\",\"ipaddress\":\"$ipaddress\",\"template\":\"hsttmpl-base\",\"hostgroup\":\"$hostgroup\",\"servicesets\":\"$serviceset\"}"
+    json="{\"folder\":\"local\", \"name\":\"$fullname\",\"alias\":\"$fullname\",\"ipaddress\":\"$ipaddress\",\"template\":\"hsttmpl-base\",\"hostgroup\":\"$hostgroup\",\"servicesets\":\"$serviceset\"}"
     echo "Registering host $1 with nagios"
     NRCCommand "$json" /add/hosts    
 }
