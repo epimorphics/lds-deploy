@@ -11,7 +11,8 @@
     "AWS_INSTANCE_STORE" : "yes"
     "AWS_INSTANCE_TYPE" : "m3.large"
     "AWS_AMI" : "ami-096cbd7e"
-    "AWS_SG" : "sg-b815c7dd"   # lds-front-end
+#    "AWS_SG" : "sg-b815c7dd"   # lds-front-end
+    "AWS_SG" : "sg-091c6a6c"   # lds-combined
     "CHEF_ENV"  : "lds-flood-server"
     "CHEF_ROLE" : "ea-floods-server"
     "AWS_IAM_ROLE_ARN" : "arn:aws:iam::853478862498:instance-profile/dms-update"
@@ -44,13 +45,13 @@
 # initialize database from S3
 "@name" : floods/loadState
 "@type" : script
-"@script" : "floods/loadState.sh"
+"@script" : "dbutil/resetState.sh"
 "@args" :
     -  "serverDir"
 ---
 # General publication processing
 "@name" : floods/catchupState
 "@type" : script
-"@script" : "floods/catchupState.sh"
+"@script" : "dbutil/catchupState.sh"
 "@args" :
     -  "serverDir"
