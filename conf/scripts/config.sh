@@ -14,3 +14,5 @@ readonly VPC_PUBLIC=( $VPC_PUBLIC_B $VPC_PUBLIC_C )
 readonly NRC_HOST=127.0.0.1                 # Nagrestconf, normally on DMS controller machine
 
 export SSH_FLAGS="-q -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+
+readonly S3_STATE="s3://dms-deploy/dms-state"

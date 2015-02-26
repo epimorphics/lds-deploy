@@ -28,3 +28,10 @@ knife node delete $nodeName -y -c /var/opt/dms/.chef/knife.rb
 
 FULL_NAME=$(jq -r .name < $serverDir/config.json)
 NRCDeleteHost "$FULL_NAME" "$NRC_SERVICE" || echo "Nagios service not responding"
+
+# Remove server from S3 state backup
+if [[ $serverDir =~ /var/opt/dms/(.*) ]]; then
+    s3key="$S3_STATE/${BASH_REMATCH[1]}"
+    aws rm "$s3key/status"
+    aws rm "$s3key/config.json"
+fi

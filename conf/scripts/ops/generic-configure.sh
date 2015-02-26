@@ -31,3 +31,10 @@ NAME="$FULL_NAME"
 if [[ $NAME =~ -([^-]*)$ ]] ; then NAME="${BASH_REMATCH[1]}"; fi
 
 NRCAddHost "$FULL_NAME" "$NAME" $IP  "$NRC_HOSTGROUP" "$NRC_SERVICESET"  || echo "Nagios service not responding"
+
+# Add server to S3 state backup
+if [[ $serverDir =~ /var/opt/dms/(.*) ]]; then
+    s3key="$S3_STATE/${BASH_REMATCH[1]}"
+    aws cp "$serverDir/status" "$s3key/status"
+    aws cp "$serverDir/config.json" "$s3key/config.json"
+fi

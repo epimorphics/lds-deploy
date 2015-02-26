@@ -14,3 +14,17 @@ if [[ -f $inst_file ]]; then
 else
     echo "No instance configuration found in $serverDir" 1>&2
 fi
+
+# Update the shortform config file
+if [[ -f $serverDir/config.json ]]; then
+    FULL_NAME=$( jq -r '.name' $serverDir/config.json )
+    jq  "{ address: .Instances[0].PublicDnsName, private: .Instances[0].PrivateIpAddress, public: .Instances[0].PublicDnsName, name: \"$FULL_NAME\" }" < $serverDir/aws-instance.json > $serverDir/config.json
+else
+    echo "No config.json found in $serverDir" 1>&2
+fi
+
+# Update copy on S3
+if [[ $serverDir =~ /var/opt/dms/(.*) ]]; then
+    s3key="s3://dms-deploy/dms-state/${BASH_REMATCH[1]}"
+    aws cp "$serverDir/config.json" "$s3key/config.json"
+fi

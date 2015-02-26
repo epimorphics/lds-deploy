@@ -1,0 +1,17 @@
+#!/bin/bash
+# Create a set of .ssh/config definitions from the S3 saved state
+
+readonly BUCKET="s3://dms-deploy"
+readonly WORK="/tmp/lds-config-gen-$RANDOM"
+for i in $( aws s3 ls --recursive "$BUCKET/dms-state/" | awk '{print $4}' | grep config.json )
+do 
+    aws s3 cp --quiet "$BUCKET/$i" $WORK
+    host=$( jq -r '.public' $WORK)
+    name=$( jq -r '.name' $WORK)
+    echo "Host $name"
+    echo "    HostName     $host"
+    echo "    User         ubuntu"
+    echo "    IdentityFile /var/opt/dms/.ssh/lds-user.pem"
+    echo ""
+done
+rm -f $WORK
