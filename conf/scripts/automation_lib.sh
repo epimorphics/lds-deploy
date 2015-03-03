@@ -32,7 +32,7 @@ backupServer() {
     if [[ $backupFile =~ .*/images/[^-_]+-[^_]+_([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9])_([0-9][0-9]-[0-9][0-9]-[0-9][0-9]).nq.gz ]]; then
         date=${BASH_REMATCH[1]}
         time=${BASH_REMATCH[2]}
-        aws s3 cp $backupFile $s3folder/images/$date/$time-0000/backupServer_dump.ng.gz
+        aws s3 cp $backupFile $s3folder/images/$date/$time-0000/backupServer_dump.nq.gz
     else
         echo "Badly formed backup file name, omitting S3 publish - $backupFile"
         exit 1
