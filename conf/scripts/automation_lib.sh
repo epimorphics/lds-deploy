@@ -12,13 +12,14 @@ firstLiveServer() {
     do
         if grep -qv Terminated $server/status ; then
             echo $server
-            exit 0
+            return 0
         fi
     done
-    exit 1
+    return 1
 }
 
 # Backup a server to both local disk and to S3
+# The base folder should be the top level folder not including "images"/"updates" and no final "/"
 # Usage: backupServer serverDir s3folder
 backupServer() {
     [[ $# = 2 ]] || { echo "Internal error calling backupServer" 1>&2 ; exit 1 ; }
@@ -35,7 +36,7 @@ backupServer() {
         aws s3 cp $backupFile $s3folder/images/$date/$time-0000/backupServer_dump.nq.gz
     else
         echo "Badly formed backup file name, omitting S3 publish - $backupFile"
-        exit 1
+        return 1
     fi
 }
 
@@ -62,3 +63,20 @@ deleteOldS3Records() {
     | awk '$1 < "'$cutoff'" {print $1}' \
     | xargs -I {} aws s3 rm --recursive "$s3folder/{}"
 }
+
+# Find the most recent available dump 
+# The base folder should be the top level folder not including "images"/"updates" and no final "/"
+# Usage: findLastDump s3Base
+findLastDump() {
+    [[ $# = 1 ]] || { echo "Internal error calling findLastDump" 1>&2 ; exit 1 ; }
+    local s3folder="$1"
+    dump=$( aws s3 ls "$s3folder/images" --recursive | grep dump.nq.gz | tail -1 | awk '{print $4}' )
+    if [[ -n $dump ]]; then
+        if [[ $s3folder =~ (s3://[^/]*)/.* ]]; then
+            echo "${BASH_REMATCH[1]}/$dump"
+            return 0
+        fi
+    fi
+    return 1
+}
+
