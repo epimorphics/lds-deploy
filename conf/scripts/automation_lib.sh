@@ -26,7 +26,7 @@ backupServer() {
     local s3folder="$2"
 
     cd /opt/dms/conf/scripts
-    backupFile=$( sudo -u tomcat7 ops/backup-server.sh $serverDir | tail -1 )
+    backupFile=$( ops/backup-server.sh $serverDir | tail -1 )
 
     echo "Publish to S3 images area"
     if [[ $backupFile =~ .*/images/[^-_]+-[^_]+_([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9])_([0-9][0-9]-[0-9][0-9]-[0-9][0-9]).nq.gz ]]; then
@@ -49,3 +49,16 @@ backupTier() {
     backupServer $serverDir $s3folder
 }
 
+# Delete all S3 folders whose name-as-date is more than AGE days old
+# The base folder should not include a trailing "/"
+# Usage: deleteOldS3Records s3Base age
+deleteOldS3Records() {
+    [[ $# = 2 ]] || { echo "Internal error calling deleteOldS3Records" 1>&2 ; exit 1 ; }
+    local s3folder="$1"
+    local age="$2"
+    local cutoff=$(date +%F -d "-$age days")
+    aws s3 ls "$s3folder/" \
+    | awk '{x = $2; sub(/\//,"",x); print x;}' \
+    | awk '$1 < "'$cutoff'" {print $1}' \
+    | xargs -I {} aws s3 rm --recursive "$s3folder/{}"
+}
