@@ -22,8 +22,8 @@
     rdfs:label "Floods monitoring"@en;
     rdfs:comment "Flood alerts, alert/warning areas, monitoring stations and measurements"@en;
     skos:notation "floods";
-    dms:defaultPublicationSet :testing;
-    dms:publicationSet :testing;
+    dms:defaultPublicationSet :production;
+    dms:publicationSet :testing, :production;
     dms:notifyUser "dave@epimorphics.com";
     .
 
