@@ -10,7 +10,7 @@
 #    "AWS_EBS" : 8
     "AWS_INSTANCE_STORE" : "yes"
     "AWS_INSTANCE_TYPE" : "m3.large"
-    "AWS_AMI" : "ami-096cbd7e"
+    "AWS_AMI" : "ami-b8d3e1a5"
 #    "AWS_SG" : "sg-b815c7dd"   # lds-front-end
     "AWS_SG" : "sg-091c6a6c"   # lds-combined
     "CHEF_ENV"  : "lds-flood-server"
