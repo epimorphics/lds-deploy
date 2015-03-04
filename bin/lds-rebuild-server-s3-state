@@ -13,12 +13,12 @@ do
     aws s3 cp $i s3://dms-deploy/dms-state/$i
 done
 
-for i in services/*/publicationSets/*/tiers/aws-lb.json
+for i in services/*/publicationSets/*/tiers/*/aws-lb.json
 do 
     aws s3 cp $i s3://dms-deploy/dms-state/$i
 done
 
-for i in services/*/publicationSets/*/tiers/lb-name
+for i in services/*/publicationSets/*/tiers/*/lb-name
 do 
     aws s3 cp $i s3://dms-deploy/dms-state/$i
 done
