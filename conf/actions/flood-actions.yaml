@@ -45,7 +45,7 @@
 # initialize database from S3
 "@name" : floods/loadState
 "@type" : script
-"@script" : "dbutil/resetState.sh"
+"@script" : "dbutil/resetServerData.sh"
 "@args" :
     -  "serverDir"
 ---

@@ -6,7 +6,7 @@
 
 set -o errexit
 
-[[ $# = 1 ]] || { echo "Internal error calling resetState.sh" 1>&2 ; exit 1 ; }
+[[ $# = 1 ]] || { echo "Internal error calling resetServerData.sh" 1>&2 ; exit 1 ; }
 . /opt/dms/conf/scripts/config.sh
 
 readonly serverDir=$1
