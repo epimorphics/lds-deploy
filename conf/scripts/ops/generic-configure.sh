@@ -37,4 +37,5 @@ if [[ $serverDir =~ /var/opt/dms/(.*) ]]; then
     s3key="$S3_STATE/${BASH_REMATCH[1]}"
     aws s3 cp "$serverDir/status" "$s3key/status"
     aws s3 cp "$serverDir/config.json" "$s3key/config.json"
+    aws s3 cp "$serverDir/aws-instance.json" "$s3key/aws-instance.json"
 fi

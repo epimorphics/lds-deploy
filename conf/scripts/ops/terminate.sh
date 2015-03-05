@@ -34,4 +34,5 @@ if [[ $serverDir =~ /var/opt/dms/(.*) ]]; then
     s3key="$S3_STATE/${BASH_REMATCH[1]}"
     aws s3 rm "$s3key/status"  || true
     aws s3 rm "$s3key/config.json" || true
+    aws s3 rm "$s3key/aws-instance.json" || true
 fi
