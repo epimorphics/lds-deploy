@@ -30,11 +30,6 @@ CheckInstalls() {
     command -v jq >/dev/null 2>&1 || { echo >&2 "Need jq installed: http://stedolan.github.io/jq/download/.  Aborting."; exit 1; }
 }
 
-# Pick a random availability zone - not used in a VPC setting, pick subnet instead
-PickZone() {
-    aws ec2 describe-availability-zones --filters Name=state,Values=available | jq -r ".AvailabilityZones[$(( $RANDOM % 3 ))].ZoneName"
-}
-
 # Shell based provisioning, syncs source area then roots bootstrap.sh script
 # ShellProvision $serverDir $sourceDir
 ShellProvision() {
@@ -89,6 +84,34 @@ BlockDeviceMappings() {
     echo $MAPPING
 }
 
+# Find the least populated availability zone for this tier out of b/c
+# Usage: PickZone serverDir
+PickZone() {
+    [[ $# = 1 ]] || { echo "Internal error calling PickZone" 1>&2 ; exit 1 ; }
+    local serverDir=$1
+    (
+        echo eu-west-1b
+        echo eu-west-1c
+        for server in $serverDir/../*
+        do
+            if grep -qv Terminated $server/status && [[ -a $server/config.json ]]; then
+               jq -r '.Instances[0].Placement.AvailabilityZone' $server/aws-instance.json
+           fi            
+       done
+    ) | uniq -c | sort | head -1 | awk '{print $2}'
+}
+
+# Find the subnet corresponding to the least populated availability zone for this tier out of b/c
+# Usage: PickSubnet serverDir
+PickSubnet() {
+    local zone=PickZone "$1"
+    if [[ "$zone" = "eu-west-1b"]]; then
+        echo $VPC_PUBLIC_B
+    else
+        echo $VPC_PUBLIC_C
+    fi
+}
+
 # Allocate an AWS server and bootstrap it
 # Arguments:
 #    AllocateServer infoDir
@@ -114,7 +137,7 @@ AllocateServer() {
         instanceID=$( jq -r '.Instances[0].InstanceId' < $serverDir/aws-instance.json )
     else
         # Start the instance
-        local VPC="${VPC_PUBLIC[ $RANDOM % 2 ]}"
+        local VPC=$(PickSubnet "$serverDir")
 
         local BD=$(BlockDeviceMappings)
 
