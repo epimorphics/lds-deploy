@@ -50,3 +50,10 @@ aws elb configure-health-check --load-balancer-name "$NAME" \
 # Set IdleTimeout to the default 60s so that it can be change later
 aws elb modify-load-balancer-attributes --load-balancer-name "$NAME" \
     --load-balancer-attributes "{\"CrossZoneLoadBalancing\":{\"Enabled\":true},\"ConnectionDraining\":{\"Enabled\":true,\"Timeout\":60},\"ConnectionSettings\":{\"IdleTimeout\":60}}" > /dev/null
+
+# Record status in S3 status already
+if [[ $tierDir =~ /var/opt/dms/(.*) ]]; then
+    s3key="$S3_STATE/${BASH_REMATCH[1]}"
+    aws s3 cp "$tierDir/lb-name" "$s3key/lb-name"
+    aws s3 cp "$tierDir/aws-lb.json" "$s3key/aws-lb.json"
+fi

@@ -32,6 +32,7 @@ NRCDeleteHost "$FULL_NAME" "$NRC_SERVICE" || echo "Nagios service not responding
 # Remove server from S3 state backup
 if [[ $serverDir =~ /var/opt/dms/(.*) ]]; then
     s3key="$S3_STATE/${BASH_REMATCH[1]}"
-    aws rm "$s3key/status"
-    aws rm "$s3key/config.json"
+    aws s3 rm "$s3key/status"  || true
+    aws s3 rm "$s3key/config.json" || true
+    aws s3 rm "$s3key/aws-instance.json" || true
 fi

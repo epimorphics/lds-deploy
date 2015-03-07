@@ -3,12 +3,12 @@
 # Should never be needed ...
 
 cd /var/opt/dms
-for i in services/*/publicationSets/*/tiers/*/servers/*/config.json
-do 
-    aws s3 cp $i s3://dms-deploy/dms-state/$i
-done
-
-for i in services/*/publicationSets/*/tiers/*/servers/*/status
+for i in \
+    services/*/publicationSets/*/tiers/*/servers/*/config.json \
+    services/*/publicationSets/*/tiers/*/servers/*/status \
+    services/*/publicationSets/*/tiers/*/servers/*/aws-instance.json \
+    services/*/publicationSets/*/tiers/*/aws-lb.json \
+    services/*/publicationSets/*/tiers/*/lb-name 
 do 
     aws s3 cp $i s3://dms-deploy/dms-state/$i
 done

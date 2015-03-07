@@ -22,8 +22,8 @@
     rdfs:label "Floods monitoring"@en;
     rdfs:comment "Flood alerts, alert/warning areas, monitoring stations and measurements"@en;
     skos:notation "floods";
-    dms:defaultPublicationSet :testing;
-    dms:publicationSet :testing;
+    dms:defaultPublicationSet :production;
+    dms:publicationSet :testing, :production;
     dms:notifyUser "dave@epimorphics.com";
     .
 
@@ -47,15 +47,6 @@
     dms:updatePolicy dms:single;
     .
 
-:measures a dms:DataComponent;
-    rdfs:label "Measures available"@en;
-    rdfs:comment "Metadata for measure types available from real-time monitoring stations"@en;
-    skos:notation "measures";
-    dct:isPartOf :floods;
-    dms:dataConverter "flood.measureImport";
-    dms:updatePolicy dms:single;
-    .
-
 :vocabularies a dms:DataComponent;
     rdfs:label "Vocabularies"@en;
     rdfs:comment "Collection of vocabularies/ontologies used to publish real-time monitoring information."@en;
@@ -75,7 +66,16 @@
     dms:publishAction "default/publish";
     dms:publicationTier :testingServers;
     dms:consolidatedUpdates false;
-#    dms:image  :baseline;
+    dms:postPublishAction "floods/postPublish";
+    .
+
+:production a dms:PublicationSet;
+    rdfs:label "Production"@en;
+    skos:notation "production";
+    dct:description "The publications released to production."@en;
+    dms:publishAction "default/publish";
+    dms:publicationTier :productionServers;
+    dms:consolidatedUpdates false;
     dms:postPublishAction "floods/postPublish";
     .
 
@@ -89,7 +89,6 @@
     dms:graphEndpoint   "http://{address}:3030/ds/data";
     dms:updateEndpoint  "http://{address}:3030/ds/update";
     dms:queryEndpoint  "http://{address}:3030/ds/query";
-#    dms:loadBalancer  :pdataLB;
     dms:configureAction "floods/server/configure";
     dms:allocateAction "floods/server/allocate";
     dms:terminateAction "default/terminate";
@@ -100,9 +99,28 @@
     dms:operation :clearCacheOp;
     .
 
+:productionServers a dms:Tier;
+    rdfs:label "Data servers/pub in production"@en;
+    dct:description "Data servers holding published data for the production service."@en;
+    skos:notation "productionServers";
+    dms:tierRole "dataServers";
+    dms:graphEndpoint   "http://{address}:3030/ds/data";
+    dms:updateEndpoint  "http://{address}:3030/ds/update";
+    dms:queryEndpoint  "http://{address}:3030/ds/query";
+    dms:loadBalancer  :pdataLB;
+    dms:configureAction "floods/server/configure";
+    dms:allocateAction "floods/server/allocate";
+    dms:terminateAction "default/terminate";
+    dms:parallelPublish true ;  # Irrelevant due to next line
+    dms:externalState  true;
+    dms:loadStateAction "floods/loadState";
+    dms:catchupStateAction "floods/catchupState";
+    dms:operation :clearCacheOp;
+    .
+
 :pdataLB a dms:LoadBalancer;
-    rdfs:label "Testing Data LB"@en;
-    rdfs:comment "Load balancer for the testing server tier"@en;
+    rdfs:label "Production Data LB"@en;
+    rdfs:comment "Load balancer for the production server tier"@en;
     # Use only the default actions
     . 
 
