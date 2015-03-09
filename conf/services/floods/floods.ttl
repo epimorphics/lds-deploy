@@ -73,7 +73,7 @@
     rdfs:label "Production"@en;
     skos:notation "production";
     dct:description "The publications released to production."@en;
-    dms:publishAction "default/publish";
+    dms:publishAction "floods/publish";
     dms:publicationTier :productionServers;
     dms:consolidatedUpdates false;
     dms:postPublishAction "floods/postPublish";

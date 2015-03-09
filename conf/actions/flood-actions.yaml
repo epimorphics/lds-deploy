@@ -55,3 +55,12 @@
 "@script" : "dbutil/catchupState.sh"
 "@args" :
     -  "serverDir"
+---
+# Publish via S3 upload
+"@name" : floods/publish
+"@type" : script
+"@script" : "floods/publish.sh"
+"@args" :
+    - "spec"
+    - "target"
+    - "servers"
