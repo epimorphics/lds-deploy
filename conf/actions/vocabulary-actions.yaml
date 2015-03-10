@@ -1,0 +1,17 @@
+---
+# Publish via S3 upload
+"@name" : vocabulary/publish
+"@type" : script
+"@script" : "ops/duPublish.sh"
+"@args" :
+    - "target"
+    - "servers"
+---
+# Publish state via S3 upload
+"@name" : vocabulary/publishState
+"@type" : script
+"@script" : "ops/duPublishState.sh"
+"@env"  :
+    "STATE_FOLDER"  : "s3://dms-deploy/images/testing"
+"@args" :
+    - "spec"

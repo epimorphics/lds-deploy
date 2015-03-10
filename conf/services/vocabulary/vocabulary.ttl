@@ -59,9 +59,10 @@
     dct:description "The publications released to the production service."@en;
 #    dms:publishAction "test/publish";
     dms:publicationTier :productionPubServers;
-    dms:tier :widgetServers;
+#    dms:tier :widgetServers;
     dms:consolidatedUpdates false;
     dms:image  :baseline;
+    dms:publishAction      "vocabulary/publish"
     .
 
 :baseline a dms:image;
@@ -73,16 +74,20 @@
 :productionPubServers a dms:Tier;
     rdfs:label "Production publication servers"@en;
     dct:description "Data servers holding published data for the production service."@en;
-    skos:notation "pubservers";
-    dms:tierRole "dataServers";
-    dms:graphEndpoint   "http://{address}:3030/ds/data";
-    dms:updateEndpoint  "http://{address}:3030/ds/update";
-    dms:queryEndpoint  "http://{address}:3030/ds/query";
+    skos:notation   "pubservers";
+    dms:tierRole    "dataServers";
+    dms:graphEndpoint    "http://{address}:3030/ds/data";
+    dms:updateEndpoint   "http://{address}:3030/ds/update";
+    dms:queryEndpoint    "http://{address}:3030/ds/query";
 #    dms:configureAction "vocabulary/configure";
 #    dms:allocateAction "vocabulary/allocate";
 #    dms:operation :tierOnlyTestOp, :testOp;
 #    dms:operation :testOp;
-    dms:loadBalancer  :dataLB;
+    dms:externalState  true;
+    dms:loadStateAction    "generic/loadState";
+    dms:catchupStateAction "generic/catchupState";
+    dms:publishStateAction "vocabulary/publishState";
+#    dms:loadBalancer  :dataLB;
     dms:testServerAction "dataserver/testServer";
     .
 

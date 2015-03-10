@@ -1,0 +1,15 @@
+# Generic  actions for server data management using S3 state transfer
+
+# initialize database from S3
+"@name" : generic/loadState
+"@type" : script
+"@script" : "dbutil/resetServerData.sh"
+"@args" :
+    -  "serverDir"
+---
+# General publication processing
+"@name" : generic/catchupState
+"@type" : script
+"@script" : "dbutil/catchupState.sh"
+"@args" :
+    -  "serverDir"
