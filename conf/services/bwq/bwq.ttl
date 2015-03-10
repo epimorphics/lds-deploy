@@ -53,6 +53,30 @@
     dms:dataPublishDir    "sources/bwq/eaew/output";
     .
 
+:revised-annual a dms:DataComponent;
+    rdfs:label "RBWD Annual assessments"@en;
+    rdfs:comment "Data cube describing historic and current annual Bathing Water quality assessments under the revised directive."@en;
+    skos:notation "revised-annual";
+    dct:isPartOf :bwq;
+    dms:dataConverter "rbwd-compliance-assessment";
+    dms:postPublishScript "bwq/updates/inseason-rebuild.ru";
+    dms:updatePolicy dms:series;
+    dms:sourcePublishDir  "sources/bwq/eaew/input";
+    dms:dataPublishDir    "sources/bwq/eaew/output";
+    .
+
+:revised-inseason a dms:DataComponent;
+    rdfs:label "RBWD In-season samples"@en;
+    rdfs:comment "Data cube describing historic and current in-season Bathing Water quality samples, for use under the revised directive."@en;
+    skos:notation "in-season";
+    dct:isPartOf :bwq;
+    dms:dataConverter "rbwd-in-season-assessment";
+    dms:postPublishScript "bwq/updates/inseason-rebuild.ru";
+    dms:updatePolicy dms:series;
+    dms:sourcePublishDir  "sources/bwq/eaew/input";
+    dms:dataPublishDir    "sources/bwq/eaew/output";
+    .
+
 :reference a dms:DataComponent;
     rdfs:label "Site reference data"@en;
     rdfs:comment "Reference data giving identifiers for Bathing Waters and asssociated sampling points."@en;
@@ -67,10 +91,11 @@
 
 :profiles a dms:DataComponent;
     rdfs:label "BW profiles"@en;
-    rdfs:comment "Profiles describing attributes of bathing waters."@en;
+    rdfs:comment "Profiles describing attributes of bathing waters, 2015 version."@en;
     skos:notation "profiles";
     dct:isPartOf :bwq;
-    dms:dataConverter "bwq-profile";
+#    dms:dataConverter "bwq-profile";
+    dms:dataConverter "revised-bwq-profile";
     dms:postPublishScript "bwq/updates/profile-rebuild.ru";
     dms:updatePolicy dms:series;
     .
@@ -116,6 +141,15 @@
     dms:updatePolicy dms:multiple;
     dms:sourcePublishDir  "sources/def";
     dms:dataPublishDir    "sources/def";
+    .
+
+:stepChange a dms:DataComponent;
+    rdfs:label "Step changes"@en;
+    rdfs:comment "Step changes in Bathing Water that might break continuity of classification."@en;
+    skos:notation "stepChange";
+    dct:isPartOf :bwq;
+    dms:dataConverter "bwq-step-change";
+    dms:updatePolicy dms:series;
     .
 
 # -- Publication sets --------------------------------

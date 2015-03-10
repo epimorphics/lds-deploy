@@ -1,0 +1,282 @@
+#################################################################################################################################
+# @@TODO 
+# 1: Needs an effective way within row processing to test for presence of column (at all): required for pre-2012 determination.
+#################################################################################################################################
+
+{ "name" : "rbwd-in-season-assessment",
+  "type" : "Composite",
+
+#   Expected_Headers_base  =  %w[samplingpoint year fdate ftime qualitycode date status status_Comments]
+#   Expected_Headers_pre12 = %w[totcolind totalcoliform fcolind faecalcoliform fstrepind faecalstreptococci salmonella entvirind enterovirus abnormalweather]
+#   Expected_Headers_12    = %w[concIEind concIE concECind concEC]
+
+  "requiredColumns" : [
+             "samplingpoint"
+             ,"year"
+             ,"fdate"
+             ,"ftime"
+#             ,"concieind"
+#             ,"concie"
+#             ,"concecind"
+#             ,"concec"
+#             ,"qualitycode"
+#             ,"abnormalweather"
+             ,"date"
+             ,"status"
+#             ,"status_comments",
+#             , "eligible_for_stp_discounting",
+#             , "discounted" 
+           ],
+  "bind" : [
+        { "extractDate" :  "{= empty($$) 
+                                                ? null : 
+                                                  $$.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss','xsd:dateTime')
+                                                  .format('yyyy-MM-dd')
+                                                  .asDate('xsd:date')
+                            }",
+          "extractTime" :  "{= empty($$) 
+                                                ? null : 
+                                                  $$.asDate('HH:mm:ss|dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss','xsd:dateTime')
+                                                  .format('HH:mm:ss')
+                                                  .asDate('xsd:time')
+                            }",        },
+        {
+            "$source_base"        : "http://environment.data.gov.uk/sources/bwq",
+            "$data_base"          : "http://environment.data.gov.uk/data/bathing-water-quality",
+            "$body_slug"          : "eaew",
+            "$body_org"           : "http://reference.data.gov.uk/id/public-body/environment-agency",
+            "$def_bw"             : "http://environment.data.gov.uk/def/bathing-water",
+            "$def_bwq"            : "http://environment.data.gov.uk/def/bathing-water-quality",
+            "$def_bwq_cc_2012"    : "http://environment.data.gov.uk/def/bwq-cc-2012",
+            "$def_sp"             : "http://location.data.gov.uk/def/ef/SamplingPoint",
+            "$id_bw"              : "http://environment.data.gov.uk/id/bathing-water",
+            "$so_sp"              : "http://location.data.gov.uk/so/ef/SamplingPoint/bwsp.eaew",
+            "$bwspid"             : "{samplingpoint.format('%05d')}",
+            "$pubDateTime"        : "{$exectime.asDate('xsd:dateTime').toWholeSeconds().toLocalTime()}",
+            "$ns"                 : "{= asResource($$).replaceAll('#$','') }",
+#            "$l_recordDate"       : "{empty(date) ? null : date.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|yyyyMMdd','xsd:date').format('yyyy-MM-dd').append('Z').asDate('xsd:date')}",
+            "$l_recordDate"       : "{extractDate.apply(date)}",
+#            "$l_uriDate"          : "{(status.toLowerCase() =='new' ? fdate : date).asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|yyyyMMdd','xsd:date')}",
+            "$l_uriDate"          : "{extractDate.apply(status.toLowerCase() =='new' ? fdate : date)}",
+#            "$l_sampleDate"       : "{fdate.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|yyyyMMdd','xsd:date')}",
+            "$l_sampleDate"       : "{extractDate.apply(fdate)}",
+#            "$l_sampleTime"       : "{ftime.asDate('HH:mm|HH:mm:ss','xsd:time')}",
+            "$l_sampleTime"       : "{extractTime.apply(ftime)}",
+#            
+            "$countQualifier"     : "{= (empty($$) || 
+                                         $$ == '=') ? 'http://environment.data.gov.uk/def/bathing-water-quality/actual' :
+                                        ($$ == '<') ? 'http://environment.data.gov.uk/def/bathing-water-quality/lessThan' : 
+                                        ($$ == '>') ? 'http://environment.data.gov.uk/def/bathing-water-quality/moreThan' : null 
+                                     }",
+#
+            "$status"             : "{= empty($$) ? null :
+                                        ($$.toLowerCase() == 'new')      ?  'http://environment.data.gov.uk/def/bathing-water-quality/new' : 
+                                        ($$.toLowerCase() == 'baseline') ?  'http://environment.data.gov.uk/def/bathing-water-quality/new' : 
+                                        ($$.toLowerCase() == 'update')   ?  'http://environment.data.gov.uk/def/bathing-water-quality/replacement' :
+                                        ($$.toLowerCase() == 'withdrawn') ? 'http://environment.data.gov.uk/def/bathing-water-quality/withdrawal' : null 
+                                     }",
+#
+            "$present"            : "{= empty($$) ? null :
+                                        $$.toLowerCase() == 'not present' ? 'http://environment.data.gov.uk/def/bathing-water-quality/not-present' : 
+                                        $$.toLowerCase() == 'absent'      ? 'http://environment.data.gov.uk/def/bathing-water-quality/not-present' :
+                                        $$.toLowerCase() == 'present'     ? 'http://environment.data.gov.uk/def/bathing-water-quality/present' : null
+                                     }",
+#            "$discountable"       : "{empty(eligible_for_stp_discounting) ? null : eligible_for_stp_discounting.trim().toLowerCase()}",
+#            "$discounted"         : "{empty(discounted) ? null : discounted.trim().toLowerCase()}"
+            "$discountable"       : "{empty(discountable) ? null : discountable.trim().toLowerCase()}",
+            "$discounted"         : "{empty(discounted)   ? null : discounted.trim().toLowerCase()}"
+
+        },
+        {
+            "$pubDateTimeSlug"     : "{$pubDateTime.format('yyyyMMdd-HHmmss')}",
+            "$inSeasonDataset"     : "{$data_base}/in-season",
+            "$bodyInSeasonDataset" : "{$data_base}/{$body_slug}/in-season",
+            "$l_sampleDateTime"    : "{$l_sampleDate.append('T').append($l_sampleTime).asDate('xsd:dateTime')}",
+            "$l_sampleYear"        : "{$l_sampleDate.format('yyyy').asDate('yyyy','xsd:gYear')}"
+
+        },{
+            "$incrementalInSeasonDataset"   : "{$bodyInSeasonDataset}/dataset-increment/{$filebasename}",
+            "$bwLabel"            : "{$bwspid.map('bwq-sp-to-bw','label',true)}",
+            "$r_sampleDateTime"   : "<{$l_sampleDateTime.referenceTime()}>",
+            "$r_sampleDate"       : "<{$l_sampleDate.referenceTime()}>",
+            "$r_sampleWeek"       : "<{$l_sampleDateTime.referenceTimeWeek()}>",
+            "$r_sampleYear"       : "<{$l_sampleYear.referenceTime()}>"
+        },{
+            "$woy_slug"           : "{$r_sampleDateTime.getPropertyValue('intervals:ordinalWeekOfYearYear').asNumber().format('%04d')}-W{$r_sampleDateTime.getPropertyValue('intervals:ordinalWeekOfYear').asNumber().format('%02d')}"
+        },{
+            "$observation"        : "{$inSeasonDataset}/sample/point/{$bwspid}/date/{$l_sampleDateTime.format('yyyyMMdd')}/time/{$l_sampleDateTime.format('HHmmss')}/recordDate/{$l_uriDate.format('yyyyMMdd')}",
+            "$sliceByWeek"        : "{$inSeasonDataset}/slice/week/{$woy_slug}",
+            "$sliceByYear"        : "{$inSeasonDataset}/slice/year/{$l_sampleDate.format('yyyy')}",
+            "$sliceBySp"          : "{$inSeasonDataset}/slice/point/{$bwspid}",
+            "$sliceBySpYear"      : "{$inSeasonDataset}/slice/point/{$bwspid}/year/{$l_sampleDate.format('yyyy')}",
+        }
+    ],
+    "sources" : [
+       ###############################################################################
+       # Source for testing only, replace in live service
+       ###############################################################################
+#       { "name"        : "sp-to-bw", 
+#         "sourceType"  : "RDFSparql", 
+#         "source"      : "transform/map/sites.ttl",
+#         "query"       : 
+#              "SELECT ?key ?value ?eubwid ?label ?district ?gss
+#               WHERE
+#               {
+#                  [] a def-sp:SamplingPoint; 
+#                     skos:notation ?key;
+#                     def-bw:bathingWater ?value .
+#                     
+#                 ?value  skos:notation ?eubwidT ;
+#                         skos:prefLabel ?label ;
+#                         onsadmingeo:district ?district .
+#                         
+#                  ?district 
+#                     admingeo:gssCode ?gss .
+#                  BIND(str(?eubwidT) AS ?eubwid)
+#                  FILTER( lang(?label) = 'en' )
+#               }"
+#       }
+
+    ],
+    "oneOffs" : [
+       { "name"           : "rbwd-body-sample-assessment-ds" ,
+         "@id"            : "<{$bodyInSeasonDataset}>",
+         "<dct:modified>" : "{$exectime.toWholeSeconds()}",
+         "<void:subset>"  : "<{$incrementalInSeasonDataset}>"
+       },
+       { "name" : "rbwd-incremental-sample-assessment-ds",
+         "@id"  : "<{$incrementalInSeasonDataset}>",
+         "<rdf:type>"           :     "<void:Dataset>",
+         "<rdfs:label>"         :     "Bathing Water Quality - Baseline or Incremental In-Season Assessment Dataset  {$filebasename}@en", 
+         "<dct:description>"    :     "Baseline or incremental in-season sample assessments of Bathing Water Quality by a single monitoring body - ({$body_slug}).@en",
+         "<dct:license>"        :     "<http://reference.data.gov.uk/id/open-government-licence>",
+         "<dct:modified>"       :     "{$exectime.toWholeSeconds()}",
+         "<void:vocabulary>"    : [
+            "<{$ns.apply('rdf:')}>",
+            "<{$ns.apply('rdfs:')}>",
+            "<{$ns.apply('qb:')}>",
+            "<{$ns.apply('void:')}>",
+            "<{$ns.apply('time:')}>",
+            "<{$ns.apply('def-bwq:')}>",
+            "<{$ns.apply('dct:')}>",
+            "<{$ns.apply('skos:')}>",
+            "<{$ns.apply('def-cc12:')}>"
+         ],
+         "<void:sparqlEndpoint>" : "<http://environment.data.gov.uk/sparql/bwq/query>",
+ ################################################################################################################################
+ # @@TODO check dumpfile location
+ ################################################################################################################################
+         "<void:dataDump>"      :     "<{$source_base}/{$body_slug}/output/{$filebasename}.ttl>"
+       }
+    ],
+    "templates" : [ "rbwd-sample-assessment",
+                    "rbwd-sa-add-slice-to-dataset",
+                    "rbwd-sa-slice-by-week",
+                    "rbwd-sa-slice-by-year",
+                    "rbwd-sa-slice-by-sp" ,
+                    "rbwd-sa-slice-by-sp-year",
+                    "rbwd-sa-sample-date-during",
+ ################################################################################################################################
+ # @@TODO - Still required?
+ # Inject the name of the sample point in the result file to simplify preview generation                    
+ ################################################################################################################################
+                    "rbwd-sa-bathing-water"
+                   ] ,
+    "referenced" : [
+#################################################################################################################################
+# Individual in-season sample assessements
+#################################################################################################################################
+      { "name"                               : "rbwd-sample-assessment",
+        "@id"                                : "<{$observation}>",
+        "<rdf:type>"                         : [ "<qb:Observation>" , "<def-bwq:SampleAssessment>" ],
+        "<rdfs:label>"                       : "{$bwLabel} sample assessment for {$woy_slug}@en",
+        "<rdfs:comment>"                     : "{status_comments}@en",
+        "<def-bwq:samplingPoint>"            : "<{$so_sp}/{$bwspid}>",
+        "<def-bwq:bathingWater>"             : "<{$bwspid.map('bwq-sp-to-bw')}>",
+        "<def-bwq:sampleClassification>"     : "<{(year.asNumber().value < 2012) ? $def_bwq : $def_bwq_cc_2012}/{qualitycode}>",
+        "<qb:dataSet>"                       : "<{$bodyInSeasonDataset}>",
+        "<dct:source>"                       : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%06d')}>",
+        "<def-bwq:recordStatus>"             : "<{$status.apply(status)}>",
+        "<def-bwq:recordDate>"               : "{$l_recordDate}",
+        "<dct:created>"                      : "{ status.toLowerCase() == 'new'    || status.toLowerCase() == 'baseline' ? $l_recordDate : null}",
+        "<dct:modified>"                     : "{ status.toLowerCase() == 'update' || status.toLowerCase() == 'withdrawn' ? $l_recordDate : null}",        
+        "<def-bwq:sampleYear>"               : "<{$r_sampleYear}>",
+        "<def-bwq:sampleWeek>"               : "<{$r_sampleWeek}>",
+        "<def-bwq:sampleDateTime>"           : "<{$r_sampleDateTime}>",
+        "<def-bwq:abnormalWeatherException>" : "{empty(abnormalweather) ? null :abnormalweather.trim().toLowerCase() == 'yes' ? true : abnormalweather.trim().toLowerCase() == 'no' ? false : null}", 
+# Post 2011 determinands
+        "<def-bwq:escherichiaColiCount>"           : "{empty(concec)  ? null : concec.asNumber().datatype('xsd:integer') }",
+        "<def-bwq:escherichiaColiQualifier>"       : "<{empty(concec) ? null : $countQualifier.apply(concecind) }>",
+        "<def-bwq:intestinalEnterococciCount>"     : "{empty(concie)  ? null : concie.asNumber().datatype('xsd:integer') }",
+        "<def-bwq:intestinalEnterococciQualifier>" : "<{empty(concie) ? null : $countQualifier.apply(concieind) }>",
+# Pre 2012 determinands
+        "<def-bwq:totalColiformCount>"             : "{empty(totalcoliform)       ? null : totalcoliform.asNumber().datatype('xsd:integer') }",
+        "<def-bwq:totalColiformQualifier>"         : "<{empty(totalcoliform)      ? null : $countQualifier.apply(totcolind)}>",
+        "<def-bwq:faecalColiformCount>"            : "{empty(faecalcoliform)      ? null : faecalcoliform.asNumber().datatype('xsd:integer')}",
+        "<def-bwq:faecalColiformQualifier>"        : "<{empty(faecalcoliform)     ? null : $countQualifier.apply(fcolind)}>",
+        "<def-bwq:faecalStreptococciCount>"        : "{empty(faecalstreptococci)  ? null : faecalstreptococci.asNumber().datatype('xsd:integer')}",
+        "<def-bwq:faecalStreptococciQualifier>"    : "<{empty(faecalstreptococci) ? null : $countQualifier.apply(fstrepind)}>",
+        "<def-bwq:entrovirusCount>"                : "{empty(enterovirus)         ? null : enterovirus.asNumber().datatype('xsd:integer')}",
+        "<def-bwq:entrovirusQualifier>"            : "<{empty(enterovirus)        ? null : $countQualifier.apply(entvirind)}>",
+# @@TODO Using presence of totalColiformCount used as a proxy indicator of pre2012 format - difference between not-assessed (pre-2012) and null (2012 and beyond).
+        "<def-bwq:salmonellaPresent>"              : "<{empty(salmonella)         ? ( empty(totalcoliform) ? null : 'http://environment.data.gov.uk/def/bathing-water-quality/not-assessed' ) : $present.apply(salmonella)}>",
+        "<dct:source>"                             : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%06d')}>",
+        "<def-bwq:discountable>"                   : "{$discountable == 'yes' ? true : $discountable = 'no' ? false : null }",
+        "<def-bwq:discounted>"                     : "{$discountable == 'yes' ? ($discounted == 'yes' ? true : $discounted == 'no' ? false : null) : null }"
+      },
+#################################################################################################################################
+# Link slices from per-body datasets
+#################################################################################################################################
+      {
+        "name"                             : "rbwd-sa-add-slice-to-dataset",
+        "@id"                              : "<{$bodyInSeasonDataset}>",
+        "<qb:slice>"                       : [ "<{$sliceByWeek}>","<{$sliceByYear}>" ,"<{$sliceBySp}>" ,"<{$sliceBySpYear}>"   ]
+      },
+#################################################################################################################################
+# Link each observation to 4 slices: by-week, by-year, by-samplepoint and by-samplepoint-year
+#################################################################################################################################
+      { "name"                             : "rbwd-sa-slice-by-week",
+        "@id"                              : "<{$sliceByWeek}>",
+        "<rdf:type>"                       : [ "<qb:Slice>", "<def-bwq:ByWeekSlice>" ],
+        "<rdfs:label>"                     : "Sample assessments during {$woy_slug}",
+        "<def-bwq:sampleWeek>"             : "<{$r_sampleWeek}>",
+        "<qb:sliceStructure>"              : "<def-bwq:byWeekKey>",
+        "<qb:observation>"                 : "<{$observation}>"
+      },
+      { "name"                             : "rbwd-sa-slice-by-year",
+        "@id"                              : "<{$sliceByYear}>",
+        "<rdf:type>"                       : [ "<qb:Slice>", "<def-bwq:ByYearSlice>" ],
+        "<rdfs:label>"                     : "Sample assessments during {$l_sampleDate.format('yyyy')}",
+        "<def-bwq:sampleYear>"             : "<{$r_sampleYear}>",
+        "<qb:sliceStructure>"              : "<def-bwq:byYearKey>",
+        "<qb:observation>"                 : "<{$observation}>"
+      },
+      { "name"                             : "rbwd-sa-slice-by-sp",
+        "@id"                              : "<{$sliceBySp}>",
+        "<rdf:type>"                       : [ "<qb:Slice>", "<def-bwq:BySamplingPointSlice>" ],
+        "<rdfs:label>"                     : "Sample assessments for {$bwLabel}",
+        "<def-bwq:samplingPoint>"          : "<{$so_sp}/{$bwspid}>",
+        "<qb:sliceStructure>"              : "<def-bwq:bySamplingPointKey>",
+        "<qb:observation>"                 : "<{$observation}>"
+      },
+      { "name"                             : "rbwd-sa-slice-by-sp-year",
+        "@id"                              : "<{$sliceBySpYear}>",
+        "<rdf:type>"                       : [ "<qb:Slice>", "<def-bwq:BySamplingPointYearSlice>" ],
+        "<rdfs:label>"                     : "Sample assessments for {$bwLabel} during {$l_sampleDate.format('yyyy')}",
+        "<def-bwq:samplingPoint>"            : "<{$so_sp}/{$bwspid}>",
+        "<def-bwq:sampleYear>"             : "<{$r_sampleYear}>",
+        "<qb:sliceStructure>"              : "<def-bwq:bySamplingPointYearKey>",
+        "<qb:observation>"                 : "<{$observation}>"
+      },
+      { "name"                             : "rbwd-sa-bathing-water",
+        "@id"                              : "<{$bwspid.map('bwq-sp-to-bw')}>",
+        "<rdf:type>"                       : "<def-bw:BathingWater>",
+        "<rdfs:label>"                     : "{$bwLabel}"
+      },
+      { "name"                             : "rbwd-sa-sample-date-during",
+        "@id"                              : "<{$r_sampleDate}>",
+        "<time:intervalDuring>"            : [ "<{$r_sampleYear}>","<{$r_sampleWeek}>" ]
+      }
+
+   ]
+}

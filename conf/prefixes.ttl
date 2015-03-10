@@ -21,6 +21,7 @@
 @prefix skos:     <http://www.w3.org/2004/02/skos/core#> .
 @prefix time:     <http://www.w3.org/2006/time#> .
 @prefix intervals: <http://reference.data.gov.uk/def/intervals/> .
+@prefix interval: <http://reference.data.gov.uk/def/intervals/> .
 
 @prefix def-bw:  <http://environment.data.gov.uk/def/bathing-water/> .
 @prefix def-bwp: <http://environment.data.gov.uk/def/bathing-water-profile/> .

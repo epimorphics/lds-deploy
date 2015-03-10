@@ -1,0 +1,21 @@
+code,label,uri
+1,Excellent,http://environment.data.gov.uk/def/bwq-cc-2015/1
+2,Good,http://environment.data.gov.uk/def/bwq-cc-2015/2
+3,Sufficient,http://environment.data.gov.uk/def/bwq-cc-2015/3
+4,Poor,http://environment.data.gov.uk/def/bwq-cc-2015/4
+5,Insufficiently Sampled,http://environment.data.gov.uk/def/bwq-cc-2015/5
+6,Not Classified - New Water,http://environment.data.gov.uk/def/bwq-cc-2015/6
+7,Not Classified - Change,http://environment.data.gov.uk/def/bwq-cc-2015/7
+8,Higher,http://environment.data.gov.uk/def/bwq-cc-2015/8
+9,Minimum,http://environment.data.gov.uk/def/bwq-cc-2015/9
+10,Fail,http://environment.data.gov.uk/def/bwq-cc-2015/10
+11,Not Sampled,http://environment.data.gov.uk/def/bwq-cc-2015/11
+12,Projected Excellent,http://environment.data.gov.uk/def/bwq-cc-2015/1
+13,Projected Good,http://environment.data.gov.uk/def/bwq-cc-2015/2
+14,Projected Sufficient,http://environment.data.gov.uk/def/bwq-cc-2015/3
+15,Projected Poor,http://environment.data.gov.uk/def/bwq-cc-2015/4
+C,Not Sampled,http://environment.data.gov.uk/def/bwq-cc-2012/C
+F,Fail,http://environment.data.gov.uk/def/bwq-cc-2012/F
+G,Higher,http://environment.data.gov.uk/def/bwq-cc-2012/G
+I,Minimum,http://environment.data.gov.uk/def/bwq-cc-2012/I
+N,Not Classified,http://environment.data.gov.uk/def/bwq-cc-2012/N

@@ -1,0 +1,364 @@
+#################################################################################################################################
+# Fields
+# samplingpoint,
+# year,
+# qualitycode,
+# assessmenttype,
+# number_of_samples,
+# minie,
+# maxie,
+# meanie,
+# stdevie,
+# meanoflog10ie,
+# sdoflog10ie,
+# ptile90ie,
+# ptile95ie,
+# minec,
+# maxec,
+# meanec,
+# stdevec,
+# meanoflog10ec,
+# sdoflog10ec,
+# ptile90ec,
+# ptile95ec,
+# startsampledate,
+# endsampledate
+#
+#################################################################################################################################
+
+{ "name" : "rbwd-compliance-assessment",
+  "type" : "Composite",
+  "required": [ "samplingpoint", "year", "qualitycode" ],
+    "bind" : [
+        {
+            "$source_base"        : "http://environment.data.gov.uk/sources/bwq",
+            "$data_base"          : "http://environment.data.gov.uk/data/bathing-water-quality",
+            "$body_slug"          : "eaew",
+            "$body_org"           : "http://reference.data.gov.uk/id/public-body/environment-agency",
+            "$def_bw"             : "http://environment.data.gov.uk/def/bathing-water",
+            "$def_bwq"            : "http://environment.data.gov.uk/def/bathing-water-quality",
+            "$def_bwq_cc_2012"    : "http://environment.data.gov.uk/def/bwq-cc-2012",
+            "$def_bwq_cc_2015"    : "http://environment.data.gov.uk/def/bwq-cc-2015",
+            "$def_sp"             : "http://location.data.gov.uk/def/ef/SamplingPoint",
+            "$id_bw"              : "http://environment.data.gov.uk/id/bathing-water",
+            "$so_sp"              : "http://location.data.gov.uk/so/ef/SamplingPoint/bwsp.eaew",
+            "$bwspid"             : "{samplingpoint.format('%05d')}",
+            "$pubDateTime"        : "{$exectime.asDate('xsd:dateTime').toWholeSeconds().toLocalTime()}",
+            "$ns"                 : "{= asResource($$).replaceAll('#$','') }",
+            "$parseDate"          : "{= $$.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|yyyyMMdd|dd-MMM-yyyy|MMM-dd-yyyy|dd-MMM-yy|MMM-dd-yy','xsd:date')}"
+        },{
+            "$pubDateTimeSlug"              : "{$pubDateTime.format('yyyyMMdd-HHmmss')}",
+            "$complianceDataset"            : "{$data_base}/compliance-rBWD",
+            "$bodyComplianceDataset"        : "{$data_base}/{$body_slug}/compliance-rBWD",
+            "$startSampleDate"              : "{empty(startsampledate) ? null : $parseDate.apply(startsampledate)}",
+            "$endSampleDate"                : "{empty(endsampledate)   ? null : $parseDate.apply(endsampledate)}"
+        },{
+            "$complianceAssessment"         : "{$complianceDataset}/point/{$bwspid}/year/{year.format('%04d')}",
+            "$yearSlice"                    : "{$complianceDataset}/slice/year/{year.format('%04d')}",
+            "$pointSlice"                   : "{$complianceDataset}/slice/point/{$bwspid}",
+        },{
+            "$incrementalComplianceDataset" : "{$bodyComplianceDataset}/dataset-increment/annual-ea_bw_compliance_{year}",
+            "$bwLabel"                      : "{$bwspid.map('bwq-sp-to-bw','label',true)}",
+            "$intestinalEnterococciStats"   : "{$complianceAssessment}/intestinalEnterococciStats",
+            "$escherichiaColiStats"         : "{$complianceAssessment}/escherichiaColiStats"
+        }
+    ],
+    "sources" : [
+       ###############################################################################
+       # Source for testing only, replace in live service
+       ###############################################################################
+#       {
+#         "name"        : "sp-to-bw", 
+#         "sourceType"  : "RDFSparql", 
+#         "source"      : "transform/map/sites.ttl",
+#         "query"       : 
+#              "SELECT ?key ?value ?eubwid ?label ?district ?gss
+#               WHERE
+#               {
+#                  [] a def-sp:SamplingPoint; 
+#                     skos:notation ?key;
+#                     def-bw:bathingWater ?value .
+#                     
+#                 ?value  skos:notation ?eubwidT ;
+#                         skos:prefLabel ?label ;
+#                         onsadmingeo:district ?district .
+#                         
+#                  ?district 
+#                     admingeo:gssCode ?gss .
+#                  BIND(str(?eubwidT) AS ?eubwid)
+#                  FILTER( lang(?label) = 'en' )
+#               }"
+#       },
+       {
+         "name" : "bwq-cc-2015",
+         "sourceType" : "CSV" ,
+         "source"     : "transform/bwq-cc-2015.csv",
+         "key"        : "code",
+         "value"      : "uri",
+         "makeURI"    : true
+       }
+    ],
+    "oneOffs" : [
+#################################################################################################################################
+# Link compliance-rbwd to the top level dataset
+#################################################################################################################################
+       { "name"             : "rbwd-cc-top-link",
+         "@id"              : "<{$data_base}>",
+         "<void:subset>"    : "<{$complianceDataset}>"
+       },
+#################################################################################################################################
+# Top level Compliance Assessment Dataset
+#
+# Commented out whole of top-level structure as already in the data and not appropriate to repeat on every increment.
+#
+#################################################################################################################################
+       { "name"              : "rbwd-cc-compliance-dataset" ,
+         "@id"               : "<{$complianceDataset}>" ,
+         "<rdf:type>"        : ["<void:Dataset>", "<qb:DataSet>", "<def-bwq:ComplianceDataSet>" ],
+         "<rdfs:label>"      : "Bathing Water Quality (rBWD) - Annual Compliance Dataset.@en" ,
+         "<dct:description>" : "Top level aggregate data cube of annual assessments of compliance with the EU Revised Bathing Water Directive based on bathing-water samples taken by monitoring bodies in the UK.@en",
+         "<dct:license>"     : "<http://reference.data.gov.uk/id/open-government-licence>",
+         "<qb:structure>"    : "<def-bwq:complianceDsd>",
+         "<void:subset>"     : "<{$bodyComplianceDataset}>",
+         "<dct:modified>"    : "{$exectime}",
+         "<void:uriRegexPattern>" : "{$complianceDataset}/(.*)",
+         "<void:vocabulary>"      : [ 
+                                      "<{$def_bwq_cc_2015}/>", 
+                                      "<{$ns.apply('def-bwq:' )}>", 
+                                      "<{$ns.apply('time:'  )}>",
+                                      "<{$ns.apply('intervals:'  )}>",
+                                      "<{$ns.apply('qb:'      )}>" ]                                     
+       },
+#################################################################################################################################
+# Per Body Compliance Assessment Dataset
+# 
+# Commented out all except linkages to incremental dataset and modification date/time
+#################################################################################################################################
+       { "name"              : "rbwd-cc-body-compliance-dataset" ,
+         "@id"               : "<{$bodyComplianceDataset}>" ,
+#         "<rdf:type>"        : ["<void:Dataset>", "<qb:DataSet>", "<def-bwq:ComplianceDataSet>" ],
+#         "<rdfs:label>"      : "Bathing Water Quality (rBWD) - Annual Compliance Dataset ({$body_slug}).@en" ,
+#         "<dct:description>" : "Revised Bathing Water Directive annual compliance assessments for bathing waters monitored by a single monitoring body - ({$body_slug}).@en",
+#         "<dct:license>"     : "<http://reference.data.gov.uk/id/open-government-licence>",
+#         "<qb:structure>"    : "<def-bwq:complianceDsd>",
+
+         "<void:subset>"     : "<{$incrementalComplianceDataset}>",
+         "<dct:modified>"    : "{$exectime}",
+
+#         "<void:uriRegexPattern>" : [ 
+#            "{$complianceDataset}/point/([0-9]\\{5\\})/year/([0-9]\\{4\\})" ,
+#            "{$complianceDataset}/slice/point/([0-9]\\{5\\})",
+#            "{$complianceDataset}/slice/year/([0-9]\\{4\\})"
+#        ],
+#        "<void:vocabulary>"      : [ 
+#                                     "<{$def_bwq_cc_2015}/>", 
+#                                     "<{$ns.apply('def-bwq:'   )}>", 
+#                                     "<{$ns.apply('time:'      )}>",
+#                                     "<{$ns.apply('intervals:' )}>",
+#                                     "<{$ns.apply('qb:'        )}>" ]
+##################################################################################################################################
+# @@TODO, have not attached to source of 2011 baseline compliance results as in current deployment
+##################################################################################################################################
+       },
+#################################################################################################################################
+# Annual incremental (per-body) Compliance Assessment Dataset
+#################################################################################################################################
+       { "name"              : "rbwd-cc-incremental-compliance-dataset" ,
+         "@id"               : "<{$incrementalComplianceDataset}>" ,
+         "<rdf:type>"        : ["<void:Dataset>" ],
+         "<rdfs:label>"      : "Bathing Water Quality (rBWD) - Baseline or Incremental Annual Compliance Assessment Dataset - {$filebasename}.@en" ,
+         "<dct:description>" : "Baseline or incremental update Revised Bathing Water Directive annual compliance assessments for bathing waters monitored by a single monitoring body - ({$body_slug}).@en",
+         "<dct:license>"     : "<http://reference.data.gov.uk/id/open-government-licence>",
+         "<dct:modified>"    : "{$exectime}",
+          "<dct:publisher>"   : "<{$body_org}>",
+         "<void:vocabulary>"      : [ "<{$def_bwq_cc_2012}/>", 
+                                      "<{$ns.apply('def-bwq:' )}>", 
+                                      "<{$ns.apply('def-bw:'  )}>", 
+                                      "<{$ns.apply('def-sp:'  )}>", 
+                                      "<{$ns.apply('time:'    )}>",
+                                      "<{$ns.apply('intervals:' )}>",
+                                      "<{$ns.apply('qb:'      )}>" ],
+##################################################################################################################################
+# @@ TODO finalise source and dump filenames
+##################################################################################################################################
+        "<void:dataDump>"       : "<{$source_base}/{$body_slug}/output/{$filebasename}-{$pubDateTime}>",
+        "<dct:source>"          : "<{$source_base}/{$body_slug}/input/{$filename}",
+        "<void:sparqlEndpoint>" : "<http://environment.data.gov.uk/sparql/bwq/query>"
+       }
+    ],
+    "templates"  : [ "rbwd-cc-annual-compliance",
+                     "rbwd-cc-ie-summary-stats" ,
+                     "rbwd-cc-ec-summary-stats",
+                     "rbwd-cc-by-point-slice",
+                     "rbwd-cc-by-year-slice",
+                     "rbwd-cc-compliance-dataset-slice",
+                     "rbwd-cc-body-compliance-dataset-slice"
+                   ] ,
+    "referenced" : [
+#################################################################################################################################
+# Individual Annual Compliance Assessements
+#################################################################################################################################
+      { "name": "rbwd-cc-annual-compliance",
+        "@id" : "<{$complianceDataset}/point/{$bwspid}/year/{year.format('%04d')}>",
+        "<rdf:type>"                         : [ "<qb:Observation>" , "<def-bwq:ComplianceAssessment>" ],
+        "<rdfs:label>"                       : "{year} compliance assessment for {$bwLabel}@en",
+        "<def-bwq:samplingPoint>"            : "<{$so_sp}/{$bwspid}>",
+        "<def-bwq:bathingWater>"             : "<{$bwspid.map('bwq-sp-to-bw')}>",
+#        "<def-bwq:complianceClassification>" : "<$def_bwq_cc_2015}/{qualitycode}>",
+        "<def-bwq:complianceClassification>" : "<{qualitycode.map('bwq-cc-2015')}>",
+        "<qb:dataSet>"                       : [ "<{$bodyComplianceDataset}>", "<{$complianceDataset}>" ] ,
+        "<def-bwq:sampleYear>"               : "<{year.asDate('xsd:gYear').referenceTime()}>",
+## @@TODO Check that this is the right way to bound these backreferences.
+        "<def-bwq:inYearDetail>"             : [ "<{($startSampleDate.year.value <= year.value && 
+                                                     year.value <= $endSampleDate.year.value) ? 
+                                                           $data_base.append('/in-season/slice/point/')
+                                                           .append($bwspid)
+                                                           .append('/year/')
+                                                           .append(year.format('%04d')) : null}>",
+
+                                                 "<{($startSampleDate.year.value <= year.value-1 && 
+                                                     year.value-1 <= $endSampleDate.year.value) ? 
+                                                           $data_base.append('/in-season/slice/point/')
+                                                           .append($bwspid)
+                                                           .append('/year/')
+                                                           .append(value(year.value-1).format('%04d')) : null}>",
+
+                                                 "<{($startSampleDate.year.value <= year.value-2 && 
+                                                     year.value-2 <= $endSampleDate.year.value) ? 
+                                                           $data_base.append('/in-season/slice/point/')
+                                                           .append($bwspid)
+                                                           .append('/year/')
+                                                           .append(value(year.value-2).format('%04d')) : null}>",
+
+                                                 "<{($startSampleDate.year.value <= year.value-3 && 
+                                                     year.value-3 <= $endSampleDate.year.value) ? 
+                                                           $data_base.append('/in-season/slice/point/')
+                                                           .append($bwspid)
+                                                           .append('/year/')
+                                                           .append(value(year.value-3).format('%04d')) : null}>" ],
+
+###
+        "<def-bwq:assessmentRegime>"         : "<def-bwq:rBWD>",
+        "<def-bwq:firstSampleDate>"          : "{empty($startSampleDate) ? null : $startSampleDate}",
+        "<def-bwq:finalSampleDate>"          : "{empty($endSampleDate)   ? null : $endSampleDate}",
+        "<def-bwq:assessmentQualifier>"      : "<{( (!empty(assessmenttype) && assessmenttype.toLowerCase()=='p') || 
+                                                    qualitycode == '12' || 
+                                                    qualitycode == '13' || 
+                                                    qualitycode == '14' || 
+                                                    qualitycode == '15' ) ? 'def-bwq:projected-assessment' : 'def-bwq:actual-assessment' }>",
+        "<dct:source>"                         : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%06d')}>",
+        "<def-bwq:intestinalEnterococciStats>" : "<{( (!empty(number_of_samples) && number_of_samples.value > 0)  ||
+                                                      !empty(minie)     || !empty(maxie)         || !empty(meanie)      || 
+                                                      !empty(stdevie)   || !empty(meanoflog10ie) || !empty(sdoflog10ie) || 
+                                                      !empty(ptile90ie) || !empty(ptile95ie) ) ?  $intestinalEnterococciStats : null }>",
+        "<def-bwq:escherichiaColiStats>"       : "<{( (!empty(number_of_samples) && number_of_samples.value > 0)  ||
+                                                      !empty(minec)     || !empty(maxec)         || !empty(meanec)      || 
+                                                      !empty(stdevec)   || !empty(meanoflog10ec) || !empty(sdoflog10ec) || 
+                                                      !empty(ptile90ec) || !empty(ptile95ec) ) ?  $escherichiaColiStats : null }>"
+      },
+#################################################################################################################################
+# Summary Stats of intestinal enterococci counts
+#################################################################################################################################
+     { "name" : "rbwd-cc-ie-summary-stats",
+       "@id"                         : "<{( (!empty(number_of_samples) && number_of_samples.value > 0)  ||
+                                            !empty(minie)     || !empty(maxie)         || !empty(meanie)      || 
+                                            !empty(stdevie)   || !empty(meanoflog10ie) || !empty(sdoflog10ie) || 
+                                            !empty(ptile90ie) || !empty(ptile95ie) ) ?  $intestinalEnterococciStats : null }>",
+       "<rdf:type>"                  : "<def-bwq:SummaryStatistics>",
+       "<def-bwq:complianceAssessment>" : "<{$complianceAssessment}>",
+       "<def-bwq:sampleCount>"       : "{number_of_samples}",
+       "<def-bwq:meanValue>"         : "{meanie}",
+       "<def-bwq:minValue>"          : "{minie}",
+       "<def-bwq:maxValue>"          : "{maxie}",
+       "<def-bwq:stdDeviation>"      : "{stdevie}",
+       "<def-bwq:meanLog10Value>"    : "{meanoflog10ie}",
+       "<def-bwq:stdDeviationLog10>" : "{sdoflog10ie}",
+       "<def-bwq:percentile90>"      : "{ptile90ie}",
+       "<def-bwq:percentile95>"      : "{ptile95ie}",
+       "<def-bwq:measure>"           : "<def-bwq:intestinalEnterococciCount>"
+     },
+#################################################################################################################################
+# Summary Stats of escherichia coli counts
+#################################################################################################################################
+     { "name" : "rbwd-cc-ec-summary-stats",
+       "@id"                         : "<{( (!empty(number_of_samples) && number_of_samples.value > 0)  ||
+                                            !empty(minec)     || !empty(maxec)         || !empty(meanec)      || 
+                                            !empty(stdevec)   || !empty(meanoflog10ec) || !empty(sdoflog10ec) || 
+                                            !empty(ptile90ec) || !empty(ptile95ec) ) ?  $escherichiaColiStats : null }>",
+       "<rdf:type>"                  : "<def-bwq:SummaryStatistics>",
+       "<def-bwq:complianceAssessment>" : "<{$complianceAssessment}>",
+       "<def-bwq:sampleCount>"       : "{number_of_samples}",
+       "<def-bwq:meanValue>"         : "{meanec}",
+       "<def-bwq:minValue>"          : "{minec}",
+       "<def-bwq:maxValue>"          : "{maxec}",
+       "<def-bwq:stdDeviation>"      : "{stdevec}",
+       "<def-bwq:meanLog10Value>"    : "{meanoflog10ec}",
+       "<def-bwq:stdDeviationLog10>" : "{sdoflog10ec}",
+       "<def-bwq:percentile90>"      : "{ptile90ec}",
+       "<def-bwq:percentile95>"      : "{ptile95ec}",
+       "<def-bwq:measure>"           : "<def-bwq:escherichiaColiCount>"
+     },
+#################################################################################################################################
+# Create and add to relevant by-year compliance assesment slice
+#################################################################################################################################
+      { "name"                               : "rbwd-cc-by-year-slice",
+        "@id"                                : "<{$yearSlice}>",
+        "<rdf:type>"                         : [ "<def-bwq:ComplianceByYearSlice>", "<qb:Slice>" ],
+        "<rdfs:label>"                       : "Bathing water quality dataset slice for all annual compliance assessments for calendar year {year}@en",
+        "<qb:sliceStructure>"                : "<def-bwq:complianceByYearKey>",
+        "<def-bwq:sampleYear>"               : "<{year.asDate('xsd:gYear').referenceTime()}>",
+        "<def-bwq:assessmentRegime>"         : "<def-bwq:rBWD>",
+        "<qb:observation>"                   : "<{$complianceAssessment}>"
+      },
+#################################################################################################################################
+# Create and add to relevant by-samplingPoint compliance assesment slice
+#################################################################################################################################
+      { "name"                               : "rbwd-cc-by-point-slice",
+        "@id"                                : "<{$pointSlice}>",
+        "<rdf:type>"                         : [ "<def-bwq:ComplianceBySamplingPointSlice>", "<qb:Slice>" ],
+        "<rdfs:label>"                       : "Bathing water quality dataset slice for all annual compliance assessments taken at {$bwLabel}@en",
+        "<qb:sliceStructure>"                : "<def-bwq:complianceBySamplingPointKey>",
+        "<def-bwq:assessmentRegime>"         : "<def-bwq:rBWD>",
+        "<def-bwq:samplingPoint>"            : "<{$so_sp}/{$bwspid}>",
+        "<qb:observation>"                   : "<{$complianceAssessment}>"
+      },
+#################################################################################################################################
+# Link Slices to compliance dataset
+#################################################################################################################################
+      { "name" : "rbwd-cc-compliance-dataset-slice",
+        "@id"  : "<{$complianceDataset}>" ,
+##################################################################################################################################
+# @@ TODO Currently slice info up to 2011 (ie. BASELINE slices) are only attached to the top level compliance data cube
+#    and post 2011 slices are only attached to the per-body cube (of which there is only one in any case).
+#    In this conversion, new slices are added to both the over all cube and the per body cube.
+#
+# See http://environment.data.gov.uk/data/bathing-water-quality/eaew/compliance?_view=description
+#     http://environment.data.gov.uk/data/bathing-water-quality/compliance?_view=description
+#
+##################################################################################################################################
+         "<qb:slice>"        : [
+                                  "<{$yearSlice}>",
+                                  "<{$pointSlice}>"
+                               ]
+      },
+#################################################################################################################################
+# Link Slices to perBody compliance dataset
+#################################################################################################################################
+      { "name" : "rbwd-cc-body-compliance-dataset-slice",
+        "@id"  : "<{$bodyComplianceDataset}>" ,
+##################################################################################################################################
+# @@ TODO Currently slice info up to 2011 (ie. BASELINE slices) are only attached to the top level compliance data cube
+#    and post 2011 slices are only attached to the per-body cube (of which there is only one in any case).
+#    In this conversion, new slices are added to both the over all cube and the per body cube.
+#
+# See http://environment.data.gov.uk/data/bathing-water-quality/eaew/compliance?_view=description
+#     http://environment.data.gov.uk/data/bathing-water-quality/compliance?_view=description
+#
+##################################################################################################################################
+         "<qb:slice>"        : [
+                                  "<{$yearSlice}>",
+                                  "<{$pointSlice}>"
+                               ]
+      }
+    ]
+}

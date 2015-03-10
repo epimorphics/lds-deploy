@@ -1,0 +1,169 @@
+name  : bwq-step-change
+type  : Composite
+######################################################################################################################
+# samplingpoint,
+# step_change_date,
+# assessment_years_affected,
+# changes
+######################################################################################################################
+required :  [ ]
+bind : 
+#####################################################################################################################
+# URI and slugs
+#####################################################################################################################
+    - "$source_base"   : "http://environment.data.gov.uk/sources/bwq"
+      "$data_base"     : "http://environment.data.gov.uk/data/bathing-water-quality"
+      "$body_slug"     : "eaew"
+      "$body_org"      : "http://reference.data.gov.uk/id/public-body/environment-agency"
+      "$def_bw"        : "http://environment.data.gov.uk/def/bathing-water"
+      "$def_sp"        : "http://location.data.gov.uk/def/ef/SamplingPoint"
+      "$def_som"       : "http://environment.data.gov.uk/def/bwq-som"
+      "$id_bw"         : "http://environment.data.gov.uk/id/bathing-water"
+      "$so_sp"         : "http://location.data.gov.uk/so/ef/SamplingPoint/bwsp.eaew"
+      "$so_env"        : "http://location.data.gov.uk/so/common/Envelope/bwpf.eaew"
+      "$bwspid"        : "{samplingpoint.replaceAll('^[^0-9]*','')}"
+      "$parseDate"     : "{= $$.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|yyyyMMdd|dd-MMM-yyyy|MMM-dd-yyyy|dd-MMM-yy|MMM-dd-yy','xsd:date')}"
+      "$affectedYears" : "{assessment_years_affected.split(',').trim()}"
+#####################################################################################################################
+# Helper functions.                 
+#####################################################################################################################
+      "$ns"                 : "{= asResource($$).replaceAll('#$','') }"
+      "$parseDate"          : "{= $$.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|yyyyMMdd|dd-MMM-yyyy|MMM-dd-yyyy|dd-MMM-yy|MMM-dd-yy','xsd:date')}"
+      "$extractDate"   : "{= $$.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss','xsd:dateTime').format('yyyy-MM-dd')}"
+      "$extractTime"   : "{= $$.asDate('HH:mm:ss|dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss','xsd:dateTime').format('HH:mm:ss')}"
+
+    - "$bw"                           : "<{$bwspid.map('bwq-sp-to-bw')}>"
+      "$bwLabel"                      : "{$bwspid.map('bwq-sp-to-bw','label',true)}"
+      "$compliance_base"              : "{$data_base}/compliance/rbwd"
+      "$stepChangeDataset"            : "<{$data_base}/step-change>"
+      "$bodyStepChangeDataset"        : "<{$data_base}/{$body_slug}/step-change>"
+      "$incrementalStepChangeDataset" : "<{$data_base}/{$body_slug}/step-change/dataset-increment/{$filebasename}>"
+      "$dateOfChange"                 : "{$parseDate.apply(step_change_date)}"
+
+    - "$stepChange"                   : "{$data_base}/step-change/point/{$bwspid}/date/{$dateOfChange.format('yyyyMMdd')}"
+
+############################################################################################################
+# Temporary Map source for mapping sampling-point codes to bathing water URI
+############################################################################################################
+
+#sources :
+###############################################################################
+# Source for testing only, replace in live service
+###############################################################################
+#  - name       : 'sp-to-bw' 
+#    sourceType : RDFSparql
+#    source     : transform/map/sites.ttl
+#    query      : >
+#             SELECT ?key ?value ?eubwid ?label ?district ?gss
+#             WHERE
+#             { [] a def-sp:SamplingPoint; 
+#                   skos:notation ?key;
+#                   def-bw:bathingWater ?value .                   
+#               ?value  skos:notation ?eubwidT ;
+#                       skos:prefLabel ?label ;
+#                       onsadmingeo:district ?district .                         
+#               ?district 
+#                  admingeo:gssCode ?gss .
+#               BIND(str(?eubwidT) AS ?eubwid)
+#               FILTER( lang(?label) = 'en' )
+#             }
+
+#  - name       : region
+#    sourceType : CSV
+#    source     : transform/map/ea-region.csv
+#    key        : code
+#    value      : region
+
+templates : 
+  - bwq-stepchange
+
+oneOffs    : 
+############################################################################################################
+# Link Step Change Dataset to top level BWQ dataset
+############################################################################################################
+    - name            : "bwq-sc-bathing-water-quality-dataset"
+      "@id"           : "<{$data_base}>"
+      "<void:subset>" : "<{$stepChangeDataset}>"
+
+############################################################################################################
+# Link per body Step Change dataset as subset of top level suspensions dataset
+############################################################################################################
+    - name                     : bwq-sc-step-change-dataset
+      "@id"                    : "<{$stepChangeDataset}>"
+      "<rdf:type>"             : "<void:Dataset>"
+      "<rdfs:label>"           : "Bathing Water Quality Step-Change Dataset@en"
+      "<dct:description>"      : "Top level dataset recording step-changes in bathing water quality that ususally arise through investments in environmental improvement.@en"
+      "<dct:license>"          : "<http://reference.data.gov.uk/id/open-government-licence>"
+      "<void:uriRegexPattern>" : "http://environment.data.gov.uk/data/bathing-water-quality/step-change/(.*)"
+      "<void:subset>"          : "<{$bodyStepChangeDataset}>"
+      "<void:vocabulary>"      : 
+          - "<{$ns.apply('def-bwq:')}>"
+          - "<{$ns.apply('def-bw:')}>"
+          - "<{$ns.apply('def-sp:')}>"
+          - "<{$ns.apply('dgu:')}>"
+          - "<{$ns.apply('skos:')}>"
+
+############################################################################################################
+# Link incremental step-change dataset to per body suspension dataset
+############################################################################################################
+    - name   : "bwq-sc-body-step-change-dataset"
+      "@id"  : "<{$bodyStepChangeDataset}>"
+      "<rdf:type> "            : "<void:Dataset>"
+      "<rdfs:label>"           : "Bathing Water Quality Step-Change Dataset - ({$body_slug})@en"
+      "<dct:description>"      : "Dataset recording recording step-changes in bathing water quality that ususally arise through investments in environmental improvement - ({$body_slug})@en"
+      "<dct:modified>"         : "{$exectime.toWholeSeconds().asDate('xsd:dateTime')}"
+      "<dct:license>"          : "<http://reference.data.gov.uk/id/open-government-licence>"
+      "<dct:publisher>"        : "<{$body_org}>"
+      "<void:uriRegexPattern>" : "http://environment.data.gov.uk/data/bathing-water-quality/step-change/(.*)"
+      "<void:subset>"         : "<{$incrementalStepChangeDataset}>"
+      "<void:vocabulary>" : 
+        - "<{$ns.apply('def-bwq:')}>"
+        - "<{$ns.apply('def-bw:')}>"
+        - "<{$ns.apply('def-sp:')}>"
+        - "<{$ns.apply('dgu:')}>"
+        - "<{$ns.apply('skos:')}>"
+ 
+############################################################################################################
+# Incremental stepchange dataset details
+############################################################################################################
+    - name  : "bwq-sc-incremental-step-change-dataset"
+      "@id"                              : "<{$incrementalStepChangeDataset}>" 
+      "<rdf:type>"                       : "<void:Dataset>"
+      "<rdfs:label>"                     : "Bathing Water Quality - Step Change Dataset {$exectime.toWholeSeconds()}@en"
+      "<dct:description>"                : "Baseline or incremental step-change dataset for a single monitoring body - ({$exectime.toWholeSeconds()}).@en"
+      "<dct:modified>"                   : "{$exectime.toWholeSeconds()}"
+      "<dct:license>"                    : "<http://reference.data.gov.uk/id/open-government-licence>"
+      "<dct:publisher>"                  : "<{$body_org}>"
+      # Added dct:source to align with practice with other dataset subsets
+      "<dct:source>"                     : "<{$source_base}/{$body_slug}/input/{$filename}>"
+      "<void:dataDump>"                  : "<{$source_base}/{$body_slug}/output/{$filebasename}.ttl>"
+      "<void:sparqlEndpoint>"            : "<http://environment.data.gov.uk/sparql/bwq/query>"
+      "<void:vocabulary>" : 
+          - "<{$ns.apply('def-bwq:')}>"
+          - "<{$ns.apply('def-bw:')}>"
+          - "<{$ns.apply('def-sp:')}>"
+          - "<{$ns.apply('dgu:')}>"
+          - "<{$ns.apply('skos:')}>"
+
+############################################################################################################
+# Process each Step Change record.
+############################################################################################################
+referenced :
+    - "name"                               :  "bwq-stepchange"
+      "@id"                               :  "<{$stepChange}>"
+      "<rdf:type>"                        :  "<def-bwq:StepChange>"
+      "<rdfs:label>"                      : "Step Change on {$dateOfChange.format('dd MMM yyyy')} at {$bwLabel}@en"
+      "<dct:source>"                      : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%06d')}>"
+      "<def-bw:bathingWater>"             : "<{$bw}>"
+      "<def-sp:samplingPoint>"            : "<{$so_sp}/{$bwspid}>"
+      "<def-bwq:dateOfChange>"            : "{$dateOfChange}"
+      "<rdfs:comment>"                    : "{changes}@en"
+############################################################################################################
+# These two might need revisiting as they are likely to be furture projections. ie. at least some of the 
+# affected assessments # don't yet exist and the respective URI will 404
+# Removing forward references, will add them with update queries when computing the back references
+############################################################################################################
+#      "<def-bwq:affectedAssessments>"     : "<{$compliance_base.append('/point/').append($bwspid).append('/year/').append($affectedYears)}>"
+      "<def-bwq:affectedYears>"           : "{$affectedYears.asDate('xsd:gYear').referenceTime()}"
+      "<dgu:uriSet>"                      : "<{$incrementalStepChangeDataset}>"
+ 
