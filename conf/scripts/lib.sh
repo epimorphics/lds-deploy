@@ -105,7 +105,7 @@ PickZone() {
 # Usage: PickSubnet serverDir
 PickSubnet() {
     local zone=PickZone "$1"
-    if [[ "$zone" = "eu-west-1b"]]; then
+    if [[ "$zone" = "eu-west-1b" ]] ; then
         echo $VPC_PUBLIC_B
     else
         echo $VPC_PUBLIC_C
