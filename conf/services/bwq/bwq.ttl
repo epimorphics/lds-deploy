@@ -166,11 +166,10 @@
     rdfs:label "Production"@en;
     skos:notation "production";
     dct:description "The publications released to the production service."@en;
-#    dms:publishAction "default/publish";
     dms:publicationTier :productionPubServers;
     dms:tier :pPresServers;
     dms:consolidatedUpdates false;
-#    dms:image  :baseline;
+    dms:image  :baseline;
     dms:publishAction "default/publish";
     dms:postPublishAction "bwq/postPublish";
     .
