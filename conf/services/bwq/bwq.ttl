@@ -238,7 +238,7 @@
     dms:tierRole "presentationServers";
     dms:loadBalancer  :pPresLB;
     dms:configureAction "bwq/presserver/configure";
-    dms:allocateAction "bwq/presserver/allocate";
+    dms:allocateAction "bwq/pres-production/allocate";
     dms:terminateAction "bwq/presserver/terminate";
     dms:operation :clearCacheOp, :webSyncOp;
     .    

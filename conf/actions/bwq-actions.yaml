@@ -50,6 +50,21 @@
     "CHEF_ENV"  : "lds-test-pres"
     "CHEF_ROLE" : "ea-bwq-pres"
 ---
+# Presentation server allocation (production versio)
+"@name" : bwq/pres-production/allocate
+"@type" : script
+"@script" : "ops/pres-allocate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+#    "AWS_EBS" : 8
+    "AWS_INSTANCE_STORE" : "yes"
+    "AWS_INSTANCE_TYPE" : "m3.large"
+    "AWS_AMI" : "ami-cda130ba"
+    "AWS_SG" : "sg-b815c7dd"   # lds-front-end
+    "CHEF_ENV"  : "lds-bwq-pres"
+    "CHEF_ROLE" : "ea-bwq-pres-production"
+---
 # Presentation server termination  
 "@name" : bwq/presserver/terminate
 "@type" : script
