@@ -152,6 +152,14 @@
     dms:updatePolicy dms:series;
     .
 
+:testData a dms:DataComponent;
+    rdfs:label "Test data"@en;
+    rdfs:comment "RDF files uploaded for test purposes only, not for production use."@en;
+    skos:notation "testdata";
+    dct:isPartOf :bwq;
+    dms:updatePolicy dms:multiple;
+    .
+
 # -- Publication sets --------------------------------
 
 :production a dms:PublicationSet;
