@@ -104,7 +104,7 @@ PickZone() {
 # Find the subnet corresponding to the least populated availability zone for this tier out of b/c
 # Usage: PickSubnet serverDir
 PickSubnet() {
-    local zone=PickZone "$1"
+    local zone=$( PickZone "$1" )
     if [[ "$zone" = "eu-west-1b" ]] ; then
         echo $VPC_PUBLIC_B
     else
