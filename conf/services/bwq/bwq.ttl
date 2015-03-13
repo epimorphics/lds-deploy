@@ -169,7 +169,7 @@
     dms:publicationTier :productionPubServers;
     dms:tier :pPresServers;
     dms:consolidatedUpdates false;
-    dms:image  :baseline;
+    dms:image  :productionBaseline;
     dms:publishAction "default/publish";
     dms:postPublishAction "bwq/postPublish";
     .
@@ -282,11 +282,11 @@
 
 # -- Base images --------------------------------
 
-#:baseline a dms:image;
-#    dms:dumpFile   "/var/opt/dms/services/bwq/publicationSets/testing/images/baseline-2014-10-02.nq.gz";
-#    dms:dbLocation "/var/opt/dms/services/bwq/publicationSets/testing/images/baseline-2014-10-02.DB.tgz";
-#    dms:effectiveDate "2014-10-02T10:18:00Z"^^xsd:dateTime;
-#    .
+:productionBaseline a dms:image;
+    dms:dumpFile   "/var/opt/dms/services/bwq/publicationSets/production/images/baseline-2014-10-02.nq.gz";
+    dms:dbLocation "/var/opt/dms/services/bwq/publicationSets/production/images/baseline-2014-10-02.DB.tgz";
+    dms:effectiveDate "2014-10-02T10:18:00Z"^^xsd:dateTime;
+    .
 
 :baseline a dms:image;
     dms:dumpFile   "/var/opt/dms/services/bwq/publicationSets/testing/images/baseline-2014-08-01-noprofile.nq.gz";
