@@ -57,12 +57,9 @@
     rdfs:label "Production"@en;
     skos:notation "production";
     dct:description "The publications released to the production service."@en;
-#    dms:publishAction "test/publish";
     dms:publicationTier :productionPubServers;
-#    dms:tier :widgetServers;
     dms:consolidatedUpdates false;
     dms:image  :baseline;
-    dms:publishAction      "vocabulary/publish"
     .
 
 :baseline a dms:image;
@@ -87,6 +84,7 @@
     dms:loadStateAction    "generic/loadState";
     dms:catchupStateAction "generic/catchupState";
     dms:publishStateAction "vocabulary/publishState";
+    dms:publishAction      "vocabulary/publish";
 #    dms:loadBalancer  :dataLB;
     dms:testServerAction "dataserver/testServer";
     .

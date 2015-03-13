@@ -4,8 +4,8 @@
 "@type" : script
 "@script" : "ops/duPublish.sh"
 "@args" :
-    - "target"
     - "servers"
+    - "server"
 ---
 # Publish state via S3 upload
 "@name" : vocabulary/publishState
@@ -13,5 +13,4 @@
 "@script" : "ops/duPublishState.sh"
 "@env"  :
     "STATE_FOLDER"  : "s3://dms-deploy/images/testing"
-"@args" :
-    - "spec"
+"@args" : json

@@ -11,48 +11,6 @@
     "count" : 3
   },
   {
-    "@name" : "test/publish",
-    "@javaclass" : "com.epimorphics.dms.test.TestAction",
-    "message" : "simulated publishing",
-    "count" : 2
-  },
-  {
-    "@name" : "test/allocate",
-    "@javaclass" : "com.epimorphics.dms.test.TestAction",
-    "message" : "simulated allocate",
-    "count" : 2
-  },
-  {
-    "@name" : "test/configure",
-    "@javaclass" : "com.epimorphics.dms.test.TestAction",
-    "message" : "simulated configure",
-    "count" : 2
-  },
-  {
-    "@name" : "test/allocateLB",
-    "@javaclass" : "com.epimorphics.dms.test.TestAction",
-    "message" : "simulated LB allocate",
-    "count" : 2
-  },
-   {
-    "@name" : "test/terminate",
-    "@javaclass" : "com.epimorphics.dms.test.TestAction",
-    "message" : "simulated terminate",
-    "count" : 2
-  },
-  {
-    "@name" : "test/terminateLB",
-    "@javaclass" : "com.epimorphics.dms.test.TestAction",
-    "message" : "simulated LB termination",
-    "count" : 2
-  },
-  {
-    "@name" : "test/testTierOnly",
-    "@javaclass" : "com.epimorphics.dms.tasks.NotifyAction",
-    "message" : "Notification invoked successfully.",
-    "userid" : "dave@epimorphics.com"
-  },
-  {
     "@name" : "api/testPublish",
     "@type" : "sequence",
     "@actions" : [
