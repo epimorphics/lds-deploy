@@ -6,7 +6,7 @@
 
 readonly spec="$1"
 
-BUCKET="$STATE_FOLDER/$( date +%F )/$( date '+%H-%M-%S-%N')"
+BUCKET="$STATE_FOLDER/updates/$( date +%F )/$( date '+%H-%M-%S-%N')"
 
 touch /tmp/empty
 
