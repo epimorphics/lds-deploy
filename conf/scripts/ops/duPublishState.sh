@@ -20,7 +20,7 @@ awsAction() {
         suffix=${BASH_REMATCH[2]}
         filebase=${BASH_REMATCH[1]}
     fi
-    echo aws s3 cp $file "$BUCKET/${filebase}_${op}_${graph}${suffix}"
+    aws s3 cp $file "$BUCKET/${filebase}_${op}_${graph}${suffix}"
 }
 
 echo $spec | jq -r '.spec[] |

@@ -13,3 +13,11 @@
 "@script" : "dbutil/catchupState.sh"
 "@args" :
     -  "serverDir"
+---
+# Publish via S3 upload
+"@name" : generic/dupublish
+"@type" : script
+"@script" : "ops/duPublish.sh"
+"@args" :
+    - "servers"
+    - "server"

@@ -14,3 +14,31 @@
 "@env"  :
     "STATE_FOLDER"  : "s3://dms-deploy/images/testing"
 "@args" : json
+---
+# Data server allocation
+"@name" : testing/server/allocate
+"@type" : script
+"@script" : "ops/generic-allocate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+#    "AWS_EBS" : 8
+    "AWS_INSTANCE_STORE" : "yes"
+    "AWS_INSTANCE_TYPE" : "m3.large"
+    "AWS_AMI" : "ami-cda130ba"
+#    "AWS_SG" : "sg-b815c7dd"   # lds-front-end
+    "AWS_SG" : "sg-091c6a6c"   # lds-combined
+    "CHEF_ENV"  : "lds-tests3-data"
+    "CHEF_ROLE" : "dms_data_server"
+    "AWS_IAM_ROLE_ARN" : "arn:aws:iam::853478862498:instance-profile/dms-update"
+---
+# Server configuration  
+"@name" : testing/server/configure
+"@type" : script
+"@script" : "ops/generic-configure.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "NRC_HOSTGROUP"  : "Test-server"
+    "NRC_SERVICESET" : "BWQ-data-ss"
+    "NRC_SERVICE"    : "check_http_ping"

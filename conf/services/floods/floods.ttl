@@ -115,6 +115,8 @@
     dms:externalState  true;
     dms:loadStateAction "floods/loadState";
     dms:catchupStateAction "floods/catchupState";
+    dms:publishStateAction "floods/dupublishState";
+    dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
     .
 

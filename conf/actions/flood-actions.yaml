@@ -56,11 +56,10 @@
 "@args" :
     -  "serverDir"
 ---
-# Publish via S3 upload
-"@name" : floods/publish
+# Publish state via S3 upload
+"@name" : floods/dupublishState
 "@type" : script
-"@script" : "floods/publish.sh"
-"@args" :
-    - "spec"
-    - "target"
-    - "servers"
+"@script" : "ops/duPublishState.sh"
+"@env"  :
+    "STATE_FOLDER"  : "s3://dms-deploy/images/flood-monitoring"
+"@args" : json
