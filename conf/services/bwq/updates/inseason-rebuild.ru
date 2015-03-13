@@ -105,7 +105,7 @@ WHERE {
      {
         {
            ?year interval:ordinalYear ?yearOrd .
-           FILTER (?yearOrd >= 2013)
+           FILTER (?yearOrd >= 2014)
            ?slice  a   bwq:BySamplingPointYearSlice;
            bwq:sampleYear ?year ;
            bwq:samplingPoint  ?sp .
