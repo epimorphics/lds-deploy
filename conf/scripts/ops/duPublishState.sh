@@ -14,7 +14,7 @@ awsAction() {
     op=$1
     file=$(echo $2 | sed -e 's/file://')
     graph=$(echo $3 | sed -e 's!/!%2F!g')
-    filebase=$(basename $file | sed -e 's/_//')
+    filebase=$(basename $file | sed -e 's/_//g')
     suffix=""
     if [[ $filebase =~ (.*)(\.[^\.]+\.gz) || $filebase =~ (.*)(\.[^\.]+) ]]; then
         suffix=${BASH_REMATCH[2]}
