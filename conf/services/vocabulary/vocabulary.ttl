@@ -76,8 +76,8 @@
     dms:graphEndpoint    "http://{address}:3030/ds/data";
     dms:updateEndpoint   "http://{address}:3030/ds/update";
     dms:queryEndpoint    "http://{address}:3030/ds/query";
-#    dms:configureAction "vocabulary/configure";
-#    dms:allocateAction "vocabulary/allocate";
+    dms:configureAction "testing/server/configure";
+    dms:allocateAction "testing/server/allocate";
 #    dms:operation :tierOnlyTestOp, :testOp;
 #    dms:operation :testOp;
     dms:externalState  true;
