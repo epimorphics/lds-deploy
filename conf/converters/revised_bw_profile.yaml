@@ -292,8 +292,8 @@ referenced :
       "<def-bwp:phytoplanktonStatement>"            : "{phytoplankton}@en"
 # Added next three fields for 2015 season
       "<def-bwp:stepChangeStatement>"               : "{step_changes}@en"
-      "<def-bwp:pollutionRiskForcastStatement>"     : "{prf_warning_summary}@en"
-      "<def-bwp:visualPollutionStatement>"          : "{visual_pollution}@en"
+      "<def-bwp:pollutionRiskForecastStatement>"     : "{prf_warning_summary}@en"
+      "<def-bwp:visiblePollutionStatement>"          : "{visual_pollution}@en"
 ###############################################################################
 # Template for Welsh profiles
 ###############################################################################
