@@ -38,6 +38,22 @@
                             Image is up to date
                         #else
                             $pubSince.size() publications since then
+                            #if ($debug)
+                                <ul>
+                                    #foreach($p in $pubSince)
+                                        <li>
+                                            $p.label
+                                            #set($us = $p.updateSet)
+                                            #if(!$us.published.isEmpty())
+                                                <p>+ #foreach($pus in $us.published) $pus #end</p>
+                                            #end
+                                            #if(!$us.unpublished.isEmpty())
+                                                <p>- #foreach($pus in $us.unpublished) $pus #end</p>
+                                            #end
+                                        </li>
+                                    #end
+                                </ul>
+                            #end
                         #end
                     </td>
                 </tr>
