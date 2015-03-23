@@ -283,8 +283,10 @@
 # -- Base images --------------------------------
 
 :productionBaseline a dms:image;
-    dms:dumpFile   "/var/opt/dms/services/bwq/publicationSets/production/images/baseline-2014-10-02.nq.gz";
-    dms:dbLocation "/var/opt/dms/services/bwq/publicationSets/production/images/baseline-2014-10-02.DB.tgz";
+#    dms:dumpFile   "/var/opt/dms/services/bwq/publicationSets/production/images/baseline-2014-10-02.nq.gz";
+#    dms:dbLocation "/var/opt/dms/services/bwq/publicationSets/production/images/baseline-2014-10-02.DB.tgz";
+    dms:dumpFile   "/var/opt/dms/services/bwq/publicationSets/production/images/baseline-2014-10-02-noprofile.nq.gz";
+    dms:dbLocation "/var/opt/dms/services/bwq/publicationSets/production/images/baseline-2014-10-02-noprofile.DB.tgz";
     dms:effectiveDate "2014-10-02T10:18:00Z"^^xsd:dateTime;
     .
 
