@@ -11,12 +11,27 @@ requiredColumns:
   - rloi_id
   - stage_datum
    # Others but that should be enough as a check
+
 prefixes:
   rt : "http://environment.data.gov.uk/flood-monitoring/def/core/"
+
+sources:
+  - sourceType : CSV
+    name       : stationIDMap
+    source     : "flood/stationID.csv"
+    key        : id
+    value      : preferred
+    makeURI    : false
+
 bind :
-    - "$base" : "http://environment.data.gov.uk/flood-monitoring/id/stations"
-      "$id"   : "{$base}/{telemetry_id.replaceAll(' ', '_')}-{region.toLowerCase().replaceAll(' ', '_')}"
-      "$point": "{empty(x_coord_actual) || empty(y_coord_actual) ? null : fromEastingNorthing(x_coord_actual, y_coord_actual)}"
+    - "$base"           : "http://environment.data.gov.uk/flood-monitoring/id/stations"
+      "$region"         : "{region.toLowerCase().replaceAll(' ', '_')}"
+      "$tid"            : "{telemetry_id.replaceAll(' ', '_').replaceAll('/', '_')}"
+    - "$stub"           : "{$tid}-{$region}"
+    - "$idfrag"         : "{$stub.map('stationIDMap')}"
+    - "$idfrag"         : "{empty($idfrag) ? $tid : $idfrag}"
+    - "$id"             : "{$base}/{$idfrag}"
+      "$point"          : "{empty(x_coord_actual) || empty(y_coord_actual) ? null : fromEastingNorthing(x_coord_actual, y_coord_actual)}"
     - "$stageScale"     : "{$id}/stageScale"
       "$downstageScale" : "{type == 'M' ? $id.append('/downstageScale') : null}"
 templates:
@@ -38,7 +53,7 @@ referenced:
         "<rt:wiskiID>"          : "{wiski_id.asString()}"
         "<rt:RLOIid>"           : "{rloi_id.asString()}"
         "<rt:stationReference>" : "{telemetry_id.asString()}"
-        "<skos:notation>"       : "{telemetry_id.asString()}"
+        "<skos:notation>"       : "{$idfrag}"
         "<rdfs:label>"          : "{external_name}"
         "<rt:datumOffset>"      : "{$offset}"
         "<rt:catchmentName>"    : "{catchment}"
