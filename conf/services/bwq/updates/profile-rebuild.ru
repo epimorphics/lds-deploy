@@ -11,8 +11,11 @@ PREFIX time: <http://www.w3.org/2006/time#>
 PREFIX ugraph:  <http://environment.data.gov.uk/bwq/graph/updates/>
 
 # delete existing latest profile links
-DELETE { GRAPH ugraph:profile {?bw def-bwp:latestBathingWaterProfile ?bwp } } WHERE
-{ ?bw def-bwp:latestBathingWaterProfile ?bwp } ;
+DELETE WHERE {
+    GRAPH ?G { ?bw def-bwp:latestBathingWaterProfile ?bwp } 
+}
+#DELETE { GRAPH ugraph:profile {?bw def-bwp:latestBathingWaterProfile ?bwp } } WHERE
+#{ ?bw def-bwp:latestBathingWaterProfile ?bwp } ;
 #
 # Rebuild new latest profile links
 INSERT { GRAPH ugraph:profile { ?bw def-bwp:latestBathingWaterProfile ?latest_bwp } } WHERE
