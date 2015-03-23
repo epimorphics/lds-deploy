@@ -1,3 +1,5 @@
+## Note: add "&debug=true" to call to see information on what updates have happened since this image
+
 #set($pageTitle = "DMS - " + $service.label + " - " + $image.label)
 #parse("header.vm")
 #parse("navbar.vm")
