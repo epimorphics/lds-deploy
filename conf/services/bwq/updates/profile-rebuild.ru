@@ -13,7 +13,7 @@ PREFIX ugraph:  <http://environment.data.gov.uk/bwq/graph/updates/>
 # delete existing latest profile links
 DELETE WHERE {
     GRAPH ?G { ?bw def-bwp:latestBathingWaterProfile ?bwp } 
-}
+} ;
 #DELETE { GRAPH ugraph:profile {?bw def-bwp:latestBathingWaterProfile ?bwp } } WHERE
 #{ ?bw def-bwp:latestBathingWaterProfile ?bwp } ;
 #
