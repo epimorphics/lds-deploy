@@ -44,6 +44,7 @@
     skos:notation "stations";
     dct:isPartOf :floods;
     dms:dataConverter "flood.rloiImport";
+    dms:sourcePublishDir  "flood-monitoring/sources/rloi";
     dms:updatePolicy dms:single;
     .
 
