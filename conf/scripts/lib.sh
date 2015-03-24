@@ -98,7 +98,7 @@ PickZone() {
                jq -r '.Instances[0].Placement.AvailabilityZone' $server/aws-instance.json
            fi            
        done
-    ) | uniq -c | sort | head -1 | awk '{print $2}'
+    ) | sort | uniq -c | sort | head -1 | awk '{print $2}'
 }
 
 # Find the subnet corresponding to the least populated availability zone for this tier out of b/c
