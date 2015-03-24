@@ -229,8 +229,7 @@
          "<def-som:recordDateTime>"          : "{$l_recordDateTime}",
 # Narrative fields
          "<dct:description>"                 : "{situation_description}@en",
-         "<rdfs:comment>"                    : "{additional_comments}@en",
-         
+         "<rdfs:comment>"                    : "{additional_comments}@en"       
       } 
    ]
 }

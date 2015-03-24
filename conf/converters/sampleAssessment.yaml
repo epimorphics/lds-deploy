@@ -196,7 +196,7 @@
         "<def-bwq:entrovirusCount>"                : "{empty(enterovirus)         ? null : enterovirus.asNumber().datatype('xsd:integer')}",
         "<def-bwq:entrovirusQualifier>"            : "<{empty(enterovirus)        ? null : $countQualifier.apply(entvirind)}>",
 # @@TODO Using presence of totalColiformCount used as a proxy indicator of pre2012 format - difference between not-assessed (pre-2012) and null (2012 and beyond).
-        "<def-bwq:salmonellaPresent>"              : "<{empty(salmonella)         ? ( empty(totalcoliform) ? null : 'http://environment.data.gov.uk/def/bathing-water-quality/not-assessed' ) : $present.apply(salmonella)}>",
+        "<def-bwq:salmonellaPresent>"              : "<{empty(salmonella)         ? ( empty(totalcoliform) ? null : 'http://environment.data.gov.uk/def/bathing-water-quality/not-assessed' ) : $present.apply(salmonella)}>"
       },
 #################################################################################################################################
 # Link slices from per-body datasets
