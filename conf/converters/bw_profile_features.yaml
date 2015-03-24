@@ -145,7 +145,7 @@ referenced :
       "<def-ver:interval>"       : "{$intervalRes}"
       "<dgu:uriSet>"             : "<{$datasetURI}>"
       "<dct:isVersionOf>"        : "<{$efURI}>"
-      "<dct:source>"             : "<{$infile}#line={value($row.number).format('%06d')}>"
+      "<dct:source>"             : "<{$infile}#row={value($row.number+1).format('%06d')}>"
 
     - name                       : bwq-feature-type
       "@id"                      : "<{$fURI}>"

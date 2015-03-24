@@ -172,7 +172,7 @@
         "<def-bwq:bathingWater>"             : "<{$bwspid.map('bwq-sp-to-bw')}>",
         "<def-bwq:sampleClassification>"     : "<{(year.asNumber().value < 2012) ? $def_bwq : $def_bwq_cc_2012}/{qualitycode}>",
         "<qb:dataSet>"                       : "<{$bodyInSeasonDataset}>",
-        "<dct:source>"                       : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%06d')}>",
+        "<dct:source>"                       : "<{$source_base}/{$body_slug}/input/{$filename}#row={value($row.number+1).format('%06d')}>",
         "<def-bwq:recordStatus>"             : "<{$status.apply(status)}>",
         "<def-bwq:recordDate>"               : "{$l_recordDate}",
         "<dct:created>"                      : "{ status.toLowerCase() == 'new'    || status.toLowerCase() == 'baseline' ? $l_recordDate : null}",
@@ -197,7 +197,6 @@
         "<def-bwq:entrovirusQualifier>"            : "<{empty(enterovirus)        ? null : $countQualifier.apply(entvirind)}>",
 # @@TODO Using presence of totalColiformCount used as a proxy indicator of pre2012 format - difference between not-assessed (pre-2012) and null (2012 and beyond).
         "<def-bwq:salmonellaPresent>"              : "<{empty(salmonella)         ? ( empty(totalcoliform) ? null : 'http://environment.data.gov.uk/def/bathing-water-quality/not-assessed' ) : $present.apply(salmonella)}>",
-        "<dct:source>"                             : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%06d')}>"
       },
 #################################################################################################################################
 # Link slices from per-body datasets

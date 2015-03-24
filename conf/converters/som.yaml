@@ -216,7 +216,7 @@
          "<rdfs:label>"                      : "{as_id} - {$bwLabel}@en",
          "<def-som:notation>"                : "{as_id.datatype('def-som:somID')}",
          "<skos:notation>"                   : [ "{as_id.datatype('def-som:somID')}","{as_id}" ],
-         "<dct:source>"                      : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%06d')}>",
+         "<dct:source>"                      : "<{$source_base}/{$body_slug}/input/{$filename}#row={value($row.number+1).format('%06d')}>",
          "<def-bw:bathingWater>"             : "<{$bw}>",
          "<def-sp:samplingPoint>"            : "<{$so_sp}/{$bwspid}>",
          "<def-bwq:sampleYear>"              : "<{bw_season.asDate('xsd:gYear').referenceTime()}>",
