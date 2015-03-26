@@ -246,7 +246,7 @@
                                                     qualitycode == '13' || 
                                                     qualitycode == '14' || 
                                                     qualitycode == '15' ) ? 'def-bwq:projected-assessment' : 'def-bwq:actual-assessment' }>",
-        "<dct:source>"                         : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%06d')}>",
+        "<dct:source>"                         : "<{$source_base}/{$body_slug}/input/{$filename}#row={value($row.number+1).format('%06d')}>",
         "<def-bwq:intestinalEnterococciStats>" : "<{( (!empty(number_of_samples) && number_of_samples.value > 0)  ||
                                                       !empty(minie)     || !empty(maxie)         || !empty(meanie)      || 
                                                       !empty(stdevie)   || !empty(meanoflog10ie) || !empty(sdoflog10ie) || 

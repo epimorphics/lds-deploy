@@ -153,7 +153,7 @@ referenced :
       "@id"                               :  "<{$stepChange}>"
       "<rdf:type>"                        :  "<def-bwq:StepChange>"
       "<rdfs:label>"                      : "Step Change on {$dateOfChange.format('dd MMM yyyy')} at {$bwLabel}@en"
-      "<dct:source>"                      : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%06d')}>"
+      "<dct:source>"                      : "<{$source_base}/{$body_slug}/input/{$filename}#row={value($row.number+1).format('%06d')}>"
       "<def-bw:bathingWater>"             : "<{$bw}>"
       "<def-sp:samplingPoint>"            : "<{$so_sp}/{$bwspid}>"
       "<def-bwq:dateOfChange>"            : "{$dateOfChange}"

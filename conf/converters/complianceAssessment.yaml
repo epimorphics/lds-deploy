@@ -165,7 +165,7 @@
         "<qb:dataSet>"                       : "<{$bodyComplianceDataset}>",
         "<def-bwq:sampleYear>"               : "<{year.asDate('xsd:gYear').referenceTime()}>",
         "<def-bwq:inYearDetail>"             : "<{$data_base}/in-season/slice/point/{$bwspid}/year/{year.format('%04d')}>",
-        "<dct:source>"                       : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%06d')}>"
+        "<dct:source>"                       : "<{$source_base}/{$body_slug}/input/{$filename}#row={value($row.number+1).format('%06d')}>"
       },
 #################################################################################################################################
 # Create and add to relevant by-year compliance assesment slice

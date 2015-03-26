@@ -140,9 +140,10 @@
                                        prediction.value == 2 ? $def_stp.append('/increased') : null}>",
          "<def-stp:samplingPoint>": "<{$so_sp}/{$bwspid}>",
          "<def-stp:bathingWater>" : "{$bathing_water}",
-         "<rdfs:comment>"         : [ "{prediction_text_en.lang('en')}", "{prediction_text_cy.lang('cy')}" ],
+         "<rdfs:comment>"         : [ "{(prediction_text_en ==null)? null : prediction_text_en.lang('en')}", 
+                                      "{(prediction_text_cy==null) ? null : prediction_text_cy.lang('cy')}" ],         
  # @@TODO 4: check source file referencing
-         "<dct:source>"           : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%04d')}>",
+         "<dct:source>"           : "<{$source_base}/{$body_slug}/input/{$filename}#row={value($row.number+1).format('%04d')}>",
          "<qb:dataSet>"           : [ "<{$stpDataset}>", "<{$bodyStpDataset}>" ],
          "^<def-stp:latestRiskPrediction>" : "{$bathing_water}"
        }

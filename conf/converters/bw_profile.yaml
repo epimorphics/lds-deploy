@@ -149,7 +149,7 @@ referenced :
       "<onsadmingeo:localAuthority>" : "{$laRes}"
       "<dct:isVersionOf>"        : "{$endurantRes}"
       "<def-bwp:webResImage>"    : "<{$imagesURI}/{$eubwid}_1-webres.jpg>"
-      "<dct:source>"             : "<{$source_base}/{$body_slug}/input/{$filename}#line={value($row.number).format('%04d')}>"
+      "<dct:source>"             : "<{$source_base}/{$body_slug}/input/{$filename}#row={value($row.number+1).format('%04d')}>"
 
     # Standard language - for 2014 there is a different SLC for every profile(!)
     - "@id"                      : "{$slcRes}"
