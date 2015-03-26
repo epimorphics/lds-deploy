@@ -47,7 +47,8 @@
             "$bodyStpDataset"  : "{$data_base}/{$body_slug}/stp-risk-prediction"
         },{
             "$incrementalStpDataset" : "{$bodyStpDataset}/dataset-increment/{$pubDateTimeSlug}",
-            "$bathing_water"   : "<{$bwspid.map('bwq-sp-to-bw', 'value', true)}>"
+            # Allow missing bathing waters through so e.g. NRW sites don't break EA conversions
+            "$bathing_water"   : "<{$bwspid.map('bwq-sp-to-bw', 'value', false)}>"
         }
     ],
 ############################################################################################################
