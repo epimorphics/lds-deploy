@@ -48,8 +48,10 @@
     "AWS_INSTANCE_TYPE" : "m3.large"
     "AWS_AMI" : "ami-cda130ba"
     "AWS_SG" : "sg-b815c7dd"   # lds-front-end
-    "CHEF_ENV"  : "lds-test-pres"
-    "CHEF_ROLE" : "ea-bwq-pres"
+#    "CHEF_ENV"  : "lds-test-pres"
+#    "CHEF_ROLE" : "ea-bwq-pres"
+    "CHEF_ENV"  : "lds-bwq-pres"
+    "CHEF_ROLE" : "ea-bwq-pres-production"
     "AWS_IAM_ROLE_ARN" : "arn:aws:iam::853478862498:instance-profile/dms-update"
 ---
 # Presentation server allocation (production versio)
@@ -101,9 +103,9 @@
 "@actions" :
   - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
     "publicationSet" : testing
-  - "@type"      : script
-    "@script"    : bwq/prf-postprod.sh
-    "@args"      : [ "filename" ]
+#  - "@type"      : script
+#    "@script"    : bwq/prf-postprod.sh
+#    "@args"      : [ "filename" ]
   - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
     "message" :    "Publications to testing completed"
     "notifyuser" : "dave@epimorphics.com"
@@ -118,9 +120,9 @@
 "@actions" :
   - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
     "publicationSet" : production
-  - "@type"      : script
-    "@script"    : bwq/prf-postprod.sh
-    "@args"      : [ "filename" ]
+#  - "@type"      : script
+#    "@script"    : bwq/prf-postprod.sh
+#    "@args"      : [ "filename" ]
   - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
     "message" :    "Publications to testing completed"
     "notifyuser" : "dave@epimorphics.com"
