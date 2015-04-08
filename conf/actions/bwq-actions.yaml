@@ -48,7 +48,7 @@
     "AWS_INSTANCE_TYPE" : "m3.large"
     "AWS_AMI" : "ami-cda130ba"
     "AWS_SG" : "sg-b815c7dd"   # lds-front-end
-    "CHEF_ENV"  : "lds-test-pres"
+    "CHEF_ENV"  : "lds-bwq-test-pres"
 #    "CHEF_ENV"  : "lds-bwq-pres"
 #    "CHEF_ROLE" : "ea-bwq-pres"
     "CHEF_ROLE" : "ea-bwq-pres-production"
