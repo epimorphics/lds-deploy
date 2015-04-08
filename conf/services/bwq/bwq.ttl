@@ -68,7 +68,7 @@
 :revised-inseason a dms:DataComponent;
     rdfs:label "RBWD In-season samples"@en;
     rdfs:comment "Data cube describing historic and current in-season Bathing Water quality samples, for use under the revised directive."@en;
-    skos:notation "in-season";
+    skos:notation "revised-in-season";
     dct:isPartOf :bwq;
     dms:dataConverter "rbwd-in-season-assessment";
     dms:postPublishScript "bwq/updates/inseason-rebuild.ru";
