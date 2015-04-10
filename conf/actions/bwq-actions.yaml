@@ -12,7 +12,7 @@
     "AWS_INSTANCE_TYPE" : "m3.large"
     "AWS_AMI" : "ami-cda130ba"
     "AWS_SG" : "sg-761ac813"    # lds-back-end
-    "CHEF_ENV"  : "lds-test-data"
+    "CHEF_ENV"  : "lds-data"
     "CHEF_ROLE" : "dms_data_server"
     "AWS_IAM_ROLE_ARN" : "arn:aws:iam::853478862498:instance-profile/dms-update"
 ---
