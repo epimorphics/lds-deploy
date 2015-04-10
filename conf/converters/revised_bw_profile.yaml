@@ -321,7 +321,7 @@ referenced :
       "<def-bwp:phytoplanktonStatement>"            : "{w_phytoplankton}@cy"
 # Added Welsh versions for good measure.
       "<def-bwp:stepChangesStatement>"              : "{w_step_changes}@cy"
-      "<def-bwp:pollutionRiskForecastStatment>"      : "{w_prf_warning_summary}@cy"
+      "<def-bwp:pollutionRiskForecastStatement>"      : "{w_prf_warning_summary}@cy"
       "<def-bwp:visiblePollutionStatement>"          : "{w_visual_pollution}@cy"
 
     - "@id"                    : "{$laRes}"
