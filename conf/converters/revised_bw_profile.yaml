@@ -180,7 +180,7 @@ referenced :
       "$intervalRes"             : "<{$profileURI}/intervals/interval>"
       "$interval_dt"             : "<http://reference.data.gov.uk/id/gregorian-instant/{profile_year}-01-01T00:00:00>"
       "$laRes"                   : "<http://location.data.gov.uk/id/au/localAuthority/ons:gss/{$sp.map('bwq-sp-to-bw', 'gss', true)}>"
-      "$twitterAccountInfo"      : "<{(empty(socialmedia) || socialmedia.trim()=='') ? null : $profileURI.append('/social/twitter')}>"
+      "$twitterAccountInfo"      : "<{(empty($profileURI) || empty(socialmedia) || socialmedia.trim()=='') ? null : $profileURI.append('/social/twitter')}>"
     templates :
 
     - "@id"                      : "{$interval_dt}"
