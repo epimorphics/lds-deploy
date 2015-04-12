@@ -45,7 +45,7 @@ if blkid $EBS_DEV > /dev/null; then
         mkdir -p /mnt/disk1
         UUID=$(blkid $EBS_DEV | sed -e 's/^.*\(UUID="[^"]*"\).*$/\1/')
 #    echo "$UUID /mnt/disk1 ext4 rw 0 2" | tee -a /etc/fstab > /dev/null && mount /mnt/disk1
-        echo "$EBS_DEV /mnt/disk1 ext4 rw,nodev 0 2" | tee -a /etc/fstab > /dev/null && mount /mnt/disk1
+        echo "$EBS_DEV /mnt/disk1 ext4 defaults,nodev 0 2" | tee -a /etc/fstab > /dev/null && mount /mnt/disk1
     fi
 fi
 
