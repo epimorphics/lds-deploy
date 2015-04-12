@@ -22,7 +22,7 @@ if blkid $INST_DEV > /dev/null; then
         sed -i "s!$INST_DEV.*\$!$INST_DEV  /mnt/ephemeral0  auto  defaults,nodev,nobootwait 0 2!" /etc/fstab
     fi
   else
-    echo "$INST_DEV  /mnt/ephemeral0  auto  defaults,nobootwait 0 2" | tee -a /etc/fstab > /dev/null
+    echo "$INST_DEV  /mnt/ephemeral0  auto  defaults,nodev,nobootwait 0 2" | tee -a /etc/fstab > /dev/null
   fi
   echo "Mount instance disk"
   mkdir -p /mnt/ephemeral0
