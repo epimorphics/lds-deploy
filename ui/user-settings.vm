@@ -9,7 +9,7 @@
             <div class="alert alert-danger" role="alert">
                 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <p><strong>Problem with last request</strong></p>
-                <p>$error</p>
+                <p>$lib.escapeHtml($error)</p>
             </div>
         #end
 
@@ -21,7 +21,7 @@
                         <div class="form-group">
                             <label for="currentPassword" class="col-md-offset-1 col-md-2 control-label">Current password</label>
                             <div class="col-md-4">
-                                <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Current password">
+                                <input type="password" class="form-control" id="currentPassword" name="currentPassword"  AUTOCOMPLETE="OFF" placeholder="Current password">
                             </div>
                         </div>
                         <div class="form-group">

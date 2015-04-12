@@ -8,7 +8,7 @@
         #if($error)
         <div class="row space-above">
             <div class="col-md-4 col-md-offset-2">
-                <p class="text-danger">$error</p>
+                <p class="text-danger">$lib.escapeHtml($error)</p>
             </div>
         </div>
         #end
@@ -29,7 +29,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="passwordbox">Password:</label>
-                                    <input id="passwordbox" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    <input id="passwordbox" class="form-control" placeholder="Password" name="password" type="password" AUTOCOMPLETE="OFF" value="">
                                 </div>
                                 <div class="checkbox">
                                     <label>
