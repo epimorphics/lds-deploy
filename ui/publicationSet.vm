@@ -65,7 +65,7 @@
 
         <h2>Monitoring</h2>
         <div>
-            <a class="btn btn-default btn-sml" href="https://lds-controller.epimorphics.net/grafana/#/dashboard/file/${service.shortID}.json">Metrics dashboard</a>
+            <a class="btn btn-default btn-sml" href="https://lds-controller.epimorphics.net/grafana/#/dashboard/file/${service.shortID}-${pset.shortID}.json">Metrics dashboard</a>
             <a class="btn btn-default btn-sml" href="https://lds-controller.epimorphics.net/grafana/#/dashboard/file/dms.json">DMS dashboard</a>
             <a class="btn btn-default btn-sml" href="https://lds-controller.epimorphics.net/graphite/composer">Metrics raw</a>
             <a class="btn btn-default btn-sml" href="https://lds-controller.epimorphics.net/nagios3/">Status monitor</a>
