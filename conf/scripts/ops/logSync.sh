@@ -1,8 +1,7 @@
 #!/bin/bash
 # Backup log files for all production servers to S3
 
-. ./config.sh
-. ./lib.sh
+. /opt/dms/conf/scripts/config.sh
 
 cd /var/opt/dms
 FLAGS="$SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem"
