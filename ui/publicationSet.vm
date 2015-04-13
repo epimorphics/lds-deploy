@@ -70,7 +70,6 @@
             <a class="btn btn-default btn-sml" href="https://lds-controller.epimorphics.net/graphite/composer">Metrics raw</a>
             <a class="btn btn-default btn-sml" href="https://lds-controller.epimorphics.net/nagios3/">Status monitor</a>
         </div>
-        </div>
 
         <h2>Operations</h2>
         <div class="row">
