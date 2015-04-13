@@ -3,6 +3,7 @@
 
 . /opt/dms/conf/scripts/config.sh
 
+echo "[$(date -Iseconds)] Backup production apache logs to S3"
 cd /var/opt/dms
 FLAGS="$SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem"
 for server in services/*/publicationSets/production/tiers/*/servers/*
