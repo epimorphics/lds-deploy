@@ -18,8 +18,7 @@ if [[ -f $serverDir/../../lb-name ]]; then
         [[ $serverDir =~ .*/services/(.*)/publicationSets/(.*)/tiers/(.*)/servers/(.*) ]] && SERVER=${BASH_REMATCH[4]}
         echo "Removing $SERVER from load balancer $LBNAME"
         aws elb deregister-instances-from-load-balancer --load-balancer-name $LBNAME --instances $instanceID
-        # ELB can take several 6-8s seconds to take effect
-        sleep 10
+        WaitForLB $LBNAME $instanceID OutOfService
     else 
         echo "Could not find server instance information at $serverDir" 1>&2
     fi
