@@ -149,12 +149,6 @@
 
         <img src="https://lds-controller.epimorphics.net/graphite/render/?width=400&height=240&_salt=$lib.now()&target=serverMetrics.${tierID}.*.load.load.shortterm&yMin=0&title=Server%20load">
 
-        <div>
-            <a class="btn btn-default btn-sml" href="https://lds-controller.epimorphics.net/grafana/">Metrics dashboard</a>
-            <a class="btn btn-default btn-sml" href="https://lds-controller.epimorphics.net/graphite/composer">Metrics raw</a>
-            <a class="btn btn-default btn-sml" href="https://lds-controller.epimorphics.net/nagios3/">Status monitor</a>
-        </div>
-
     </div> <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
