@@ -24,6 +24,25 @@ WaitFor() {
     return 1
 }
 
+# Wait for a LB add/remove to take effect
+# WaitForLB LBname instanceID targetState
+WaitForLB() {
+    [[ $# = 3 ]] || { echo "Internal error calling waitForLB" 1>&2 ; exit 99 ; }
+    local lbname=$1
+    local instanceID=$2
+    local target=$3
+    for i in $(seq 1 15)
+    do
+        STATE=$(aws elb describe-instance-health --load-balancer-name $lbname --instances $instanceID | jq -r ".InstanceStates[0].State")
+        echo "State is: $STATE"
+        if [[ $STATE == $target ]]; then
+            return 0
+        fi
+        sleep 1
+    done
+    return 1
+}
+
 # Check required programs are installed
 CheckInstalls() {
     command -v aws >/dev/null 2>&1 || { echo >&2 "Need aws installed: http://aws.amazon.com/cli/.  Aborting."; exit 1; }

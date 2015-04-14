@@ -19,10 +19,10 @@ if blkid $INST_DEV > /dev/null; then
         echo "/mnt/ephmeral0 already set up"
     else
         umount $INST_DEV || true
-        sed -i "s!$INST_DEV.*\$!$INST_DEV  /mnt/ephemeral0  auto  defaults,nobootwait 0 2!" /etc/fstab
+        sed -i "s!$INST_DEV.*\$!$INST_DEV  /mnt/ephemeral0  auto  defaults,nodev,nobootwait 0 2!" /etc/fstab
     fi
   else
-    echo "$INST_DEV  /mnt/ephemeral0  auto  defaults,nobootwait 0 2" | tee -a /etc/fstab > /dev/null
+    echo "$INST_DEV  /mnt/ephemeral0  auto  defaults,nodev,nobootwait 0 2" | tee -a /etc/fstab > /dev/null
   fi
   echo "Mount instance disk"
   mkdir -p /mnt/ephemeral0
@@ -45,7 +45,7 @@ if blkid $EBS_DEV > /dev/null; then
         mkdir -p /mnt/disk1
         UUID=$(blkid $EBS_DEV | sed -e 's/^.*\(UUID="[^"]*"\).*$/\1/')
 #    echo "$UUID /mnt/disk1 ext4 rw 0 2" | tee -a /etc/fstab > /dev/null && mount /mnt/disk1
-        echo "$EBS_DEV /mnt/disk1 ext4 rw 0 2" | tee -a /etc/fstab > /dev/null && mount /mnt/disk1
+        echo "$EBS_DEV /mnt/disk1 ext4 defaults,nodev 0 2" | tee -a /etc/fstab > /dev/null && mount /mnt/disk1
     fi
 fi
 
