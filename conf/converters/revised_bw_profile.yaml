@@ -218,8 +218,8 @@ referenced :
                                        (prf.asString().toLowerCase()=='yes')   ? true  :
                                        (prf.asString().toLowerCase()=='no')    ? false : null }"
       "<def-bwp:seasonInterval>"   : "<{$seasonIntervalURI}>"
-      "<def-bwp:seasonStartDate>"  : "{$seasonStartDate.format('yyyy-MM-dd').asDate('xsd:date')}"
-      "<def-bwp:seasonFinishDate>" : "{$seasonFinishDate.format('yyyy-MM-dd').asDate('xsd:date')}"
+      "<def-bwp:seasonStartDate>"  : "{empty($seasonStartDate)  ? null : $seasonStartDate.format('yyyy-MM-dd').asDate('xsd:date')}"
+      "<def-bwp:seasonFinishDate>" : "{empty($seasonFinishDate) ? null : $seasonFinishDate.format('yyyy-MM-dd').asDate('xsd:date')}"
 
     # Standard language - for 2014 there is a different SLC for every profile(!)
     - "@id"                      : "{$slcRes}"
