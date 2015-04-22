@@ -220,7 +220,7 @@
          "<def-bw:bathingWater>"             : "<{$bw}>",
          "<def-sp:samplingPoint>"            : "<{$so_sp}/{$bwspid}>",
          "<def-bwq:sampleYear>"              : "<{bw_season.asDate('xsd:gYear').referenceTime()}>",
-         "<def-bw:regionalOrganization>"     : "<{region.map('region')}>",
+         "<def-bw:regionalOrganization>"     : "<{region.map('ea-region')}>",
          "<dgu:uriSet>"                      : "<{$incrementalSomDataset}>",
  # Date/Time fields
          "<def-som:startOfSuspension>"       : "{$l_startDateTime}",
