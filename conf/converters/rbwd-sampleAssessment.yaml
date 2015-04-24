@@ -28,18 +28,17 @@
 #             , "discounted" 
            ],
   "bind" : [
-        { "extractDate" :  "{= empty($$) 
-                                                ? null : 
+        { "extractDate" :  "{= empty($$)        ? null : 
                                                   $$.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss','xsd:dateTime')
                                                   .format('yyyy-MM-dd')
                                                   .asDate('xsd:date')
                             }",
-          "extractTime" :  "{= empty($$) 
-                                                ? null : 
-                                                  $$.asDate('HH:mm:ss|dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss','xsd:dateTime')
+          "extractTime" :  "{= empty($$)        ? null : 
+                                                  $$.asDate('HH:mm|HH:mm:ss|dd/MM/yyyy HH:mm|dd-MM-yyyy HH:mm|yyyy-MM-dd HH:mm|yyyy/MM/dd HH:mm|dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss','xsd:dateTime')
                                                   .format('HH:mm:ss')
                                                   .asDate('xsd:time')
-                            }",        },
+                            }",
+        },
         {
             "$source_base"        : "http://environment.data.gov.uk/sources/bwq",
             "$data_base"          : "http://environment.data.gov.uk/data/bathing-water-quality",
@@ -55,7 +54,7 @@
             "$pubDateTime"        : "{$exectime.asDate('xsd:dateTime').toWholeSeconds().toLocalTime()}",
             "$ns"                 : "{= asResource($$).replaceAll('#$','') }",
 #            "$l_recordDate"       : "{empty(date) ? null : date.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|yyyyMMdd','xsd:date').format('yyyy-MM-dd').append('Z').asDate('xsd:date')}",
-            "$l_recordDate"       : "{extractDate.apply(date)}",
+            "$l_recordDate"       : "{extractDate.apply(date).format('yyyy-MM-dd').append('Z').asDate('xsd:date')}",
 #            "$l_uriDate"          : "{(status.toLowerCase() =='new' ? fdate : date).asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|yyyyMMdd','xsd:date')}",
             "$l_uriDate"          : "{extractDate.apply(status.toLowerCase() =='new' ? fdate : date)}",
 #            "$l_sampleDate"       : "{fdate.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|yyyyMMdd','xsd:date')}",

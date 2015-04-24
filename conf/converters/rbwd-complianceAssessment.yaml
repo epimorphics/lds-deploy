@@ -199,7 +199,7 @@
 # Individual Annual Compliance Assessements
 #################################################################################################################################
       { "name": "rbwd-cc-annual-compliance",
-        "@id" : "<{$complianceDataset}/point/{$bwspid}/year/{year.format('%04d')}>",
+        "@id"                                : "<{$complianceAssessment}>",
         "<rdf:type>"                         : [ "<qb:Observation>" , "<def-bwq:ComplianceAssessment>" ],
         "<rdfs:label>"                       : "{year} compliance assessment for {$bwLabel}@en",
         "<def-bwq:samplingPoint>"            : "<{$so_sp}/{$bwspid}>",

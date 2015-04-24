@@ -179,7 +179,8 @@ referenced :
     bind :
       "$intervalRes"             : "<{$profileURI}/intervals/interval>"
       "$interval_dt"             : "<http://reference.data.gov.uk/id/gregorian-instant/{profile_year}-01-01T00:00:00>"
-      "$laRes"                   : "<http://location.data.gov.uk/id/au/localAuthority/ons:gss/{$sp.map('bwq-sp-to-bw', 'gss', true)}>"
+      "$laRes"                   : "<http://location.data.gov.uk/id/au/localAuthority/ons:gss/{$sp.map('bwq-sp-to-bw', 'gss', true)}-{$sp}-{profile_year}>"
+      "$laResCanonical"          : "<http://location.data.gov.uk/id/au/localAuthority/ons:gss/{$sp.map('bwq-sp-to-bw', 'gss', true)}>"
       "$twitterAccountInfo"      : "<{(empty($profileURI) || empty(socialmedia) || socialmedia.trim()=='') ? null : $profileURI.append('/social/twitter')}>"
     templates :
 
@@ -192,6 +193,7 @@ referenced :
     - "@id"                      : "{$laRes}"
       "<onsadmingeo:district>"   : "{$sp.map('bwq-sp-to-bw', 'district', true)}"
       "<rdfs:label>"             : "{la}@en"
+      "<owl:sameAs>"             : "{$laResCanonical}"
 
     - "@id"                      : "<{$profileURI}>"
       "<rdf:type>"               : "<def-bwp:BathingWaterProfile>"
@@ -218,8 +220,8 @@ referenced :
                                        (prf.asString().toLowerCase()=='yes')   ? true  :
                                        (prf.asString().toLowerCase()=='no')    ? false : null }"
       "<def-bwp:seasonInterval>"   : "<{$seasonIntervalURI}>"
-      "<def-bwp:seasonStartDate>"  : "{$seasonStartDate.format('yyyy-MM-dd').asDate('xsd:date')}"
-      "<def-bwp:seasonFinishDate>" : "{$seasonFinishDate.format('yyyy-MM-dd').asDate('xsd:date')}"
+      "<def-bwp:seasonStartDate>"  : "{empty($seasonStartDate)  ? null : $seasonStartDate.format('yyyy-MM-dd').asDate('xsd:date')}"
+      "<def-bwp:seasonFinishDate>" : "{empty($seasonFinishDate) ? null : $seasonFinishDate.format('yyyy-MM-dd').asDate('xsd:date')}"
 
     # Standard language - for 2014 there is a different SLC for every profile(!)
     - "@id"                      : "{$slcRes}"
