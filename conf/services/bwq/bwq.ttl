@@ -98,6 +98,8 @@
     dms:dataConverter "revised-bwq-profile";
     dms:postPublishScript "bwq/updates/profile-rebuild.ru";
     dms:updatePolicy dms:series;
+    dms:sourcePublishDir  "sources/bwq/eaew/input";
+    dms:dataPublishDir    "sources/bwq/eaew/output";
     .
 
 :features a dms:DataComponent;
@@ -107,6 +109,8 @@
     dct:isPartOf :bwq;
     dms:dataConverter "bwq-profile-feature";
     dms:updatePolicy dms:series;
+    dms:sourcePublishDir  "sources/bwq/eaew/input";
+    dms:dataPublishDir    "sources/bwq/eaew/output";
     .
 
 :suspensions a dms:DataComponent;
