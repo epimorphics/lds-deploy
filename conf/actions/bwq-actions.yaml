@@ -119,8 +119,8 @@
 "@type" : sequence
 "@actions" :
   - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
-    "publicationSet" : testing
-#    "publicationSet" : production
+#    "publicationSet" : testing
+    "publicationSet" : production
 #  - "@type"      : script
 #    "@script"    : bwq/prf-postprod.sh
 #    "@args"      : [ "filename" ]
