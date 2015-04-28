@@ -115,22 +115,37 @@
     "notifyuser" : "dave@epimorphics.com"
 ---
 # STP auto-publish endpoint
-"@name" : api/publishProduction
-"@type" : sequence
-"@actions" :
-  - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
-    "publicationSet" : testing
-#    "publicationSet" : production
-#  - "@type"      : script
-#    "@script"    : bwq/prf-postprod.sh
-#    "@args"      : [ "filename" ]
-  - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
-    "message" :    "Publications to production (testing) completed"
-    "notifyuser" : "dave@epimorphics.com"
-"@onError" :
-    "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
-    "message"    : "publication to production (testing) FAILED"
-    "notifyuser" : "dave@epimorphics.com"
+
+#"@name" : api/publishProduction
+#"@type" : sequence
+#"@actions" :
+#  - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
+#    "publicationSet" : testing
+#  - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+#    "message" :    "Publications to production (testing) completed"
+#    "notifyuser" : "dave@epimorphics.com"
+#"@onError" :
+#    "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+#    "message"    : "publication to production (testing) FAILED"
+#    "notifyuser" : "dave@epimorphics.com"
+#---
+"@name"      : api/publishProduction
+"@type"      : script
+"@script"    : bwq/prf-nrw-check.sh
+"@args"      : [ "filename" ]
+"@onSuccess" :
+    "@type"  : sequence
+    "@actions" :
+    - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
+      "publicationSet" : testing
+#      "publicationSet" : production
+    - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+      "message" :    "publication to production (testing) completed"
+      "notifyuser" : "dave@epimorphics.com"
+    "@onError" :
+      "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+      "message"    : "publication to production (testing) FAILED"
+      "notifyuser" : "dave@epimorphics.com"
 ---
 # STP auto-publish endpoint - to default publication environment
 "@name" : api/autoPublish
