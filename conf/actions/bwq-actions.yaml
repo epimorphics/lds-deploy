@@ -103,9 +103,6 @@
 "@actions" :
   - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
     "publicationSet" : testing
-#  - "@type"      : script
-#    "@script"    : bwq/prf-postprod.sh
-#    "@args"      : [ "filename" ]
   - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
     "message" :    "Publications to testing completed"
     "notifyuser" : "dave@epimorphics.com"
@@ -137,14 +134,14 @@
     "@type"  : sequence
     "@actions" :
     - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
-      "publicationSet" : testing
-#      "publicationSet" : production
+#      "publicationSet" : testing
+      "publicationSet" : production
     - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
-      "message" :    "publication to production (testing) completed"
+      "message" :    "publication to production completed"
       "notifyuser" : "dave@epimorphics.com"
     "@onError" :
       "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
-      "message"    : "publication to production (testing) FAILED"
+      "message"    : "publication to production FAILED"
       "notifyuser" : "dave@epimorphics.com"
 ---
 # STP auto-publish endpoint - to default publication environment
