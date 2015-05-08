@@ -154,6 +154,8 @@
     dct:isPartOf :bwq;
     dms:dataConverter "bwq-step-change";
     dms:updatePolicy dms:series;
+    dms:sourcePublishDir  "sources/bwq/eaew/input";
+    dms:dataPublishDir    "sources/bwq/eaew/output";
     .
 
 :testData a dms:DataComponent;
