@@ -260,7 +260,7 @@ referenced :
       "<interval:hasXsdDurationDescription>" : "{$seasonIntervalDuration}^^xsd:duration"
 
 ###############################################################################
-# Template for English profiles
+# Template for profiles in English
 ###############################################################################
   - name      : revised-bwq-profile-eng
     type      : Composite
@@ -296,8 +296,9 @@ referenced :
       "<def-bwp:stepChangeStatement>"               : "{step_changes}@en"
       "<def-bwp:pollutionRiskForecastStatement>"     : "{prf_warning_summary}@en"
       "<def-bwp:visiblePollutionStatement>"          : "{visual_pollution}@en"
+      "<def-bwp:otherPollutionSourcesStatement>"    : "{other_sources}@en"
 ###############################################################################
-# Template for Welsh profiles
+# Template for profiles in Welsh
 ###############################################################################
   - name      : revised-bwq-profile-wales
     type      : Composite
@@ -325,6 +326,7 @@ referenced :
       "<def-bwp:stepChangesStatement>"              : "{w_step_changes}@cy"
       "<def-bwp:pollutionRiskForecastStatement>"      : "{w_prf_warning_summary}@cy"
       "<def-bwp:visiblePollutionStatement>"          : "{w_visual_pollution}@cy"
+      "<def-bwp:otherPollutionSourcesStatement>"    : "{w_other_sources}@en"
 
     - "@id"                    : "{$laRes}"
       "<rdfs:label>"           : "{w_la}@cy"
