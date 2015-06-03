@@ -1,0 +1,52 @@
+#!/bin/bash
+# Script to generate consolidated monhtly log file for a DMS service
+# Usage:   log-gen s3base stem month
+# E.g.     log-gen s3://dms-logs/bwq/production/presServers environment-access.log 05
+
+[[ $# = 3 ]] || { echo "Usage:   log-gen s3base stem month" 1>&2 ; exit 1 ; }
+
+readonly S3FOLDER="$1"
+readonly STEM="$2"
+readonly MONTH_NUM=$3
+readonly YEAR=$( date +%Y )
+readonly MONTH_NUM_PLUS=$( printf "%.2d" $(( $MONTH_NUM + 1 )) )
+readonly MONTH_NAME=$( date -d "2015-${MONTH_NUM}-01" +%b )
+readonly FILTER="$STEM(\$|-${YEAR}${MONTH_NUM}|-${YEAR}${MONTH_NUM_PLUS})"
+
+if [[ $S3FOLDER =~ (s3://[^/]*)/.* ]] ; then 
+    S3BUCKET="${BASH_REMATCH[1]}"
+else
+    echo "Could not parse S3 bucket from $S3FOLDER"
+    exit 1
+fi
+
+echo "Fetching potentially relevant log files"
+# Locate the log files that might include relevant entries
+# prefer compressed version over possibly-old uncompressed version
+# for date-stamped files require target month or following month (log for May created with timestamp for june)
+aws s3 ls $S3FOLDER --recursive | grep "$STEM" | awk '
+{
+    files[$4]++;
+}
+END {
+    for (i in files) {
+        if (i !~ /.gz$/) {
+            gz = i ".gz"
+            if (files[gz] != 1) {
+                print i;
+            }
+        } else {
+            print i;
+        }
+    }
+}' | egrep $FILTER |  while read line; do 
+    if [[ $line =~ .*/([^/]+)/([^/]+)$ ]]; then
+        aws s3 cp "$S3BUCKET/$line" "${BASH_REMATCH[1]}-${BASH_REMATCH[2]}"
+    fi
+done
+
+echo "Merging log files"
+MERGE="merge-$YEAR-$MONTH_NUM.log.gz"
+/usr/share/awstats/tools/logresolvemerge.pl *$STEM* | grep $MONTH_NAME/$YEAR | gzip -c > "$MERGE"
+
+aws s3 cp $MERGE "$S3FOLDER/merge/$MERGE"
