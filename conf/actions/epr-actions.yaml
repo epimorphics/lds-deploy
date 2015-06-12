@@ -1,0 +1,44 @@
+# Actions customized for the LDS epr service
+
+# Data server allocation
+"@name" : epr/server/allocate
+"@type" : script
+"@script" : "ops/generic-allocate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+#    "AWS_EBS" : 8
+    "AWS_INSTANCE_STORE" : "yes"
+    "AWS_INSTANCE_TYPE" : "m3.large"
+    "AWS_AMI" : "ami-cda130ba"
+#    "AWS_SG" : "sg-b815c7dd"   # lds-front-end
+    "AWS_SG" : "sg-091c6a6c"   # lds-combined
+    "CHEF_ENV"  : "lds-epr-server"
+    "CHEF_ROLE" : "ea-epr-server"
+    "AWS_IAM_ROLE_ARN" : "arn:aws:iam::853478862498:instance-profile/dms-update"
+---
+# Server configuration  
+"@name" : epr/server/configure
+"@type" : script
+"@script" : "ops/generic-configure.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "NRC_HOSTGROUP"  : "epr-server"
+    "NRC_SERVICESET" : "epr-data-ss"
+    "NRC_SERVICE"    : "check_http_ping"
+---
+# General publication processing
+"@name" : epr/postPublish
+"@type" : script
+"@script" : "epr/post-publish.sh"
+"@args" :
+    -  "servers"
+---
+# Publish state via S3 upload
+"@name" : epr/dupublishState
+"@type" : script
+"@script" : "ops/duPublishState.sh"
+"@env"  :
+    "STATE_FOLDER"  : "s3://dms-deploy/images/epr"
+"@args" : json

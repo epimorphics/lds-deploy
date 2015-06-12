@@ -1,0 +1,136 @@
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix version:  <http://purl.org/linked-data/version#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qb:   <http://purl.org/linked-data/cube#> .
+@prefix org:  <http://www.w3.org/ns/org#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+
+@prefix dms: <http://www.epimorphics.com/public/vocabulary/dms#> .
+
+@prefix : <http://localhost/dms/metadata/epr/> .
+
+:epr a dms:DataService;
+    rdfs:label "ePR"@en;
+    rdfs:comment "Electronic public register, currently waste carries/brokers/dealers only"@en;
+    skos:notation "epr";
+    dms:defaultPublicationSet :production;
+    dms:publicationSet :testing, :production;
+    dms:notifyUser "dave@epimorphics.com";
+    .
+
+# -- Data components --------------------------------
+
+:wcb_ir a dms:DataComponent;
+    rdfs:label "Waste CBD - IR"@en;
+    rdfs:comment "Waste carrier/broker/dealer registrations from IR"@en;
+    skos:notation "wcb_ir";
+    dct:isPartOf :epr;
+    #    dms:dataConverter "";
+    dms:updatePolicy dms:single;
+    .
+
+:wcb_serr_sim a dms:DataComponent;
+    rdfs:label "Waste CBD - SERR/SIM"@en;
+    rdfs:comment "Waste carrier/broker/dealer registrations from SERR/SIM"@en;
+    skos:notation "wcb_serr_sim";
+    dct:isPartOf :epr;
+    #    dms:dataConverter "";
+    dms:updatePolicy dms:series;
+    .
+
+:vocabularies a dms:DataComponent;
+    rdfs:label "Vocabularies"@en;
+    rdfs:comment "Collection of vocabularies/ontologies used to publish epr data."@en;
+    skos:notation "vocabularies";
+    dct:isPartOf :epr;
+    dms:updatePolicy dms:multiple;
+    dms:sourcePublishDir  "public-register/sources/def";
+    dms:dataPublishDir    "public-register/sources/def";
+    .
+
+# -- Publication sets --------------------------------
+
+:testing a dms:PublicationSet;
+    rdfs:label "Testing"@en;
+    skos:notation "testing";
+    dct:description "The publications released to the testing service."@en;
+    dms:publishAction "default/publish";
+    dms:publicationTier :testingServers;
+    dms:consolidatedUpdates false;
+    dms:postPublishAction "epr/postPublish";
+    .
+
+:production a dms:PublicationSet;
+    rdfs:label "Production"@en;
+    skos:notation "production";
+    dct:description "The publications released to production."@en;
+    dms:publishAction "epr/publish";
+    dms:publicationTier :productionServers;
+    dms:consolidatedUpdates false;
+    dms:postPublishAction "epr/postPublish";
+    .
+
+# -- Tiers --------------------------------
+
+:testingServers a dms:Tier;
+    rdfs:label "Data servers/pub in testing"@en;
+    dct:description "Data servers holding published data for the testing service."@en;
+    skos:notation "testingServers";
+    dms:tierRole "dataServers";
+    dms:graphEndpoint   "http://{address}:3030/ds/data";
+    dms:updateEndpoint  "http://{address}:3030/ds/update";
+    dms:queryEndpoint  "http://{address}:3030/ds/query";
+    dms:configureAction "epr/server/configure";
+    dms:allocateAction "epr/server/allocate";
+    dms:terminateAction "default/terminate";
+    dms:parallelPublish true ;
+    dms:externalState  true;
+    dms:loadStateAction "epr/loadState";
+    dms:catchupStateAction "generic/catchupState";
+    dms:operation :clearCacheOp;
+    .
+
+:productionServers a dms:Tier;
+    rdfs:label "Data servers/pub in production"@en;
+    dct:description "Data servers holding published data for the production service."@en;
+    skos:notation "productionServers";
+    dms:tierRole "dataServers";
+    dms:graphEndpoint   "http://{address}:3030/ds/data";
+    dms:updateEndpoint  "http://{address}:3030/ds/update";
+    dms:queryEndpoint  "http://{address}:3030/ds/query";
+    dms:loadBalancer  :pdataLB;
+    dms:configureAction "epr/server/configure";
+    dms:allocateAction "epr/server/allocate";
+    dms:terminateAction "default/terminate";
+    dms:parallelPublish true ;  # Irrelevant due to next line
+    dms:externalState  true;
+    dms:loadStateAction "epr/loadState";
+    dms:catchupStateAction "generic/catchupState";
+    dms:publishStateAction "epr/dupublishState";
+    dms:publishAction      "generic/dupublish";
+    dms:operation :clearCacheOp;
+    .
+
+:pdataLB a dms:LoadBalancer;
+    rdfs:label "Production Data LB"@en;
+    rdfs:comment "Load balancer for the production server tier"@en;
+    # Use only the default actions
+    . 
+
+:clearCacheOp
+    rdfs:label "Clear caches";
+    rdfs:comment "Clear the caches for this tier";
+    dms:action "default/clearCache";
+    skos:notation "clearCacheOp";
+    dms:tierOnly true;
+    .
+
