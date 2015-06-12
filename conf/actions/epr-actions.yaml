@@ -25,7 +25,7 @@
   - "serverDir"
 "@env"  :
     "NRC_HOSTGROUP"  : "epr-server"
-    "NRC_SERVICESET" : "epr-data-ss"
+    "NRC_SERVICESET" : "BWQ-data-ss"
     "NRC_SERVICE"    : "check_http_ping"
 ---
 # General publication processing
