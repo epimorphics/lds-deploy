@@ -1,0 +1,10 @@
+key,value
+"Major, Persistent, Severe",http://environment.data.gov.uk/public-register/def/impact/major
+Significant,http://environment.data.gov.uk/public-register/def/impact/significant
+Minor,http://environment.data.gov.uk/public-register/def/impact/minor
+None,http://environment.data.gov.uk/public-register/def/impact/none
+1,http://environment.data.gov.uk/public-register/def/impact/major
+2,http://environment.data.gov.uk/public-register/def/impact/significant
+3,http://environment.data.gov.uk/public-register/def/impact/minor
+4,http://environment.data.gov.uk/public-register/def/impact/none
+N,http://environment.data.gov.uk/public-register/def/impact/none

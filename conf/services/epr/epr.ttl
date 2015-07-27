@@ -34,7 +34,7 @@
     rdfs:comment "Waste carrier/broker/dealer registrations from IR"@en;
     skos:notation "wcb_ir";
     dct:isPartOf :epr;
-    #    dms:dataConverter "";
+    dms:dataConverter "epr-ir-csv";
     dms:updatePolicy dms:single;
     .
 
@@ -94,7 +94,7 @@
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;
     dms:externalState  true;
-    dms:loadStateAction "epr/loadState";
+    dms:loadStateAction "generic/loadState";
     dms:catchupStateAction "generic/catchupState";
     dms:operation :clearCacheOp;
     .
@@ -113,7 +113,7 @@
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;  # Irrelevant due to next line
     dms:externalState  true;
-    dms:loadStateAction "epr/loadState";
+    dms:loadStateAction "generic/loadState";
     dms:catchupStateAction "generic/catchupState";
     dms:publishStateAction "epr/dupublishState";
     dms:publishAction      "generic/dupublish";

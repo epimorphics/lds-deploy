@@ -1,0 +1,5 @@
+sub_regime,registration_type,id
+carrier and broker,carrier_broker_dealer,http://environment.data.gov.uk/public-register/def/regime/carriers-and-brokers/carrier-broker-dealer
+carrier,carrier_dealer,http://environment.data.gov.uk/public-register/def/regime/carriers-and-brokers/carrier-dealer
+broker,broker-dealer,http://environment.data.gov.uk/public-register/def/regime/carriers-and-brokers/broker-dealer
+,carrier,http://environment.data.gov.uk/public-register/def/regime/carriers-and-brokers/carrier

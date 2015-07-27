@@ -1,0 +1,258 @@
+###################################################################################
+# Template to convert IR Carriers and Brokers 
+###################################################################################
+name     : epr-ir-csv
+type     : Composite
+prefixes :
+  foaf:      "http://xmlns.com/foaf/0.1/"
+  rdf:       "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  rdfs:      "http://www.w3.org/2000/01/rdf-schema#"
+  xsd:       "http://www.w3.org/2001/XMLSchema#"
+  owl:       "http://www.w3.org/2002/07/owl#"
+  geo:       "http://www.w3.org/2003/01/geo/wgs84_pos#"
+  admingeo:  "http://data.ordnancesurvey.co.uk/ontology/admingeo/"
+  spatialrelations: "http://data.ordnancesurvey.co.uk/ontology/spatialrelations/"
+  postcode:  "http://data.ordnancesurvey.co.uk/ontology/postcode/"
+  onsadmingeo: "http://statistics.data.gov.uk/def/administrative-geography/"
+  geometry:  "http://data.ordnancesurvey.co.uk/ontology/geometry/"
+  void:      "http://rdfs.org/ns/void#"
+  dct:       "http://purl.org/dc/terms/"
+  org:       "http://www.w3.org/ns/org#"
+  qb:        "http://purl.org/linked-data/cube#"
+  skos:      "http://www.w3.org/2004/02/skos/core#"
+  time:      "http://www.w3.org/2006/time#"
+  intervals: "http://reference.data.gov.uk/def/intervals/"
+  vcard:     "http://www.w3.org/2006/vcard/ns#"
+  dgu:       "http://reference.data.gov.uk/def/reference/"
+  status:    "http://reference.data.gov.uk/def/status/"
+  reg:       "http://environment.data.gov.uk/public-register/def/registration/"
+  regime:    "http://environment.data.gov.uk/public-register/def/regime/"
+  at :        "http://environment.data.gov.uk/public-register/def/applicant-type/"
+  "schema-org" :  "http://schema.org/"
+
+requiredColumns :
+  - applicant_type
+  - business_name
+  - easting
+  - northing
+  - business_tel_number
+  - registration_date
+  - renewal_date
+  - expiry_date
+  - ir_permission_number
+required:
+  - applicant_type
+#  - business_address
+  - ir_permission_number
+#  - applicant_name
+
+# onlyIf : "{ empty(ir_ceased_date) }"
+
+sources :
+  - name       : epr-ir-registration_type
+    sourceType : CSV
+    source     : epr/registrationType.csv
+    key        : ircode
+    value      : id
+    makeURI    : true
+
+  - name       : epr-ir-subregime-registration_type
+    sourceType : CSV
+    source     : epr/subregimeRegistrationType.csv
+    key        : sub_regime
+    value      : id
+    makeURI    : true
+
+  - name       : epr-ir-business_type
+    sourceType : CSV
+    source     : epr/businessType.csv
+    key        : business_type
+    value      : id
+    makeURI    : true
+
+  - name       : epr-ir-applicant_type
+    sourceType : CSV
+    source     : epr/businessType.csv
+    key        : business_type
+    value      : at_id
+    makeURI    : true
+
+bind:
+###################################################################################
+# Helper Functions
+###################################################################################  
+  - "$cleanAddress"    : "{= $$.trim().replaceAll('^(, *)*','').replaceAll('(, *)+',', ').replaceAll('(, *)*$','')}"
+  
+    "$postcodeToUri"   : "{= empty($$) ? null :
+                             $$.matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\} [0-9][a-zA-Z]\\{2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodeunit/').append($$.toUpperCase().replaceAll(' ','')) :
+                             $$.matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\} [0-9]$') ? value('http://data.ordnancesurvey.co.uk/id/postcodesector/').append($$.toUpperCase().replaceAll(' ','')) :
+                             $$.matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodedistrict/').append($$.toUpperCase().replaceAll(' ','')) :
+                             $$.matches('^[a-zA-Z]\\{1,2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodearea/').append($$.toUpperCase().replaceAll(' ','')) :
+                             null }"
+###################################################################################
+# Clean up embedded commas in northing and easting
+# and create $point for coordinate transformations.
+###################################################################################
+  - "$northing"        : "{empty(northing) ? null : northing.replaceAll(',','').asNumber()}"
+    "$easting"         : "{empty(easting)  ? null : easting.replaceAll(',','').asNumber()}"
+  - "$point"           : "{empty($easting) || empty($northing) ? null : 
+                                  fromEastingNorthing($easting, $northing)}"
+###################################################################################
+# Constants
+###################################################################################                                   
+    "$at_person"       : "<at:person>"
+    "$foaf_Person"     : "<foaf:Person>"
+    "$org_Organization" : "<org:Organization>"
+
+###################################################################################
+# Field cleansing and other variables.
+###################################################################################         
+  - "$registration"    : "{ir_permission_number.replaceAll('/','-')}"
+    "$r_telephone"     : "{ empty(business_tel_number)  ? null : 
+                            value('tel:')
+                            .append(business_tel_number.trim()
+                                    .replaceAll(' +','-')
+                                    .replaceAll('^00','+')
+                                    .replaceAll('^0','+44-')) 
+                          }"
+    "$postcodeURI"     : "{$postcodeToUri.apply(postcode)}"
+
+# Business Name, use business name if given, otherwise applicant name if given.
+    "$business_name_raw"   : "{!empty(business_name)  && business_name.trim()!=''  ? business_name.trim() :
+                           !empty(applicant_name) && applicant_name.trim()!='' ? applicant_name.trim() : null }"
+# Contact Name, use contact name if given, otherwise applicant name or then business name
+#    "$contact_name"    : "{!empty(contact_name)   && contact_name.trim()!=''   ? contact_name.trim()   :
+#                           !empty(applicant_name) && applicant_name.trim()!='' ? applicant_name.trim() :
+#                           !empty(business_name)  && business_name.trim()!=''  ? business_name.trim()  : null }"
+    "$r_applicantType" : "<{applicant_type.map('epr-ir-applicant_type')}>"
+
+  - "$business_name"   : "{ $business_name_raw.replaceAll('\\s+',' ')}"
+###################################################################################
+# Site Address components
+###################################################################################  
+#    "$ea"              : "{empty($business_name)?'':$business_name}, {empty(house)?'':house}, {empty(building)?'':building}, {empty(street)?'':street}, {empty(locality)?'':locality}, {empty(town)?'':town}, {empty(county)?'':county}, {empty(postcode)?'':postcode}"
+  - "$ea"              : "{empty(house)?'':house}, {empty(building)?'':building}, {empty(street)?'':street}, {empty(locality)?'':locality}, {empty(town)?'':town}, {empty(county)?'':county}, {empty(postcode)?'':postcode}"
+#    "$sa"              : "{empty(house)?'':house}, {empty(building)?'':building}, {empty(street)?'':street}, {empty(locality)?'':locality}"
+    "$sa"              : "{empty(house)?'':house}, {empty(building)?'':building}, {empty(street)?'':street}"
+    "$lt"              : "{empty(locality)?'':locality}, {empty(town)?'':town}"
+  - "$extendedAddress" : "{$cleanAddress.apply($ea)}"
+    "$streetAddress"   : "{$cleanAddress.apply($sa)}"
+    "$localityTown"    : "{$cleanAddress.apply($lt)}"    
+    
+###################################################################################
+# Entity URI
+###################################################################################    
+  - "$regName"         : "waste-carriers-brokers"
+  - "$base"            : "http://environment.data.gov.uk/public-register/{$regName}"
+  - "$r_register"      : "{$base}/register"
+    "$id_reg"          : "{$base}/id"
+  - "$r_registration"  : "{$id_reg}/{$registration}"
+  - "$r_holder"        : "{$r_registration}/holder/0"
+    "$r_site"          : "{$r_registration}/site/0"
+    "$r_siteLocation"  : "{(empty(northing)||empty(easting)) ? null : $r_registration.append('/site/0/location/0')}"
+    "$r_siteAddress"   : "{$r_registration}/site/0/address/0"
+    "$r_applicant"     : "{empty(applicant_name) ? null : $r_registration.append('/applicant/0')}"
+    
+###################################################################################
+# OneOff Register info
+###################################################################################    
+oneOffs :
+  - name :                    epr-ir-register
+    "@id"                     : "<{$r_register}>"
+    "<rdf:type>"              : "<reg:Register>"
+    "<rdfs:label>"            : "Waste Carriers and Brokers Public Register for England@en"
+    
+###################################################################################
+# Templates to call
+###################################################################################
+templates:
+  - epr-ir-registration
+  - epr-ir-holder
+  - epr-ir-site
+  - epr-ir-applicant
+  - epr-ir-site-address
+  - epr-ir-site-location
+
+###################################################################################
+# Called template definitions
+###################################################################################
+referenced:
+###################################################################################
+# Registration
+###################################################################################    
+  - name : epr-ir-registration
+    "@id"                     : "<{$r_registration}>"
+    "<rdfs:label>"            : "Registration {ir_permission_number}@en" 
+    "<rdf:type>"              : "<reg:Registration>"
+    "<reg:register>"          : "<{$r_register}>"
+    "<skos:notation>"         : "{ir_permission_number}"
+    "<reg:eprReferenceNumber>": "{current_registration_number}" # But its not a number!!!!
+    "<reg:holder>"            : "<{$r_holder}>"
+    "<reg:regime>"            : "<{sub_regime.toLowerCase().map('epr-ir-subregime-registration_type')}>"
+#    "<at:applicantType>"      : "<{applicant_type.map('epr-ir-applicant_type')}>"
+    "<at:applicantType>"      : "{$r_applicantType}"
+    "<reg:applicant>"         : "<{$r_applicant}>"
+    "<reg:site>"              : "<{$r_site}>"
+#    "<reg:Address>"           : "<{$id_reg}/{$registration}/address/0>"
+    "<reg:registrationDate>"  : "{empty(registration_date) ? null : registration_date.asDate('MM/dd/yyyy|MM/dd/yyyy HH:mm:ss|MM/dd/yyyy hh:mm:ss a','xsd:date')}"
+    "<reg:expiryDate>"        : "{empty(expiry_date)       ? null : expiry_date.asDate(      'MM/dd/yyyy|MM/dd/yyyy HH:mm:ss|MM/dd/yyyy hh:mm:ss a','xsd:date')}"
+    "<reg:renewalDate>"       : "{empty(renewal_date)      ? null : renewal_date.asDate(     'MM/dd/yyyy|MM/dd/yyyy HH:mm:ss|MM/dd/yyyy hh:mm:ss a','xsd:date')}"
+
+###################################################################################
+# Holder
+###################################################################################    
+  - name : epr-ir-holder
+    "@id"                     : "<{$r_holder}>"
+    "<rdfs:label>"            : "Holder for registration {ir_permission_number}@en" 
+    "<rdf:type>"              : [ "<{$r_applicantType == $at_person ? $foaf_Person : $org_Organization}>", "<{applicant_type.map('epr-ir-business_type')}>"]
+    "<foaf:name>"             : "{$business_name}"
+    "<vcard:tel>"             : "<{$r_telephone}>"
+    "<org:hasSite>"           : "<{$r_site}>"
+###################################################################################
+# Applicant
+###################################################################################    
+  - name : epr-ir-applicant
+    "@id"                     : "<{$r_applicant}>"
+    "<rdfs:label>"            : "Applicant for registration {ir_permission_number}@en" 
+    "<rdf:type>"              : "<foaf:Agent>"
+    "<at:applicantType>"      : "{$r_applicantType}"
+    "<foaf:name>"             : "{applicant_name}"
+
+###################################################################################
+# Site
+###################################################################################    
+  - name : epr-ir-site
+    "@id"                          : "<{$r_site}>"
+    "<rdfs:label>"                 : "Site for registration {ir_permission_number}@en" 
+    "<geo:location>"               : "<{$r_siteLocation}>"
+    "<org:siteAddress>"            : "<{$r_siteAddress}>"
+    "<org:siteOf>"                 : "<{$r_holder}>"
+
+###################################################################################
+# Site Address
+###################################################################################    
+  - name : epr-ir-site-address
+    "@id"                          : "<{$r_siteAddress}>"
+    "<rdfs:label>"                 : "Site Address for registration {ir_permission_number}@en"
+    "<rdf:type>"                   : "<vcard:Address>"
+    "<vcard:extended-address>"     : "{$extendedAddress}"
+    "<vcard:organization-name>"    : "{$business_name}"
+    "<vcard:street-address>"       : "{$streetAddress}"
+    "<vcard:locality>"             : "{$localityTown}"  # "{empty(town)   ? null : town}"
+    "<vcard:region>"               : "{empty(county) ? null : county}"
+    "<vcard:postal-code>"          : "{postcode}"
+    "<vcard:tel>"                  : "<{$r_telephone}>"
+    "<postcode:postcode>"          : "<{$postcodeURI}>"
+    "<geo:location>"               : "<{$r_siteLocation}>"
+ 
+###################################################################################
+# Site Location
+###################################################################################      
+  - name : epr-ir-site-location
+    "@id"                          : "<{$r_siteLocation}>"
+    "<rdfs:label>"                 : "Site location for registration {ir_permission_number}@en"
+    "<rdf:type>"                   : "<geo:Point>"
+    "<spatialrelations:easting>"   : "{$easting}"
+    "<spatialrelations:northing>"  : "{$northing}"
+    "<geo:lat>"                    : "{empty($point) ? null : $point.latLiteral}"
+    "<geo:long>"                   : "{empty($point) ? null : $point.lonLiteral}"

@@ -1,0 +1,5 @@
+ircode,registration_type,id
+3,carrier_broker_dealer,http://environment.data.gov.uk/public-register/def/regime/carriers-and-brokers/carrier-broker-dealer
+1,carrier_dealer,http://environment.data.gov.uk/public-register/def/regime/carriers-and-brokers/carrier-dealer
+2,broker-dealer,http://environment.data.gov.uk/public-register/def/regime/carriers-and-brokers/broker-dealer
+,carrier,http://environment.data.gov.uk/public-register/def/regime/carriers-and-brokers/carrier

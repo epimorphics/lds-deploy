@@ -1,0 +1,19 @@
+"@name"      : monitor/epr-ir-upload
+"@javaclass" : com.epimorphics.dms.updates.UploadAction
+"service"    : epr
+"component"  : wcb_ir
+"user"       : monitor-user
+---
+"@name"      : monitor/epr-ir-rebuild
+"@type" : sequence
+"@actions" :
+  - "@javaclass" : com.epimorphics.dms.updates.UploadAction
+    "service"    : epr
+    "component"  : wcb_ir
+    "user"       : monitor-user
+  - "@type"      : script
+    "@script"    : epr/dbrebuild.sh
+    "@args"      :
+       - "publishableFile"
+  # TODO install image in production tier
+

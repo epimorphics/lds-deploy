@@ -1,0 +1,81 @@
+@prefix :        <http://localhost/epr#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
+@prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
+@prefix text:    <http://jena.apache.org/text#> .
+@prefix vcard:   <http://www.w3.org/2006/vcard/ns#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix fuseki:  <http://jena.apache.org/fuseki#> .
+
+[] rdf:type fuseki:Server ;
+   # Timeout - server-wide default: milliseconds.
+   # Format 1: "1000" -- 1 second timeout
+   # Format 2: "10000,60000" -- 10s timeout to first result, then 60s timeout to for rest of query.
+   # See java doc for ARQ.queryTimeout
+     ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "50000,60000" ] ;
+   # ja:loadClass "your.code.Class" ;
+
+   fuseki:services (
+     <#service_ds>
+   ) .
+
+<#service_ds> rdf:type fuseki:Service ;
+    rdfs:label                             "TDB Service (RW)" ;
+    fuseki:name                            "ds" ;
+    fuseki:serviceQuery                    "query" ;
+    fuseki:serviceQuery                    "sparql" ;
+    fuseki:serviceUpdate                   "update" ;
+    fuseki:serviceUpload                   "upload" ;
+    fuseki:serviceReadWriteGraphStore      "data" ;
+    # A separate read-only graph store endpoint:
+    fuseki:serviceReadGraphStore           "get" ;
+    fuseki:dataset                         :ds-with-lucene ;
+    .
+
+## Initialize TDB
+[] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
+tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
+tdb:GraphTDB    rdfs:subClassOf  ja:Model .
+
+## Initialize text query
+[] ja:loadClass       "org.apache.jena.query.text.TextQuery" .
+# A TextDataset is a regular dataset with a text index.
+text:TextDataset      rdfs:subClassOf   ja:RDFDataset .
+# Lucene index
+text:TextIndexLucene  rdfs:subClassOf   text:TextIndex .
+# Solr index
+text:TextIndexSolr    rdfs:subClassOf   text:TextIndex .
+
+:ds-with-lucene rdf:type     text:TextDataset ;
+    text:dataset   :dataset ;
+    text:index     :indexLucene ;
+    .
+
+# A TDB datset used for RDF storage
+:dataset rdf:type      tdb:DatasetTDB ;
+    tdb:location "DS-DB" ;
+    tdb:unionDefaultGraph true ; # Optional
+    .
+
+# Text index description
+:indexLucene a text:TextIndexLucene ;
+    text:directory <file:DS-DB-lucene> ;
+    ##text:directory "mem" ;
+    text:entityMap :entMap ;
+    .
+
+# Mapping in the index
+# URI stored in field "uri"
+# rdfs:label is mapped to field "text"
+:entMap a text:EntityMap ;
+    text:entityField      "uri" ;
+    text:defaultField     "name" ;
+    text:map (
+         [ text:field "name"         ; text:predicate foaf:name  ]
+         [ text:field "notation"     ; text:predicate skos:notation ]
+         [ text:field "address"      ; text:predicate vcard:extended-address ]
+         [ text:field "town"         ; text:predicate vcard:locality ]
+         [ text:field "postcode"     ; text:predicate vcard:postal-code  ]
+         ) .
