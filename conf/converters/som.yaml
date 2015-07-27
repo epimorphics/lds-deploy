@@ -1,6 +1,6 @@
 { "name" : "bwq-suspension-of-monitoring",
   "type" : "Composite",
-  "requiredColumns" : [
+  "required" : [
       "as_id",
       "date_time_stamp",
       "bw_season",
@@ -10,10 +10,10 @@
 #      "end_date",
 #      "end_time",
       "region",
-      "bathing_water",
+#      "bathing_water",
       "bw_ref",
       "situation_description",
-      "additional_comments",
+#      "additional_comments",
 #      "nirs_ref"
    ],
     "bind" : [
@@ -43,11 +43,11 @@
 #####################################################################################################################       
             "$l_expectedEndOfSuspension" : "{empty(expected_end_date) 
                                                 ? null : 
-                                                  expected_end_date.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss','xsd:dateTime')
+                                                  expected_end_date.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss|dd/MM/yyyy HH:mm|dd-MM-yyyy HH:mm|yyyy-MM-dd HH:mm|yyyy/MM/dd HH:mm','xsd:dateTime')
                                                   .format('yyyy-MM-dd')
                                                   .asDate('xsd:date')
                                             }",
-            "$l_recordDateTime"      : "{date_time_stamp.asDate('dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss','xsd:dateTime')}",
+            "$l_recordDateTime"      : "{date_time_stamp.asDate('dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss|dd/MM/yyyy HH:mm|dd-MM-yyyy HH:mm|yyyy-MM-dd HH:mm|yyyy/MM/dd HH:mm','xsd:dateTime')}",
 
 #####################################################################################################################
 # Helper functions.                 
@@ -62,8 +62,8 @@
 # Incidentally, at the time of writing .asDate('xsd:time').format('HH:mm:ss) doesn't work on 'xsd:time' literals.
 # SKW 2014-10-07
 #####################################################################################################################
-            "$extractDate"           : "{= $$.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss','xsd:dateTime').format('yyyy-MM-dd')}",
-            "$extractTime"           : "{= $$.asDate('HH:mm:ss|dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss','xsd:dateTime').format('HH:mm:ss')}"
+            "$extractDate"           : "{= $$.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss|dd/MM/yyyy HH:mm|dd-MM-yyyy HH:mm|yyyy-MM-dd HH:mm|yyyy/MM/dd HH:mm','xsd:dateTime').format('yyyy-MM-dd')}",
+            "$extractTime"           : "{= $$.asDate('HH:mm:ss|dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss|HH:mm|dd/MM/yyyy HH:mm|dd-MM-yyyy HH:mm|yyyy-MM-dd HH:mm|yyyy/MM/dd HH:mm','xsd:dateTime').format('HH:mm:ss')}"
         }, 
         {
             "$s_startDate"           : "{$extractDate.apply(start_date)}",

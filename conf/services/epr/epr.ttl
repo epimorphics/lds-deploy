@@ -96,6 +96,8 @@
     dms:externalState  true;
     dms:loadStateAction "generic/loadState";
     dms:catchupStateAction "generic/catchupState";
+    dms:publishStateAction "epr/dupublishState";
+    dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
     .
 
