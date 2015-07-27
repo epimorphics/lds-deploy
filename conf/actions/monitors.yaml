@@ -15,5 +15,8 @@
     "@script"    : epr/dbrebuild.sh
     "@args"      :
        - "publishableFile"
-  # TODO install image in production tier
-
+  - "@type"      : script
+    "@script"    : dbutil/resetTierData.sh
+    "@env"       :
+       "tierDir"   : "/var/opt/dms/services/epr/publicationSets/testing/tiers/testingServers"
+#       "tierDir"   : "/var/opt/dms/services/epr/publicationSets/production/tiers/productionServers"
