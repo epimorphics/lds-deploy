@@ -2,21 +2,22 @@
 "@javaclass" : com.epimorphics.dms.updates.UploadAction
 "service"    : epr
 "component"  : wcb_ir
-"user"       : monitor-user
+"userid"     : monitor-user
 ---
 "@name"      : monitor/epr-ir-rebuild
-"@type" : sequence
-"@actions" :
-  - "@javaclass" : com.epimorphics.dms.updates.UploadAction
-    "service"    : epr
-    "component"  : wcb_ir
-    "user"       : monitor-user
-  - "@type"      : script
+"userid"     : monitor-user
+"@javaclass" : com.epimorphics.dms.updates.UploadAction
+"service"    : epr
+"component"  : wcb_ir
+"@onSuccess" :
+    "@type"      : script
     "@script"    : epr/dbrebuild.sh
     "@args"      :
        - "publishableFile"
-  - "@type"      : script
-    "@script"    : dbutil/resetTierData.sh
-    "@env"       :
-       "tierDir"   : "/var/opt/dms/services/epr/publicationSets/testing/tiers/testingServers"
+    "@onSuccess" :
+        "@type"      : script
+        "@script"    : dbutil/resetTierData.sh
+        "@args"      : []
+        "@env"       :
+           "tierDir"   : "/var/opt/dms/services/epr/publicationSets/testing/tiers/testingServers"
 #       "tierDir"   : "/var/opt/dms/services/epr/publicationSets/production/tiers/productionServers"

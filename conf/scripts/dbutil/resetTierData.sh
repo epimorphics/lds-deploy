@@ -5,7 +5,6 @@
 
 set -o errexit
 
-echo "resetTierData called with: $* and env:tierDir=$tierDir"
 if [[ $# = 1 ]]; 
 then
     tierDir="$1"
