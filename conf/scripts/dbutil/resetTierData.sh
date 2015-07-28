@@ -5,10 +5,10 @@
 
 set -o errexit
 
-tierDir
+echo "resetTierData called with: $* and env:tierDir=$tierDir"
 if [[ $# = 1 ]]; 
 then
-    tierDir = "$1"
+    tierDir="$1"
 fi
 [[ -n $tierDir ]] || { echo "Internal error calling resetTierData.sh, no tier given" 1>&2 ; exit 1 ; }
 
