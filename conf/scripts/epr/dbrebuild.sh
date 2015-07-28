@@ -2,6 +2,7 @@
 # Build a new epr database image from an IR upload
 # usage: dbrebuild.sh  ir-file
 
+set -o errexit
 [[ $# = 1 ]] || { echo "Usage: dbrebuild.sh ir_file" 1>&2 ; exit 1 ; }
 
 readonly JENA_BASE=/opt/jena/bin
