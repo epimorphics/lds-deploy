@@ -83,6 +83,7 @@
     skos:notation "reference";
     dct:isPartOf :bwq;
     dms:dataConverter "bwq-sites";
+    dms:uploadAction  "bwq/convertUploadInMemory" ;
     dms:updatePolicy dms:single;
     dms:asMapSource  "bwq-sp-to-bw";
     dms:sourcePublishDir  "sources/bwq/eaew/input";

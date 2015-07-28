@@ -170,3 +170,8 @@
 "@script" : "bwq/web-sync.sh"
 "@args" :
   - "tier"
+---
+# Data conversion which forces non-streaming mode (needed for reference data)
+"@name"         : "bwq/convertUploadInMemory"
+"@javaclass"    : "com.epimorphics.dms.dc.ConversionAction"
+"forceInMemory" : true
