@@ -1,0 +1,181 @@
+# NEDS_SUMMARY_VIEW_ID
+# OFFENDER
+# COMPANY_NO
+# INDUSTRY_SECTOR
+# BUILDING
+# HOUSE
+# STREET
+# LOCALITY
+# OFFENDER_TOWN
+# OFFENDER_COUNTY
+# OFFENDER_POSTCODE
+# EA_REGION
+
+- name  :  epr-enforcement-action-summary
+
+  type  :  Composite 
+
+  prefixes :
+    foaf:      "http://xmlns.com/foaf/0.1/"
+    rdf:       "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    rdfs:      "http://www.w3.org/2000/01/rdf-schema#"
+    xsd:       "http://www.w3.org/2001/XMLSchema#"
+    owl:       "http://www.w3.org/2002/07/owl#"
+    geo:       "http://www.w3.org/2003/01/geo/wgs84_pos#"
+    admingeo:  "http://data.ordnancesurvey.co.uk/ontology/admingeo/"
+    spatialrelations: "http://data.ordnancesurvey.co.uk/ontology/spatialrelations/"
+    postcode:  "http://data.ordnancesurvey.co.uk/ontology/postcode/"
+    onsadmingeo: "http://statistics.data.gov.uk/def/administrative-geography/"
+    geometry:  "http://data.ordnancesurvey.co.uk/ontology/geometry/"
+    void:      "http://rdfs.org/ns/void#"
+    dct:       "http://purl.org/dc/terms/"
+    org:       "http://www.w3.org/ns/org#"
+    qb:        "http://purl.org/linked-data/cube#"
+    skos:      "http://www.w3.org/2004/02/skos/core#"
+    time:      "http://www.w3.org/2006/time#"
+    intervals: "http://reference.data.gov.uk/def/intervals/"
+    vcard:     "http://www.w3.org/2006/vcard/ns#"
+    dgu:       "http://reference.data.gov.uk/def/reference/"
+    status:    "http://reference.data.gov.uk/def/status/"
+    reg:       "http://environment.data.gov.uk/public-register/def/registration/"
+    regime:    "http://environment.data.gov.uk/public-register/def/regime/"
+    at :        "http://environment.data.gov.uk/public-register/def/applicant-type/"
+    "schema-org" :  "http://schema.org/"
+
+  bind :
+###################################################################################
+# Utility Functions
+###################################################################################   
+    - "$cleanAddress"     : "{= empty($$) ? null : $$.trim().replaceAll('^(, *)*','').replaceAll('(, *)+',', ').replaceAll('(, *)*$','')}"
+      "$labelToNotation"  : "{= empty($$) ? null : $$.trim().toLowerCase().replaceAll('[\\s_,\\-\\#\\?\\&]+','-')}"
+      "$postcodeToUri"    : "{= empty($$) ? null :
+                               $$.matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\} [0-9][a-zA-Z]\\{2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodeunit/').append($$.toUpperCase().replaceAll(' ','')) :
+                               $$.matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\} [0-9]$') ? value('http://data.ordnancesurvey.co.uk/id/postcodesector/').append($$.toUpperCase().replaceAll(' ','')) :
+                               $$.matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodedistrict/').append($$.toUpperCase().replaceAll(' ','')) :
+                               $$.matches('^[a-zA-Z]\\{1,2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodearea/').append($$.toUpperCase().replaceAll(' ','')) :
+                               null }"
+###################################################################################
+# URI variables and useful(?) constants.
+###################################################################################   
+    - "$postcodeURI"      : "{$postcodeToUri.apply(offender_postcode)}"
+      "$regName"          : "enforcement-action"
+      "$base"             : "http://environment.data.gov.uk/public-register"
+
+    - "$regBase"          : "{$base}/{$regName}"
+      "$at_person"        : "<at:person>"
+      "$foaf_Person"      : "<foaf:Person>"
+      "$org_Organization" : "<org:Organization>"
+      "$ch_base"          : "http://business.data.gov.uk/id/company/"
+
+    - "r_register"               : "{$regBase}/register"
+      "r_offender"               : "{$regBase}/id/{neds_summary_view_id}/offender/0"
+      "r_action"                 : "{$regBase}/id/{neds_summary_view_id}"
+      "r_industry_sector_scheme" : "{$base}/def/industry-sector/scheme"
+      "l_industry_sector_notation" :
+                            "{empty(industry_sector) ? 
+                                 null :
+                                 $labelToNotation.apply(industry_sector.replaceAll('\\(Industry Sector\\)',''))
+                             }"
+
+    - "r_industry_sector" : "{empty(industry_sector) ? 
+                                null : 
+                                $base.append('/def/industry-sector/')
+                                     .append(l_industry_sector_notation)
+                             }"
+      "$actionDate"       : "{date_of_action.asDate('MM/dd/yyyy|MM-dd-yyyy','xsd:date')}"
+
+###################################################################################################################################
+# Clean up 'building' fields that simply repeat 'house' concatenated with 'street'
+###################################################################################################################################
+    -  "$b0"              : "{empty(house)    ? ''   : house.trim()} {empty(street) ? '' : street.trim()}"
+    -  "$b1"              : "{empty($b0)      ? null : $b0.replaceAll('\\s+', ' ').trim()}"
+       "$b2"              : "{empty(building) ? null : building.replaceAll('\\s+', ' ').trim()}"
+
+    -  "$building"        : "{$b1 == $b2 ? '' : building}"
+       "$county"          : "{empty(offender_county) || size(offender_county.trim().value) < 2 ? '' : offender_county  }" 
+###################################################################################################################################
+    - "$ea"    : "{empty(house)?'':house}, {empty($building)?'':$building}, {empty(street)?'':street}, {empty(locality)?'':locality}, {empty(offender_town)?'':offender_town}, {empty($county)?'':$county}, {empty(offender_postcode)?'':offender_postcode}"
+      "$sa"    : "{empty(house)?'':house}, {empty($building)?'':$building}, {empty(street)?'':street}, {empty(locality)?'':locality}"
+      "$lt"    : "{empty(locality)?'':locality}, {empty(town)?'':offender_town}"
+
+    - "$extendedAddress" : "{$cleanAddress.apply($ea)}"
+      "$streetAddress"   : "{$cleanAddress.apply($sa)}"
+      "$localityTown"    : "{$cleanAddress.apply($lt)}"
+
+    - "r_offenderAddress" : "{(empty($streetAddress)|| $streetAddress.trim()=='') ? null : r_offender.append('/address/0')}"  
+      "r_business_ch"      : "{(empty(company_no) || !company_no.matches('[0-9]+')) ? null :$ch_base.append(company_no.asNumber().format('%08d'))}"
+
+  oneOffs :
+###################################################################################
+# One off include the Register for Registrations to be 'in'.
+###################################################################################   
+    - name :                    epr-enforcement-action-register
+      "@id"                     : "<{r_register}>"
+      "<rdf:type>"              : "<reg:Register>"
+      "<rdfs:label>"            : "Enforcement Action Public Register for England@en"
+
+###################################################################################
+# One off Concept scheme for Industry Sectors.
+###################################################################################   
+    - name               : epr-enforcement-action-industry-sector-scheme
+      "@id"              : "<{r_industry_sector_scheme}>"
+      "<rdf:type>"       : "<skos:ConceptScheme>"
+      "<skos:prefLabel>"  : "SKOS Concept Scheme for Industry Sectors noted in Enforcement Action records@en"
+
+  templates :
+    - epr-enforcement-action-enforcement-action
+    - epr-enforcement-action-offender
+    - epr-enforcement-action-offender-address
+    - epr-enforcement-action-industry-sector
+
+  referenced : 
+###################################################################################
+# Enforcement Action
+###################################################################################   
+    - name                     : epr-enforcement-action-enforcement-action
+      "@id"                    : "<{r_action}>"
+      "<rdf:type>"             : [ "<reg:EnforcementAction>", "<reg:RegisterItem>" ]
+      "<reg:register>"         : "<{r_register}>"
+      "<reg:regime>"           : "<{r_regime}>"
+      "<reg:actionDate>"       : "{$actionDate}"
+      "<reg:offender>"         : "<{r_offender}>"
+      "<skos:notation>"        : "{neds_summary_view_id}"
+
+###################################################################################
+# Offender
+###################################################################################   
+    - name                     :  epr-enforcement-action-offender
+      "@id"                    : "<{r_offender}>"
+      "<rdf:type>"             : "<foaf:Agent>"
+      "<foaf:name>"            : "{offender}@en"
+      "<owl:sameAs>"           : "<{r_business_ch}>"
+      "<reg:industrySector>"   : "<{r_industry_sector}>"
+      "<vcard:hasAddress>"     : "<{r_offenderAddress}>"
+      "<org:identifer>"        : "{empty(company_no) ? null : company_no.asString()}"
+#      "<reg:enforcementAction>" : "<{r_action}>"
+
+###################################################################################
+# Offender's Address
+###################################################################################   
+    - name                        : epr-enforcement-action-offender-address
+      "@id"                       : "<{r_offenderAddress}>"
+      "<rdf:type>"                : "<vcard:Address>"
+      "<vcard:extended-address>"  : "{$extendedAddress}"
+      "<vcard:organization-name>" : "{offender}"
+      "<vcard:street-address>"    : "{$streetAddress}"
+      "<vcard:locality>"          : "{empty(offender_town)   ? null : offender_town}"
+      "<vcard:region>"            : "{empty($county) ? null : $county}"
+      "<vcard:postal-code>"       : "{offender_postcode}"
+      "<postcode:postcode>"       : "<{$postcodeURI}>"
+
+###################################################################################
+# Offender's Industry Sector
+###################################################################################   
+    - name                    : epr-enforcement-action-industry-sector
+      "@id"                   : "<{r_industry_sector}>"
+      "<rdf:type>"            : [ "<skos:Concept>" , "<reg:IndustrySector>"]
+      "<skos:notation>"       : "{l_industry_sector_notation}"
+      "<skos:prefLabel>"      : "{industry_sector}@en"
+      "<skos:inScheme>"       : "<{r_industry_sector_scheme}>"
+      "<skos:topConceptOf>"   : "<{r_industry_sector_scheme}>"
+      "^<skos:hasTopConcept>" : "<{r_industry_sector_scheme}>"

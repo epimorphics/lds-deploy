@@ -47,6 +47,24 @@
     dms:updatePolicy dms:series;
     .
 
+:enfact_summary a dms:DataComponent;
+    rdfs:label "Enforcement actions - summary"@en;
+    rdfs:comment "Enforcement actions summary data"@en;
+    skos:notation "enfact_summary";
+    dct:isPartOf :epr;
+    dms:dataConverter "epr-enforcement-action-summary";
+    dms:updatePolicy dms:series;
+    .
+
+:enfact_detail a dms:DataComponent;
+    rdfs:label "Enforcement actions - detail"@en;
+    rdfs:comment "Enforcement actions detail data"@en;
+    skos:notation "enfact_detail";
+    dct:isPartOf :epr;
+    dms:dataConverter "epr-enforcement-action-detail";
+    dms:updatePolicy dms:series;
+    .
+
 :vocabularies a dms:DataComponent;
     rdfs:label "Vocabularies"@en;
     rdfs:comment "Collection of vocabularies/ontologies used to publish epr data."@en;

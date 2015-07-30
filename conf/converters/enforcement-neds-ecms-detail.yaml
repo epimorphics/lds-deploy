@@ -1,0 +1,341 @@
+# NEDS_SUMMARY_VIEW_ID
+# ACTION_DATE
+# ACTION_TYPE
+# TOTAL_FINE
+# CASE_REFERENCE
+# EVENT_REFERENCE
+# EVENT_ADDRESS
+# EVENT_TOWN
+# EVENT_COUNTY
+# EVENT_POSTCODE
+# AGENCY_FUNCTION
+# SUB_CATEGORY
+# DESCRIPTION
+# WATER_IMPACT
+# LAND_IMPACT
+# AIR_IMPACT
+# ACT
+# SECTION
+# PENALTY_TYPE
+# FINE
+# CDF_NEDS_ID
+
+- name  :  epr-enforcement-action-detail
+
+  type  :  Composite 
+
+  prefixes :
+    foaf:      "http://xmlns.com/foaf/0.1/"
+    rdf:       "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    rdfs:      "http://www.w3.org/2000/01/rdf-schema#"
+    xsd:       "http://www.w3.org/2001/XMLSchema#"
+    owl:       "http://www.w3.org/2002/07/owl#"
+    geo:       "http://www.w3.org/2003/01/geo/wgs84_pos#"
+    admingeo:  "http://data.ordnancesurvey.co.uk/ontology/admingeo/"
+    spatialrelations: "http://data.ordnancesurvey.co.uk/ontology/spatialrelations/"
+    postcode:  "http://data.ordnancesurvey.co.uk/ontology/postcode/"
+    onsadmingeo: "http://statistics.data.gov.uk/def/administrative-geography/"
+    geometry:  "http://data.ordnancesurvey.co.uk/ontology/geometry/"
+    void:      "http://rdfs.org/ns/void#"
+    dct:       "http://purl.org/dc/terms/"
+    org:       "http://www.w3.org/ns/org#"
+    qb:        "http://purl.org/linked-data/cube#"
+    skos:      "http://www.w3.org/2004/02/skos/core#"
+    time:      "http://www.w3.org/2006/time#"
+    intervals: "http://reference.data.gov.uk/def/intervals/"
+    vcard:     "http://www.w3.org/2006/vcard/ns#"
+    dgu:       "http://reference.data.gov.uk/def/reference/"
+    status:    "http://reference.data.gov.uk/def/status/"
+    reg:       "http://environment.data.gov.uk/public-register/def/registration/"
+    regime:    "http://environment.data.gov.uk/public-register/def/regime/"
+    at :        "http://environment.data.gov.uk/public-register/def/applicant-type/"
+    "schema-org" :  "http://schema.org/"
+
+  required :
+      - neds_summary_view_id
+      - cdf_neds_id
+
+  sources :
+    - name         : epr-enforcement-action-impact
+      sourceType   : "CSV"
+      source       : "epr/impact.csv"
+      key          : "key"
+      value        : "value"
+      makeURI      : true
+
+  bind :
+    - "$cleanAddress"     : "{= (empty($$) || $$=='') ? null : $$.trim().replaceAll('^(, *)*','').replaceAll('(, *)+',', ').replaceAll('(, *)*$','')}"
+
+      "$labelToSlug"      : "{= (empty($$) || $$=='') ? null : 
+                                                        $$.trim()
+                                                       .toLowerCase() 
+                                                       .replaceAll('((^[\\-,`\\'\\s\\.]+)|([\\-,`\\'\\s\\.]*$)|([`\\']+))','')
+                                                       .replaceAll('[\\s_,\\-\\#\\?\\&/:\\[\\]]+','-')}"
+
+      "$cleanLabel"       : "{= (empty($$) || $$=='') ? null : $$.replaceAll('((^[\\-,`\\'\\s\\.]+)|([\\-,`\\'\\s\\.]*$))','')}"
+
+    - "$postcodeToUri"     : "{= empty($$) ? null :
+                               $$.matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\} [0-9][a-zA-Z]\\{2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodeunit/').append($$.toUpperCase().replaceAll(' ','')) :
+                               $$.matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\} [0-9]$') ? value('http://data.ordnancesurvey.co.uk/id/postcodesector/').append($$.toUpperCase().replaceAll(' ','')) :
+                               $$.matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodedistrict/').append($$.toUpperCase().replaceAll(' ','')) :
+                               $$.matches('^[a-zA-Z]\\{1,2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodearea/').append($$.toUpperCase().replaceAll(' ','')) :
+                               null }"
+
+    - "$postcodeURI"               : "{$postcodeToUri.apply(event_postcode)}"
+
+      "$actionDate"                : "{action_date.asDate('MM/dd/yyyy|MM-dd-yyyy','xsd:date')}"
+
+    - "$regName"                   : "enforcement-action"
+
+    - "$base"                      : "http://environment.data.gov.uk/public-register"
+    - "$regBase"                   : "{$base}/{$regName}"
+      "l_offence_slug"              : "{neds_summary_view_id}-{cdf_neds_id}"
+      "l_incident_slug"            : "{$labelToSlug.apply(case_reference)}"
+
+    - "r_action"                   : "{$regBase}/id/{neds_summary_view_id}"
+    - "r_offence"                   : "{r_action}/offence/{cdf_neds_id}"
+      "r_offender"                 : "{r_action}/offender/0"
+      "r_incident"                 : "{r_action}/incident/{l_incident_slug}"
+####################################################################################
+# Scheme URI and concept slugs/notations
+####################################################################################    
+      "r_action_type_scheme"       : "{$regBase}/def/action-type/scheme"
+      "l_action_type_slug"         : "{$labelToSlug.apply(action_type)}"
+
+      "r_agency_function_scheme"   : "{$regBase}/def/agency-function/scheme"
+      "l_agency_function_slug"     : "{$labelToSlug.apply(agency_function)}"
+
+#      "r_offence_type_scheme"      : "{$regBase}/def/offence-type/scheme"
+#      "l_offence_type_slug"        : "{$labelToSlug.apply(act)}"
+
+      "r_penalty_type_scheme"      : "{$regBase}/def/penalty-type/scheme"
+      "l_penalty_type_slug"        : "{$labelToSlug.apply(penalty_type)}"
+
+      "r_subcategory_scheme"       : "{$regBase}/def/sub-category/scheme"
+      "l_subcategory_slug"         : "{$labelToSlug.apply(sub_category)}"
+
+      "l_legislation_slug"         : "{$labelToSlug.apply(act)}"
+      "l_offence_provision_slug"   : "{$labelToSlug.apply(act)}-{$labelToSlug.apply(section)}"
+
+####################################################################################
+# Concept Instance URI
+####################################################################################    
+    - "r_agency_function"          : "{$regBase}/def/agency-function/{l_agency_function_slug}"
+      "r_action_type"              : "{$regBase}/def/action-type/{l_action_type_slug}"
+ #     "r_offence_type"             : "{$regBase}/def/offence-type/{l_offence_type_slug}"
+      "r_penalty_type"             : "{$regBase}/def/penalty-type/{l_penalty_type_slug}"
+      "r_subcategory"              : "{$regBase}/def/sub-category/{l_subcategory_slug}"
+
+####################################################################################
+# URI for legislative elements
+####################################################################################    
+      "r_legislation"              : "{$regBase}/legislation/{l_legislation_slug}"
+      "r_provision"                : "{$regBase}/legislation/{l_offence_provision_slug}"
+
+####################################################################################
+# URI for Penalty and Incident Site
+####################################################################################    
+    - "r_penalty"                  : "{(empty(l_penalty_type_slug) && (empty(fine) || fine.value == 0)) ? null : r_offence.append('/penalty')}"
+      "r_incident_site"            : "{r_incident}/site/0"
+
+####################################################################################
+# Incident Site Address fields
+####################################################################################    
+    - "$ea"              : "{empty(event_address)?'':event_address}, {empty(event_town)?'':event_town}, {empty(event_county)?'':event_county}, {empty(event_postcode)?'':event_postcode}"
+      "$sa"              : "{empty(event_address)?'':event_address}"
+      "$lt"              : "{empty(event_town)?'':event_town}"
+
+    - "$extendedAddress" : "{$cleanAddress.apply($ea)}"
+      "$streetAddress"   : "{$cleanAddress.apply($sa)}"
+      "$localityTown"    : "{$cleanAddress.apply($lt)}"
+
+####################################################################################
+# URI for Incident Site
+####################################################################################    
+    - "r_incident_site_address"   : "{(empty($extendedAddress) || $extendedAddress.trim()=='') ? null : r_incident_site.append('/address/0')}" 
+
+# Clean up the event reference. Some are decimals with long .00000000 tails.
+# Force them to strings be cause can't be certain they are all, always, going to be numeric.
+    - "l_event_reference" : "{empty(event_reference)    ? null : value(round(event_reference.asNumber())).asString() }" 
+
+  oneOffs :
+####################################################################################
+# One Off ConceptSchemes
+####################################################################################    
+     - name              : epr-enforcement-action-action-type-scheme
+       "@id"             : "<{r_action_type_scheme}>"
+       "<rdf:type>"      : "<skos:ConceptScheme>"
+       "<skos:prefLabel>": "SKOS Concept Scheme for types of Enforcement Action@en"
+
+     - name              : epr-enforcement-action-penalty-type-scheme
+       "@id"             : "<{r_penalty_type_scheme}>"
+       "<rdf:type>"      : "<skos:ConceptScheme>"
+       "<skos:prefLabel>": "SKOS Concept Scheme for types of Penalty Types@en"
+
+     - name              : epr-enforcement-action-agency-function-scheme
+       "@id"             : "<{r_agency_function_scheme}>"
+       "<rdf:type>"      : "<skos:ConceptScheme>"
+       "<skos:prefLabel>": "SKOS Concept Scheme for Agency Functions@en"
+
+     - name              : epr-enforcement-action-subcategory-scheme
+       "@id"             : "<{r_subcategory_scheme}>"
+       "<rdf:type>"      : "<skos:ConceptScheme>"
+       "<skos:prefLabel>": "SKOS Concept Scheme for sub-categories@en"
+
+  templates :
+####################################################################################
+# Per detail row templates to call.
+####################################################################################    
+    - epr-enforcement-action-offence
+    - epr-enforcement-action-action-type
+    - epr-enforcement-action-agency-function
+    - epr-enforcement-action-incident
+    - epr-enforcement-action-penalty
+    - epr-enforcement-action-penalty-type
+    - epr-enforcement-action-subcategory
+#    - epr-enforcement-action-offence-type
+    - epr-enforcement-action-incident-site
+    - epr-enforcement-action-incident-site-address
+    - epr-enforcement-action-provision
+    - epr-enforcement-action-legislation
+
+  referenced :
+########################################################################################################################### 
+## Instantiate leaf level Enforcement action.
+## For presentation these actions may be grouped by 
+##  - "offender x action_date" <= {ned_summary_view_id}
+##  - ["case_reference" or "event_reference"]x{neds_summary_view_id}
+###########################################################################################################################
+####################################################################################
+# Instantiate Offence.
+####################################################################################    
+    - name                      : epr-enforcement-action-offence
+      "@id"                     : "<{r_offence}>"
+      "<rdf:type>"              : "<reg:Offence>"
+      "<skos:notation>"         : "{l_offence_slug}"
+      "<reg:actionType>"        : "<{r_action_type}>"
+      "<reg:offender>"          : "<{r_offender}>"
+#      "^<reg:offence>" : [ "<{r_offender}>", "<{r_action}>" ]
+      "^<reg:offence>"          : "<{r_action}>"
+      "<reg:actionDate>"        : "{$actionDate}"
+      "<reg:enforcementAction>" : "<{r_action}>"
+## TODO should incident site be more closely associated with the incident than the action/offence.
+      "<reg:incidentSite>"      : "<{r_incident_site}>"
+      "<reg:incident>"          : "<{r_incident}>"
+      "<reg:agencyFunction>"    : "<{r_agency_function}>"
+      "<reg:subCategory>"       : "<{r_subcategory}>"
+      "<reg:description>"       : "{description}"
+#      "<reg:offenceType>"      : "<{r_offence_type}>"
+      "<reg:impactLand>"        : "{empty(land_impact)   ? null : land_impact.map('epr-enforcement-action-impact')}"
+      "<reg:impactAir>"         : "{empty(air_impact)    ? null : air_impact.map('epr-enforcement-action-impact')}"
+      "<reg:impactWater>"       : "{empty(water_impact)  ? null : water_impact.map('epr-enforcement-action-impact')}"
+## TODO reconcile to legislation?? (probably not).
+      "<reg:provisionEnforced>" : "<{r_provision}>"
+      "<reg:legislationTitle>"  : "{act}@en"
+      "<reg:legislationSection>": "{section}@en"
+      "<reg:penalty>"           : "<{r_penalty}>"
+
+###########################################################################################################################
+### Instantiate an incident
+###########################################################################################################################   
+    - name                      : epr-enforcement-action-incident
+      "@id"                     : "<{r_incident}>"
+      "<rdf:type>"              : "<reg:Incident>"
+      "<skos:notation>"         : "{l_incident_slug}"
+      "<reg:caseReference>"     : "{case_reference.asString()}"
+      "<reg:incidentReference>" : "{l_event_reference}"
+      "<reg:totalFine>"         : "{(empty(total_fine) || total_fine.value == 0 ) ? null : total_fine.datatype('xsd:decimal')}"
+      "<reg:enforcementAction>" : "<{r_action}>"
+      "^<reg:incident>"         : "<{r_action}>"
+#      "<reg:offence>"           : "<{r_offence}>"
+#      "<reg:offender>"          : "<{r_offender}>"
+#      "^<reg:incident>"         : "<{r_offender}>"
+      "<reg:incidentSite>"      : "<{r_incident_site}>"
+
+###########################################################################################################################
+### Instantiate a Penalty
+###########################################################################################################################     
+    - name                      : epr-enforcement-action-penalty
+      "@id"                     : "<{r_penalty}>"
+      "<rdf:type>"              : "<reg:Penalty>"
+      "<reg:enforcementAction>" : "<{r_action}>"
+      "^<reg:penalty>"          : "<{r_action}>"
+      "<reg:offence>"           : "<{r_offence}>"
+      "<reg:penaltyType>"       : "<{r_penalty_type}>"
+# The precomputed totals for some collection of offences seems at best confused.
+# The TOTAL_FINE in the data (as opposed to as presented by the current app) is the total for actions that share neds_summary_view_id,
+# action_date, action_type and case_reference values.
+#      "<reg:totalFine>"         : "{( empty(total_fine) || total_fine.value == 0 ) ? null : total_fine.datatype('xsd:decimal')}"
+      "<reg:fine>"              : "{(empty(fine) || fine.value == 0 ) ? null : fine.datatype('xsd:decimal')}"
+
+
+###########################################################################################################################
+### Instantiate Incident Site and Site Address
+###########################################################################################################################
+    - "name"                    : epr-enforcement-action-incident-site
+      "@id"                     : "<{r_incident_site}>"
+      "<rdf:type>"              : "<org:Site>"
+      "<org:siteAddress>"       : "<{r_incident_site_address}>"
+
+    - name                      : epr-enforcement-action-incident-site-address
+      "@id"                     : "<{r_incident_site_address}>"
+      "<rdf:type>"              : "<vcard:Address>"
+      "<vcard:extended-address>" : "{$extendedAddress}"
+      "<vcard:street-address>"  : "{$streetAddress}"
+      "<vcard:locality>"        : "{empty(event_town)   ? null : event_town}"
+      "<vcard:region>"          : "{empty(event_county) ? null : event_county}"
+      "<vcard:postal-code>"     : "{event_postcode}"
+      "<postcode:postcode>"     : "<{$postcodeURI}>"
+
+###########################################################################################################################
+### Instantiate Legislation and provision associated with offence.      
+###########################################################################################################################
+    - name                      : "epr-enforcement-action-legislation"
+      "@id"                     : "<{r_legislation}>"
+      "<rdfs:label>"            : "{act}@en"
+      "<dct:title>"             : "{act}@en"
+      "<reg:provision>"         : "<{r_provision}>"
+
+    - name                      : "epr-enforcement-action-provision"
+      "@id"                     : "<{r_provision}>"
+      "<rdfs:label>"            : "{section}@en"
+      "<reg:legislation>"       : "<{r_legislation}>"
+
+###########################################################################################################################
+### Instantiate codepoints.       
+###########################################################################################################################
+    - name                    : epr-enforcement-action-action-type
+      "@id"                   : "<{r_action_type}>"
+      "<rdf:type>"            : [ "<skos:Concept>" , "<reg:EnforcementActionType>" ]
+      "<skos:notation>"       : "{l_action_type_slug}"
+      "<skos:prefLabel>"      : "{$cleanLabel.apply(action_type)}@en"
+      "<skos:inScheme>"       : "<{r_action_type_scheme}>"
+      "<skos:topConceptOf>"   : "<{r_action_type_scheme}>"
+      "^<skos:hasTopConcept>" : "<{r_action_type_scheme}>"
+
+    - name                    : epr-enforcement-action-penalty-type
+      "@id"                   : "<{r_penalty_type}>"
+      "<rdf:type>"            : [ "<skos:Concept>" , "<reg:PenaltyType>" ]
+      "<skos:notation>"       : "{l_penalty_type_slug}"
+      "<skos:prefLabel>"      : "{$cleanLabel.apply(penalty_type)}@en"
+      "<skos:inScheme>"       : "<{r_penalty_type_scheme}>"
+      "<skos:topConceptOf>"   : "<{r_penalty_type_scheme}>"
+      "^<skos:hasTopConcept>" : "<{r_penalty_type_scheme}>"
+
+    - name                    : epr-enforcement-action-agency-function
+      "@id"                   : "<{r_agency_function}>"
+      "<rdf:type>"            : [ "<skos:Concept>" , "<reg:AgencyFunction>" ]
+      "<skos:notation>"       : "{l_agency_function_slug}"
+      "<skos:prefLabel>"      : "{$cleanLabel.apply(agency_function)}@en"
+      "<skos:inScheme>"       : "<{r_agency_function_scheme}>"
+      "<skos:topConceptOf>"   : "<{r_agency_function_scheme}>"
+      "^<skos:hasTopConcept>" : "<{r_agency_function_scheme}>"
+
+    - name                    : epr-enforcement-action-subcategory
+      "@id"                   : "<{r_subcategory}>"
+      "<rdf:type>"            : [ "<skos:Concept>" , "<reg:SubCategory>" ]
+      "<skos:notation>"       : "{l_subcategory_slug}"
+      "<skos:prefLabel>"      : "{$cleanLabel.apply(sub_category)}@en"
+      "<skos:inScheme>"       : "<{r_subcategory_scheme}>"
+      "<skos:topConceptOf>"   : "<{r_subcategory_scheme}>"
+      "^<skos:hasTopConcept>" : "<{r_subcategory_scheme}>"
