@@ -1,0 +1,12 @@
+"@name"      : api/testUser
+"@type"      : script
+"@script"    : debug/debug-script.sh
+"@onSuccess" :
+    "@type"  : sequence
+    "@actions" :
+      - "@name" : "test action"
+        "@javaclass" : "com.epimorphics.dms.test.TestAction"
+        "message" : "Test opereration call first in sequence"
+        "count" : 1
+      - "@javaclass" : com.epimorphics.dms.tasks.TestUserAccessAction
+        "userid"     : backupuser
