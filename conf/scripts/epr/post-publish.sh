@@ -10,8 +10,8 @@ set -o errexit
 
 readonly serversDir="/var/opt/dms/$1"
 
-echo "Synchronizing web content, including source/dump files"
-cd $serversDir/../../Web
+# echo "Synchronizing web content, including source/dump files"
+# cd $serversDir/../../Web
 for server in $serversDir/servers/* 
 do
     if grep -qv Terminated $server/status 
