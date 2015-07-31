@@ -4,9 +4,11 @@
 "@onSuccess" :
     "@type"  : sequence
     "@actions" :
-      - "@name" : "test action"
+      - "@name"      : "test action"
         "@javaclass" : "com.epimorphics.dms.test.TestAction"
-        "message" : "Test opereration call first in sequence"
-        "count" : 1
+        "message"    : "Test opereration call first in sequence"
+        "count"      : 1
+      - "@type"      : script
+        "@script"    : debug/debug-delay.sh
       - "@javaclass" : com.epimorphics.dms.tasks.TestUserAccessAction
         "userid"     : backupuser
