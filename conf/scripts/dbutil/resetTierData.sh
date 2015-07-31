@@ -17,9 +17,11 @@ FLAGS="$SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem"
 for server in $tierDir/servers/*
 do
     if grep -qv Terminated $server/status 
-        then
+    then
+        . ops/removeserver-lb.sh
         IP=$( jq -r .address "$server/config.json" )
         echo "Calling db_reset on $server"
         ssh -t -t $FLAGS -l ubuntu $IP /bin/bash /usr/local/bin/db_reset
+        . ops/addserver-lb.sh
     fi
 done
