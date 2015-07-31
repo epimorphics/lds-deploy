@@ -17,8 +17,8 @@ do
     if grep -qv Terminated $server/status 
     then
         FLAGS="$SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem"
-#        echo "Sync to $server"
-#        IP=$( jq -r .address "$server/config.json" )
+        echo "Sync to $server"
+        IP=$( jq -r .address "$server/config.json" )
 #        rsync -a --delete -e "ssh $FLAGS" * ubuntu@$IP:/var/www/html
 
         echo "Clear caches"
