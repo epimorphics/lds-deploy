@@ -1,4 +1,4 @@
 #!/bin/bash
 # Build a TDB image from the latest daily backup of the real time floods data
 cd /opt/dms/conf/scripts
-ops/buildLatestimage.sh s3://dms-deploy/images/flood-monitoring
+sudo -u tomcat7 ./ops/buildLatestImage.sh s3://dms-deploy/images/flood-monitoring

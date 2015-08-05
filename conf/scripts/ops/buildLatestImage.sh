@@ -34,8 +34,9 @@ aws s3 cp "$dump" dump.nq.gz ||  { echo "Failed to download dump $dump" 1>&2 ; e
 /opt/jena/bin/tdbloader2 --loc DS-DB dump.nq.gz ||  { echo "Failed to build image" 1>&2 ; exit 1 ; }
 tar czf DS-DB.tgz DS-DB ||  { echo "Failed to package image" 1>&2 ; exit 1 ; }
 
-# TODO - test the image, for now exit here
-exit 0
+# Check contains expected data
+readingsCount=$( /opt/jena/bin/tdbquery --results CSV --set tdb:unionDefaultGraph=true --loc=DS-DB "PREFIX rt:  <http://environment.data.gov.uk/flood-monitoring/def/core/> SELECT * WHERE {[] rt:latestReading ?id }" | wc -l )
+[[ $readingsCount > 1000 ]] || { echo "Only found $readingsCount readings, aborting"; exit 1; }
 
 # Upload the image
 echo "Uploading built image to: $image"
