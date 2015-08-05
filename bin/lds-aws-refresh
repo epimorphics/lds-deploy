@@ -13,6 +13,7 @@ if [[ -f $inst_file ]]; then
     aws ec2 describe-instances --instance-ids $instanceID | jq .Reservations[0] > $inst_file
 else
     echo "No instance configuration found in $serverDir" 1>&2
+    exit 1
 fi
 
 # Update the shortform config file
@@ -21,6 +22,7 @@ if [[ -f $serverDir/config.json ]]; then
     jq  "{ address: .Instances[0].PublicDnsName, private: .Instances[0].PrivateIpAddress, public: .Instances[0].PublicDnsName, name: \"$FULL_NAME\" }" < $serverDir/aws-instance.json > $serverDir/config.json
 else
     echo "No config.json found in $serverDir" 1>&2
+    exit 1
 fi
 
 # Update copy on S3

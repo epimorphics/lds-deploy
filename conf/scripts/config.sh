@@ -16,3 +16,5 @@ readonly NRC_HOST=127.0.0.1                 # Nagrestconf, normally on DMS contr
 export SSH_FLAGS="-q -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 readonly S3_STATE="s3://dms-deploy/dms-state"
+
+readonly DEFAULT_WORK_DIR=/tmp/dms-work

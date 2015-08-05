@@ -50,3 +50,4 @@ MERGE="merge-$YEAR-$MONTH_NUM.log.gz"
 /usr/share/awstats/tools/logresolvemerge.pl *$STEM* | grep $MONTH_NAME/$YEAR | gzip -c > "$MERGE"
 
 aws s3 cp $MERGE "$S3FOLDER/merge/$MERGE"
+rm $MERGE

@@ -1,0 +1,13 @@
+#!/bin/bash
+# Generate consolidated log files for the last month for the main services
+
+readonly WORK_DIR=/tmp/dms-work
+
+cd $WORK_DIR
+
+printf -v month "%02d" $(( 10#$(date +%m) - 1 ))
+
+log-gen s3://dms-logs/bwq/production/presServers environment-access.log $month
+log-gen s3://dms-logs/floods/production/productionServers flood-monitoring-access.log $month
+
+rm *
