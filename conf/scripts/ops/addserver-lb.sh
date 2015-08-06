@@ -8,6 +8,8 @@ set -o errexit
 . ./lib.sh
 CheckInstalls
 
+[[ $# = 1 ]] || { echo "Internal error calling $0" 1>&2 ; exit 1 ; }
+
 readonly serverDir=$1
 
 if [[ -f $serverDir/../../lb-name ]]; then

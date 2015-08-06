@@ -20,6 +20,6 @@ report_error() {
     exit 1
 }
 
-[[ $( probe "data/readings.csv?latest" | wc -l ) > 1000 ]] || report_error "Not enough readings"
-[[ $( probe "id/floods" ) != "null" ]]                     || report_error "No items in flood warnings"
-[[ $( probe "id/floodAreas?_limit=10" | wc -l ) > 9 ]]     || report_error "Not enough flood areas"
+[[ $( probe "data/readings.csv?latest" | wc -l ) > 1000 ]]   || report_error "Not enough readings"
+[[ $( probe "id/floods" ) != "null" ]]                       || report_error "No items in flood warnings"
+[[ $( probe "id/floodAreas.csv?_limit=10" | wc -l ) > 9 ]]   || report_error "Not enough flood areas"
