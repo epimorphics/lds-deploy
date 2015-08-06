@@ -63,3 +63,15 @@
 "@env"  :
     "STATE_FOLDER"  : "s3://dms-deploy/images/flood-monitoring"
 "@args" : json
+---
+# Rebuild latest DB image from S3 and install on tier
+"@name" : floods/rebuildDB
+"@type" : script
+"@script" : "dbutil/buildLatestImage.sh"
+"@args" :
+  - "tier"
+"@onSuccess" :
+    "@type" : script
+    "@script" : "dbutil/resetTierData.sh"
+    "@args" :
+      - "tier"

@@ -118,7 +118,7 @@
     dms:catchupStateAction "floods/catchupState";
     dms:publishStateAction "floods/dupublishState";
     dms:publishAction      "generic/dupublish";
-    dms:operation :clearCacheOp;
+    dms:operation :clearCacheOp, :rebuildDBOp;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -135,3 +135,10 @@
     dms:tierOnly true;
     .
 
+:rebuildDBOp
+    rdfs:label "Rebuild databases";
+    rdfs:comment "Rebuild latest DB image from S3 and install on tier";
+    dms:action "floods/rebuildDB";
+    skos:notation "rebuildDBOp";
+    dms:tierOnly true;
+    .
