@@ -28,7 +28,7 @@ do
             service="${BASH_REMATCH[1]}"
             testRunner="/opt/dms/conf/tests/$service/runtests.sh"
             if [[ -x "$testRunner" ]]; then
-                $testRunner || { echo "Tests failed, aborting with $server out of LB" 1>&2 ; exit 1 ; }
+                $testRunner $server || { echo "Tests failed, aborting with $server out of LB" 1>&2 ; exit 1 ; }
             fi
         fi
 
