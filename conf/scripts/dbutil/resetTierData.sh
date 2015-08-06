@@ -26,7 +26,8 @@ do
 
         if [[ $tierDir =~ /var/opt/dms/services/(.*)/publicationSets/(.*)/tiers/(.*) ]]; then
             service="${BASH_REMATCH[1]}"
-            testRunner="/opt/dms/conf/tests/$service/runtests.sh"
+            tier="${BASH_REMATCH[3]}"
+            testRunner="/opt/dms/conf/tests/$service/$tier/runtests.sh"
             if [[ -x "$testRunner" ]]; then
                 echo "Runing integration test on $server"
                 $testRunner $server || { echo "Tests failed, aborting with $server out of LB" 1>&2 ; exit 1 ; }
