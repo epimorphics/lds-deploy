@@ -22,7 +22,7 @@ do
 
         IP=$( jq -r .address "$server/config.json" )
         echo "Calling db_reset on $server"
-        echo ssh -t -t $FLAGS -l ubuntu $IP /bin/bash /usr/local/bin/db_reset
+        ssh -t -t $FLAGS -l ubuntu $IP /bin/bash /usr/local/bin/db_reset
 
         if [[ $tierDir =~ /var/opt/dms/services/(.*)/publicationSets/(.*)/tiers/(.*) ]]; then
             service="${BASH_REMATCH[1]}"
