@@ -68,8 +68,9 @@
 "@name" : floods/rebuildDB
 "@type" : script
 "@script" : "dbutil/buildLatestImage.sh"
+"s3bucket" : "s3://dms-deploy/images/flood-monitoring"
 "@args" :
-  - "tier"
+  - "s3bucket"
 "@onSuccess" :
     "@type" : script
     "@script" : "dbutil/resetTierData.sh"
