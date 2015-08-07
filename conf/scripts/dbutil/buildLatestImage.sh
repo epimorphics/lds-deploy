@@ -11,6 +11,8 @@ s3folder="$1"
 . config.sh
 . automation_lib.sh
 
+echo TESTING  -exit early; exit 0
+
 # Find the dump to be loaded
 dump=$( findLastDump "$s3folder" )
 [[ -n $dump ]] || { echo "Could not find S3 dump" 1>&2 ; exit 1 ; }

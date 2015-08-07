@@ -12,17 +12,18 @@ fi
 [[ -n $tierDir ]] || { echo "Internal error calling resetTierData.sh, no tier given" 1>&2 ; exit 1 ; }
 
 . /opt/dms/conf/scripts/config.sh
+. /opt/dms/conf/scripts/automation_lib.sh
 FLAGS="$SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem"
 
 for server in $tierDir/servers/*
 do
     if grep -qv Terminated $server/status 
     then
-        ops/removeserver-lb.sh $server
+        suspendServer $server
 
         IP=$( jq -r .address "$server/config.json" )
         echo "Calling db_reset on $server"
-        ssh -t -t $FLAGS -l ubuntu $IP /bin/bash /usr/local/bin/db_reset
+        echo TESTING: ssh -t -t $FLAGS -l ubuntu $IP /bin/bash /usr/local/bin/db_reset
 
         if [[ $tierDir =~ /var/opt/dms/services/(.*)/publicationSets/(.*)/tiers/(.*) ]]; then
             service="${BASH_REMATCH[1]}"
@@ -34,6 +35,6 @@ do
             fi
         fi
 
-        ops/addserver-lb.sh $server
+        unsuspendServer $server
     fi
 done
