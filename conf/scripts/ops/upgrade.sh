@@ -21,3 +21,6 @@ ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo reboot
 # Wait for machine to come up again
 sleep 10s
 ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP echo "Server up"
+
+# Good luck pause to allow services to start as well
+sleep 5s

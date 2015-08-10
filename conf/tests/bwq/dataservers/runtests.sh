@@ -14,6 +14,10 @@ checkCount() {
     local QUERY=$1
     local LIMIT=$2
     local COUNT=$( curl -s http://$IP:3030/ds/query --data-urlencode "query=SELECT (COUNT(?x) AS ?count) WHERE { $QUERY }"  | jq -r ".results.bindings[0].count.value" )
+    if [[ -z "$COUNT" ]]; then
+        echo "Data test failed. Query '$QUERY' returned empty"
+        exit 1
+    fi
     if (( $COUNT < $LIMIT )); then
         echo "Data test failed. Query '$QUERY' returned only $COUNT instead of $LIMIT"
         exit 1;
