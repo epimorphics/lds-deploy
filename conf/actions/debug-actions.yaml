@@ -12,3 +12,11 @@
         "@script"    : debug/debug-delay.sh
       - "@javaclass" : com.epimorphics.dms.tasks.TestUserAccessAction
         "userid"     : backupuser
+---
+"@name"      : debug/testServer
+"@type"      : script
+"@script"    : debug/debug-test.sh
+---
+"@name"      : debug/tierOp
+"@type"      : script
+"@script"    : debug/debug-script.sh

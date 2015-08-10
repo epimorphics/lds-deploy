@@ -226,7 +226,6 @@
     dms:updateEndpoint  "http://{address}:3030/ds/update";
     dms:queryEndpoint  "http://{address}:3030/ds/query";
     dms:loadBalancer  :tdataLB;
-#    dms:testServerAction "dataserver/testServer";
     dms:configureAction "bwq/dataserver/configure";
     dms:allocateAction "bwq/dataserver/allocate";
     dms:terminateAction "bwq/dataserver/terminate";
@@ -263,8 +262,17 @@
     dms:configureAction "bwq/presserver/configure";
     dms:allocateAction "bwq/presserver/allocate";
     dms:terminateAction "bwq/presserver/terminate";
+    dms:testServerAction "debug/testServer";
     dms:operation :clearCacheOp, :webSyncOp;
+#    dms:operation :debugOp;
     .    
+
+#:debugOp
+#    rdfs:label "Debug op";
+#    dms:action "debug/tierOp";
+#    skos:notation "debugOp";
+#    dms:removeFromLB true;
+#    .
 
 :clearCacheOp
     rdfs:label "Clear caches";
@@ -272,7 +280,7 @@
     dms:action "bwq/clearCache";
     skos:notation "clearCacheOp";
     dms:tierOnly true;
-    .
+.
 
 :webSyncOp
     rdfs:label "Web sync";
