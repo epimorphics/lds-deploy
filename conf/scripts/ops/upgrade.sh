@@ -10,6 +10,6 @@ readonly IP=$( jq -r .address "$SERVER/config.json" )
 
 . /opt/dms/conf/scripts/config.sh
 
-ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP apt-get -yq update
-ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP apt-get -yq upgrade
-ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP apt-get -yq dist-upgrade
+ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo apt-get -yq update
+ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo apt-get -yq upgrade
+ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo apt-get -yq dist-upgrade
