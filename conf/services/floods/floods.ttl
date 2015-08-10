@@ -98,6 +98,7 @@
     dms:loadStateAction "floods/loadState";
     dms:catchupStateAction "floods/catchupState";
     dms:operation :clearCacheOp;
+    dms:operation :upgradeOp;
     .
 
 :productionServers a dms:Tier;
@@ -119,6 +120,7 @@
     dms:publishStateAction "floods/dupublishState";
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp, :rebuildDBOp;
+    dms:operation :upgradeOp;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -142,3 +144,11 @@
     skos:notation "rebuildDBOp";
     dms:tierOnly true;
     .
+
+:upgradeOp
+    rdfs:label "Upgrade server";
+    dms:action "default/upgrade";
+    skos:notation "upgradeOp";
+    dms:removeFromLB true;
+    .
+    

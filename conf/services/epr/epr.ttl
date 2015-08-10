@@ -117,6 +117,7 @@
     dms:publishStateAction "epr/dupublishState";
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
+    dms:operation :upgradeOp;
     .
 
 :productionServers a dms:Tier;
@@ -138,6 +139,7 @@
     dms:publishStateAction "epr/dupublishState";
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
+    dms:operation :upgradeOp;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -154,3 +156,9 @@
     dms:tierOnly true;
     .
 
+:upgradeOp
+    rdfs:label "Upgrade server";
+    dms:action "default/upgrade";
+    skos:notation "upgradeOp";
+    dms:removeFromLB true;
+    .

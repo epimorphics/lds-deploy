@@ -68,5 +68,17 @@
     "@type" : "script",
     "@script" : "ops/clear-caches.sh",
     "@args" : [ "tier" ]
+  },
+  {
+    "@name" : "default/testServer",
+    "@type" : "script",
+    "@script" : "ops/genericTest.sh",
+    "@args" : [ "serverDir" ]
+  },
+  {
+    "@name" : "default/upgrade",
+    "@type" : "script",
+    "@script" : "ops/upgrade.sh",
+    "@args" : [ "serverDir" ]
   }
 ]
