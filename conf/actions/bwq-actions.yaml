@@ -164,12 +164,19 @@
 "@args" :
   - "tier"
 ---
-# Synchronize web content
+# Synchronize web content - whole tier
 "@name" : bwq/webSync
 "@type" : script
 "@script" : "bwq/web-sync.sh"
 "@args" :
   - "tier"
+---
+# Synchronize web content - single server
+"@name" : bwq/webSyncServer
+"@type" : script
+"@script" : "bwq/web-sync-server.sh"
+"@args" :
+  - "serverDir"
 ---
 # Data conversion which forces non-streaming mode (needed for reference data)
 "@name"         : "bwq/convertUploadInMemory"
