@@ -22,12 +22,12 @@
 "@args" :
   - "serverDir"
 "@env"  :
-    "AWS_EBS" : 8
+    "AWS_EBS" : 10
     "AWS_INSTANCE_STORE" : "yes"
 #    "AWS_INSTANCE_TYPE" : "m3.large"
 #    "AWS_AMI" : "ami-cda130ba"
     "AWS_INSTANCE_TYPE" : "i2.xlarge"
-    "AWS_AMI" : "ami-c5bf2eb2"
+    "AWS_AMI" : "ami-47a23a30"
 #    "AWS_SG" : "sg-b815c7dd"   # lds-front-end
     "AWS_SG" : "sg-091c6a6c"   # lds-combined
     "CHEF_ENV"  : "lds-data"
