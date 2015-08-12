@@ -7,7 +7,6 @@
 
 set -o nounset
 set -o errexit
-set -o pipefail
 
 # Format and mount disk if possible.
 # Usage:  install_disk device location
