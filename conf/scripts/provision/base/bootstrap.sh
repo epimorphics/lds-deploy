@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Generic provisioning script to run on a new instance
 # Formats any attached EBS volume at standard location /dev/xvdf and mounts it
 # Forces any instance disk at /dev/xvdg to be mounted at /mnt/ephemeral1 
@@ -11,7 +11,6 @@ set -o errexit
 # Format and mount disk if possible.
 # Usage:  install_disk device location
 install_disk() {
-    [[ $# = 2 ]] || { echo "Internal error calling $0, expected server address" 1>&2 ; exit 1 ; }
     local DEV="$1"
     local MOUNT="$2"
 
