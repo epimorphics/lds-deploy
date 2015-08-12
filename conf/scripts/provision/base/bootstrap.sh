@@ -51,5 +51,5 @@ fi
 
 # Basic packages - probably should leave these to chef but can't see how
 apt-get -q -y update
-apt-get -q -y -o DPkg::Options::="--force-confdef" -o DPkg::Options::="--force-confold" upgrade 
+DEBIAN_FRONTEND=noninteractive apt-get -q -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade 
 locale-gen en_GB.UTF-8
