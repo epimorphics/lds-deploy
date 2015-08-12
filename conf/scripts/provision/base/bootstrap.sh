@@ -7,47 +7,46 @@
 
 set -o nounset
 set -o errexit
+set -o pipefail
 
-readonly INST_DEV=/dev/xvdg
-readonly EBS_DEV=/dev/xvdf
+# Format and mount disk if possible.
+# Usage:  install_disk device location
+install_disk() {
+    [[ $# = 2 ]] || { echo "Internal error calling $0, expected server address" 1>&2 ; exit 1 ; }
+    local DEV="$1"
+    local MOUNT="$2"
 
-# Check for instance disk
-if blkid $INST_DEV > /dev/null; then
-  if grep -q $INST_DEV /etc/fstab ; then
-    # Check if mounted in right place, AWS doesn't always respect request
-    if grep -q "$INST_DEV.*/mnt/ephemeral0" /etc/fstab; then
-        echo "/mnt/ephmeral0 already set up"
-    else
-        umount $INST_DEV || true
-        sed -i "s!$INST_DEV.*\$!$INST_DEV  /mnt/ephemeral0  auto  defaults,nodev,nobootwait 0 2!" /etc/fstab
+    # Ensure formatted
+    if ! blkid $DEV > /dev/null; then
+        # No visible attached volume but might not be formatted yet
+        # This will just fail if no such device
+        echo "Attempting to format disk at $DEV"
+        mkfs -t ext4 $DEV || true
     fi
-  else
-    echo "$INST_DEV  /mnt/ephemeral0  auto  defaults,nodev,nobootwait 0 2" | tee -a /etc/fstab > /dev/null
-  fi
-  echo "Mount instance disk"
-  mkdir -p /mnt/ephemeral0
-  mount /mnt/ephemeral0 || true          # May fail if already mounted and busy, which occurs during retry
-fi 
 
-# Check for possible EBS disk
-if ! blkid $EBS_DEV > /dev/null; then
-    # No visible attached volume but might not be formatted yet
-    # This will just fail if no such device
-    echo "Attempting to format EBS disk"
-    mkfs -t ext4 $EBS_DEV || true
-fi
+    if blkid $DEV > /dev/null; then
 
-if blkid $EBS_DEV > /dev/null; then
-    # We have an attached volume, mount it
-    if ! mount | grep -q $EBS_DEV ; then
-        # Not mounted yet
-        echo "Mounting EBS disk"
-        mkdir -p /mnt/disk1
-        UUID=$(blkid $EBS_DEV | sed -e 's/^.*\(UUID="[^"]*"\).*$/\1/')
-#    echo "$UUID /mnt/disk1 ext4 rw 0 2" | tee -a /etc/fstab > /dev/null && mount /mnt/disk1
-        echo "$EBS_DEV /mnt/disk1 ext4 defaults,nodev 0 2" | tee -a /etc/fstab > /dev/null && mount /mnt/disk1
-    fi
-fi
+        # Disk exists and formatted, check mounting
+        if grep -q $DEV /etc/fstab ; then
+            # Check if mounted in right place, AWS doesn't always respect request
+            if grep -q "$DEV.*$MOUNT" /etc/fstab; then
+                echo "$MOUNT already set up"
+            else
+                umount $DEV || true
+                sed -i "s!DEV.*\$!$DEV  $MOUNT  auto  defaults,nodev,nobootwait 0 2!" /etc/fstab
+            fi
+        else
+            echo "$DEV  $MOUNT  auto  defaults,nodev,nobootwait 0 2" >> /etc/fstab
+        fi
+
+        echo "Mount disk at $MOUNT"
+        mkdir -p "$MOUNT"
+        mount "$MOUNT" || true          # May fail if already mounted and busy, which occurs during retry
+    fi 
+}
+
+install_disk /dev/xvdg  /mnt/ephemeral0
+install_disk /dev/xvdf  /mnt/disk1
 
 # Basic packages - probably should leave these to chef but can't see how
 apt-get -q -y update
