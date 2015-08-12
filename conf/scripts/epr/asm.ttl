@@ -73,7 +73,8 @@ text:TextIndexSolr    rdfs:subClassOf   text:TextIndex .
     text:entityField      "uri" ;
     text:defaultField     "name" ;
     text:map (
-         [ text:field "name"         ; text:predicate foaf:name  ]
+         [ text:field "name"         ; text:predicate foaf:name  ; text:analyzer [ a text:SimpleAnalyzer ] ]
+#         [ text:field "name"         ; text:predicate foaf:name  ]
          [ text:field "notation"     ; text:predicate skos:notation ]
          [ text:field "address"      ; text:predicate vcard:extended-address ]
          [ text:field "town"         ; text:predicate vcard:locality ]
