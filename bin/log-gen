@@ -9,7 +9,7 @@ readonly S3FOLDER="$1"
 readonly STEM="$2"
 readonly MONTH_NUM=$3
 readonly YEAR=$( date +%Y )
-readonly MONTH_NUM_PLUS=$( printf "%.2d" $(( $MONTH_NUM + 1 )) )
+readonly MONTH_NUM_PLUS=$( printf "%.2d" $(( 10#$MONTH_NUM + 1 )) )
 readonly MONTH_NAME=$( date -d "2015-${MONTH_NUM}-01" +%b )
 readonly FILTER="$STEM(\$|-${YEAR}${MONTH_NUM}|-${YEAR}${MONTH_NUM_PLUS})"
 
