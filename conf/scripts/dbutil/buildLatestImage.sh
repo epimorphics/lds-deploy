@@ -31,6 +31,7 @@ echo "Fetch dump: $dump"
 aws s3 cp "$dump" dump.nq.gz ||  { echo "Failed to download dump $dump" 1>&2 ; exit 1 ; }
 
 # Build the image
+export SORT_ARGS="--buffer-size=50% --parallel=3 --temporary-directory=/tmp/dms-work"
 /opt/jena/bin/tdbloader2 --loc DS-DB dump.nq.gz ||  { echo "Failed to build image" 1>&2 ; exit 1 ; }
 tar czf DS-DB.tgz DS-DB ||  { echo "Failed to package image" 1>&2 ; exit 1 ; }
 
