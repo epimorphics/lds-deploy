@@ -2,6 +2,12 @@
 # Build a TDB image from the latest daily backup of the real time floods data
 set -o errexit
 
+# Ensure work area is set up to use ephemeral disk, can get reset
+if [[ -n /tmp/dms-work ]] ; 
+    echo "Recreating work area link"
+    ln -s /mnt/ephemeral0/dms-work/ /tmp
+fi
+
 cd /opt/dms/conf/scripts
 sudo -u tomcat7 ./dbutil/buildLatestImage.sh s3://dms-deploy/images/flood-monitoring
 sudo -u tomcat7 ./dbutil/resetTierData.sh /var/opt/dms/services/floods/publicationSets/production/tiers/productionServers
