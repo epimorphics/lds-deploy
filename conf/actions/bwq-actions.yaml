@@ -127,6 +127,7 @@
 #    "notifyuser" : "dave@epimorphics.com"
 #---
 "@name"      : api/publishProduction
+## Next two lines used out of season to suspend publication but allow files to be recieved
 "@javaclass" : "com.epimorphics.dms.util.PrintAction"
 "message"    : "PRF publication suspended (out of season)"
 ## In season configuration below here
