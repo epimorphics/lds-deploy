@@ -22,6 +22,7 @@ if [[ -n $(aws s3 ls "$image") ]]; then
 fi
 
 # Create a working area
+checkWorkArea
 buildir="$DEFAULT_WORK_DIR/makeImage-$( date +%F%T%N )$RANDOM"
 mkdir -p $buildir
 cd $buildir

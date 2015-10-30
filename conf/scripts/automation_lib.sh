@@ -2,6 +2,8 @@
 # Function library used in external automation scripts
 # Generally assume runing as tomcat7 for compatbility with DMS UI calling
 
+readonly DEFAULT_WORK_DIR=/tmp/dms-work
+
 # Find the first live server in a tier
 # Usage: firstLiveServer  tier
 firstLiveServer() {
@@ -100,4 +102,13 @@ unsuspendServer() {
     ops/addserver-lb.sh $serverDir
     echo "Running" > $serverDir/status
     rmdir $serverDir/lock
+}
+
+# Check the /tmp work area exists
+
+checkWorkArea() {
+    if [[ ! -e $DEFAULT_WORK_DIR ]] ; then
+        echo "Recreating work area link"
+        ln -s /mnt/ephemeral0/dms-work/ $DEFAULT_WORK_DIR
+    fi
 }
