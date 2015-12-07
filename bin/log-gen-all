@@ -1,7 +1,12 @@
 #!/bin/bash
 # Generate consolidated log files for the last month for the main services
+set -o errexit
 
 readonly WORK_DIR=/tmp/dms-work
+
+if [[ ! -d /tmp/dms-work ]]; then
+    ln -s /mnt/ephemeral0/dms-work/ /tmp
+fi
 
 cd $WORK_DIR
 
