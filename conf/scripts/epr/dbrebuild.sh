@@ -8,6 +8,9 @@ set -o errexit
 readonly JENA_BASE=/opt/jena/bin
 readonly FUSEKI_BASE=/opt/fuseki
 readonly WORK_DIR=/tmp/dms-work
+if [[ ! -d /tmp/dms-work ]]; then
+    ln -s /mnt/ephemeral0/dms-work/ /tmp
+fi
 
 readonly IR_FILE="$1"
 
@@ -21,7 +24,6 @@ prepareGraph() {
     $JENA_BASE/riot -q -nocheck $file | sed -e "s|\.$|<$graphname> .|" > ${name}.nq
 }
 
-mkdir -p $WORK_DIR
 tmpdir=$( mktemp -d --tmpdir=$WORK_DIR )
 
 cd $tmpdir
@@ -50,11 +52,13 @@ java -cp $FUSEKI_BASE/fuseki-server.jar jena.textindexer --desc=asm.ttl
 echo "*** Prepare upload"
 tar czf baseline_image.tgz DS-DB DS-DB-lucene
 
-S3_IMAGE="s3://dms-deploy/images/epr/images/$( date +%F/%H-%M-%S-0000 )/baseline_image.tgz"
+S3_IMAGE="s3://dms-deploy/images/epr/testing/images/$( date +%F/%H-%M-%S-0000 )/baseline_image.tgz"
 aws s3 cp baseline_image.tgz $S3_IMAGE
 
 echo "*** Clean up work area"
 cd /tmp
 rm -r $tmpdir
+
+mv $IR_FILE /home/eprxfer/completed
 
 echo $S3_IMAGE
