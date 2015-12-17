@@ -8,7 +8,6 @@ readonly pubset=$(echo $spec | jq -r .pubset)
 
 . ./config.sh
 
-STATE_FOLDER="$S3_BUCKET/images/$PREFIX"
 BUCKET="$STATE_FOLDER/$pubset/updates/$( date +%F )/$( date '+%H-%M-%S-%N')"
 
 touch /tmp/empty
