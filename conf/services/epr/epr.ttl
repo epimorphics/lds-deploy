@@ -130,7 +130,7 @@
     dms:queryEndpoint  "http://{address}:3030/ds/query";
     dms:loadBalancer  :pdataLB;
     dms:configureAction "epr/server/configure";
-    dms:allocateAction "epr/server/allocate";
+    dms:allocateAction "epr/server/production/allocate";
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;  # Irrelevant due to next line
     dms:externalState  true;
