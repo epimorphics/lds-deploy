@@ -9,15 +9,21 @@ S3FOLDER="$1"
 STEM="$2"
 MONTH_NUM=$3
 YEAR=$( date +%Y )
-MONTH_NUM_PLUS=$( printf "%.2d" $(( 10#$MONTH_NUM + 1 )) )
-MONTH_NAME=$( date -d "2015-${MONTH_NUM}-01" +%b )
-FILTER="$STEM(\$|-${YEAR}${MONTH_NUM}|-${YEAR}${MONTH_NUM_PLUS})"
 
 # Cope with underflow of month arithmetic at start of year - a hack!
 if [[ $MONTH_NUM == '00' ]]; then
     MONTH_NUM="12"
+    NEXT_YEAR=$YEAR
     YEAR=$(( $YEAR - 1 ))
+    MONTH_NAME=$( date -d "2015-${MONTH_NUM}-01" +%b )
+    FILTER="$STEM(\$|-${YEAR}${MONTH_NUM}|-${NEXT_YEAR}01)"
+else
+    MONTH_NUM_PLUS=$( printf "%.2d" $(( 10#$MONTH_NUM + 1 )) )
+    MONTH_NAME=$( date -d "2015-${MONTH_NUM}-01" +%b )
+    FILTER="$STEM(\$|-${YEAR}${MONTH_NUM}|-${YEAR}${MONTH_NUM_PLUS})"
 fi
+
+echo "DEBUG: Filter is $FILTER"
 
 if [[ $S3FOLDER =~ (s3://[^/]*)/.* ]] ; then 
     S3BUCKET="${BASH_REMATCH[1]}"
