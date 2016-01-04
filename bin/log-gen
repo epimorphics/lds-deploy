@@ -5,13 +5,19 @@
 
 [[ $# = 3 ]] || { echo "Usage:   log-gen s3base stem month" 1>&2 ; exit 1 ; }
 
-readonly S3FOLDER="$1"
-readonly STEM="$2"
-readonly MONTH_NUM=$3
-readonly YEAR=$( date +%Y )
-readonly MONTH_NUM_PLUS=$( printf "%.2d" $(( 10#$MONTH_NUM + 1 )) )
-readonly MONTH_NAME=$( date -d "2015-${MONTH_NUM}-01" +%b )
-readonly FILTER="$STEM(\$|-${YEAR}${MONTH_NUM}|-${YEAR}${MONTH_NUM_PLUS})"
+S3FOLDER="$1"
+STEM="$2"
+MONTH_NUM=$3
+YEAR=$( date +%Y )
+MONTH_NUM_PLUS=$( printf "%.2d" $(( 10#$MONTH_NUM + 1 )) )
+MONTH_NAME=$( date -d "2015-${MONTH_NUM}-01" +%b )
+FILTER="$STEM(\$|-${YEAR}${MONTH_NUM}|-${YEAR}${MONTH_NUM_PLUS})"
+
+# Cope with underflow of month arithmetic at start of year - a hack!
+if [[ $MONTH_NUM == '00' ]]; then
+    MONTH_NUM="12"
+    YEAR=$(( $YEAR - 1 ))
+fi
 
 if [[ $S3FOLDER =~ (s3://[^/]*)/.* ]] ; then 
     S3BUCKET="${BASH_REMATCH[1]}"
