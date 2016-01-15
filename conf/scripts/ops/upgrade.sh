@@ -18,8 +18,8 @@ ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo DEBIAN_FRON
 ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo reboot
 
 # Wait for machine to come up again
-sleep 10s
-ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP echo "Server up"
+sleep 20s
+ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP echo "Server up" || ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP echo "Server up (2nd try)"
 
 # Good luck pause to allow services to start as well
 sleep 5s
