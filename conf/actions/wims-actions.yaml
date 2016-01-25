@@ -1,0 +1,54 @@
+# Actions customized for the LDS epr service
+
+# Data server allocation
+"@name" : wims/server/allocate
+"@type" : script
+"@script" : "ops/generic-allocate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+#    "AWS_EBS" : 8
+    "AWS_INSTANCE_STORE" : "yes"
+    "AWS_INSTANCE_TYPE" : "r3.xlarge"
+    "AWS_AMI" : "ami-b265c7c1"
+#    "AWS_SG" : "sg-b815c7dd"   # lds-front-end
+    "AWS_SG" : "sg-091c6a6c"   # lds-combined
+    "CHEF_ENV"  : "lds-wims-dev-server"
+    "CHEF_ROLE" : "ea-wims-server"
+    "AWS_IAM_ROLE_ARN" : "arn:aws:iam::853478862498:instance-profile/dms-update"
+---
+# Data server allocation
+"@name" : wims/server/production/allocate
+"@type" : script
+"@script" : "ops/generic-allocate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+#    "AWS_EBS" : 8
+    "AWS_INSTANCE_STORE" : "yes"
+    "AWS_INSTANCE_TYPE" : "r3.xlarge"
+    "AWS_AMI" : "ami-b265c7c1"
+#    "AWS_SG" : "sg-b815c7dd"   # lds-front-end
+    "AWS_SG" : "sg-091c6a6c"   # lds-combined
+    "CHEF_ENV"  : "lds-wims-production-server"
+    "CHEF_ROLE" : "ea-wims-server"
+    "AWS_IAM_ROLE_ARN" : "arn:aws:iam::853478862498:instance-profile/dms-update"
+---
+# Server configuration  
+"@name" : wims/server/configure
+"@type" : script
+"@script" : "ops/generic-configure.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "NRC_HOSTGROUP"  : "wims-server"
+    "NRC_SERVICESET" : "BWQ-data-ss"
+    "NRC_SERVICE"    : "check_http_ping"
+---
+# Publish state via S3 upload
+"@name" : wims/dupublishState
+"@type" : script
+"@script" : "ops/duPublishState.sh"
+"@env"  :
+    "STATE_FOLDER"  : "s3://dms-deploy/images/wims"
+"@args" : json

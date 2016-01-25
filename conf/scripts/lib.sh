@@ -217,11 +217,12 @@ InstallChef() {
     [[ $# = 1 ]] || { echo "Internal error calling AllocateServer" 1>&2 ; exit 1 ; }
     local serverDir=$1
 
-    config="\"epi_server_base\":{\"system_name\":\"$FULL_NAME\"}"
+    IP=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
+    config="\"epi_server_base\":{\"system_name\":\"$FULL_NAME\", \"dns_addresses\":[\"$IP\"]}"
     if [[ -n $CHEF_PARAMS ]] ; then
         config="$config,$CHEF_PARAMS"
     fi
-    IP=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
+
     echo "Bootstrapping chef: env=$CHEF_ENV role=$CHEF_ROLE config={$config}"
     knife bootstrap -c /var/opt/dms/.chef/knife.rb -i /var/opt/dms/.ssh/lds.pem -x ubuntu --sudo \
                 -E "$CHEF_ENV" -r "$CHEF_ROLE" \
