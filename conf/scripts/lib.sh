@@ -197,7 +197,7 @@ AllocateServer() {
     jq  "{ address: .Instances[0].PublicDnsName, private: .Instances[0].PrivateIpAddress, public: .Instances[0].PublicDnsName, name: \"$FULL_NAME\" }" < $serverDir/aws-instance.json > $serverDir/config.json
 
     # Label the attached storage - if any
-    jq -r '.Instances[0].BlockDeviceMappings[].Ebs.VolumeId' < $serverDir/aws-instance.json | xargs aws ec2 create-tags --tags "Key=Name,Value=disk-$FULL_NAME"  --resources > /dev/null
+    jq -r '.Instances[0].BlockDeviceMappings[].Ebs.VolumeId' < $serverDir/aws-instance.json | xargs aws ec2 create-tags --tags "Key=Name,Value=disk-$FULL_NAME"  --resources > /dev/null || true
 
     # Format the disk if necessary
     WaitForSsh $serverDir
