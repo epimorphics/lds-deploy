@@ -80,5 +80,11 @@
     "@type" : "script",
     "@script" : "ops/upgrade.sh",
     "@args" : [ "serverDir" ]
+  },
+  {
+    "@name" : "generic/resetDB",
+    "@type" : "script",
+    "@script" : "dbutil/resetTierData.sh",
+    "@args" : ["tier" ]
   }
 ]

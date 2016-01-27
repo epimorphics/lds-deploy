@@ -78,7 +78,7 @@
     dms:catchupStateAction "generic/catchupState";
     dms:publishStateAction "wims/dupublishState";
     dms:publishAction      "generic/dupublish";
-    dms:operation :clearCacheOp;
+    dms:operation :clearCacheOp, :resetDataOp;
     dms:operation :upgradeOp;
     .
 
@@ -100,7 +100,7 @@
     dms:catchupStateAction "generic/catchupState";
     dms:publishStateAction "wims/dupublishState";
     dms:publishAction      "generic/dupublish";
-    dms:operation :clearCacheOp;
+    dms:operation :clearCacheOp, :resetDataOp;
     dms:operation :upgradeOp;
     .
 
@@ -123,4 +123,12 @@
     dms:action "default/upgrade";
     skos:notation "upgradeOp";
     dms:removeFromLB true;
+    .
+
+:resetDataOp
+    rdfs:label "Reset database";
+    rdfs:comment "Relace current data from lastest image on S3";
+    dms:action "generic/resetDB";
+    skos:notation "resetDataOp";
+    dms:tierOnly true;
     .
