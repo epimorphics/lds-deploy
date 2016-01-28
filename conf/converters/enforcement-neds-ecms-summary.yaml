@@ -48,12 +48,15 @@
 ###################################################################################   
     - "$cleanAddress"     : "{= empty($$) ? null : $$.trim().replaceAll('^(, *)*','').replaceAll('(, *)+',', ').replaceAll('(, *)*$','')}"
       "$labelToNotation"  : "{= empty($$) ? null : $$.trim().toLowerCase().replaceAll('[\\s_,\\-\\#\\?\\&]+','-')}"
-      "$postcodeToUri"    : "{= empty($$) ? null :
-                               $$.matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\} [0-9][a-zA-Z]\\{2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodeunit/').append($$.toUpperCase().replaceAll(' ','')) :
-                               $$.matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\} [0-9]$') ? value('http://data.ordnancesurvey.co.uk/id/postcodesector/').append($$.toUpperCase().replaceAll(' ','')) :
-                               $$.matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodedistrict/').append($$.toUpperCase().replaceAll(' ','')) :
-                               $$.matches('^[a-zA-Z]\\{1,2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodearea/').append($$.toUpperCase().replaceAll(' ','')) :
-                               null }"
+      "$postcodeToUri"   : "{= empty($$) ? null :
+                             $$.trim().matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\} *[0-9Oo][a-zA-Z]\\{2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodeunit/').append($$.trim().toUpperCase().replaceAll('(.*)[O]([A-Z][A-Z]$)','$10$2').replaceAll(' ','')) :
+                             $$.trim().matches('^[a-zA-Z]\\{1,2\\}[0-9][a-zA-Z] *[0-9Oo][a-zA-Z]\\{2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodeunit/').append($$.trim().toUpperCase().replaceAll('(.*)[O]([A-Z][A-Z])$','$10$2').replaceAll(' ','')) :
+                             $$.trim().matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\} +[0-9]$') ? value('http://data.ordnancesurvey.co.uk/id/postcodesector/').append($$.trim().toUpperCase().replaceAll(' ','')) :
+                             $$.trim().matches('^[a-zA-Z]\\{1,2\\}[0-9][a-zA-Z] +[0-9]$') ? value('http://data.ordnancesurvey.co.uk/id/postcodesector/').append($$.trim().toUpperCase().replaceAll(' ','')) :
+                             $$.trim().matches('^[a-zA-Z]\\{1,2\\}[0-9]\\{1,2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodedistrict/').append($$.trim().toUpperCase().replaceAll(' ','')) :
+                             $$.trim().matches('^[a-zA-Z]\\{1,2\\}[0-9][a-zA-Z]$') ? value('http://data.ordnancesurvey.co.uk/id/postcodedistrict/').append($$.trim().toUpperCase().replaceAll(' ','')) :
+                             $$.trim().matches('^[a-zA-Z]\\{1,2\\}$') ? value('http://data.ordnancesurvey.co.uk/id/postcodearea/').append($$.trim().toUpperCase().replaceAll(' ','')) :
+                             null }"
 ###################################################################################
 # URI variables and useful(?) constants.
 ###################################################################################   
