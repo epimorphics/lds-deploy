@@ -59,7 +59,7 @@
 # Publish state via S3 upload
 "@name" : floods/dupublishState
 "@type" : script
-"@script" : "ops/duPublishState.sh"
+"@script" : "floods/duPublishState.sh"
 "@env"  :
     "STATE_FOLDER"  : "s3://dms-deploy/images/flood-monitoring"
 "@args" : json
