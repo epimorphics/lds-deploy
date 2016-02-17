@@ -1,9 +1,6 @@
 #!/bin/bash
 # Server tests for a BWQ presentation server
 
-set -o errexit
-set -o pipefail
-
 [[ $# = 1 ]] || { echo "Internal error calling runtests, expected server address" 1>&2 ; exit 1 ; }
 
 readonly SERVER="$1"
@@ -17,12 +14,27 @@ check() {
     echo "Checking $NAME"
     if (( $RESULT < $LIMIT )); then
         echo "Failed, testing for: $NAME"
-        exit 1
+        return 1
+    else
+        return 0
     fi
 }
 
-check "Elda running" $(curl -s -H "Host: localhost" http://$IP/doc/bathing-water.json?_pageSize=5 | jq -r ".result.items | length") 5 
+checkAll() {
+    check "Elda running" $(curl -s -H "Host: localhost" http://$IP/doc/bathing-water.json?_pageSize=5 | jq -r ".result.items | length") 5     
+&&  check "Landing page non-trivial" $(curl -s -H "Host: localhost" http://$IP/bwq/profiles/ | grep "<div" | wc -l ) 10 
+&&  check "Widget design page non-trivial" $(curl -s -H "Host: localhost"  http://$IP/bwq/widget/design | grep "<div" | wc -l ) 10
+}
 
-check "Landing page non-trivial" $(curl -s -H "Host: localhost" http://$IP/bwq/profiles/ | grep "<div" | wc -l ) 10 
+sleep 5s
 
-check "Widget design page non-trivial" $(curl -s -H "Host: localhost"  http://$IP/bwq/widget/design | grep "<div" | wc -l ) 10
+if !checkAll ; then
+    echo "Failed first try, retry after wait"
+    sleep 15s
+    if ! checkAll ; then
+        echo "Failed tests"
+        exit 1
+    fi
+fi
+
+exit 0
