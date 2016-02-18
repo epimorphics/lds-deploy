@@ -117,7 +117,7 @@
     dms:publishStateAction "epr/dupublishState";
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
-    dms:operation :upgradeOp;
+    dms:operation :upgradeOp, :resetDataOp;
     .
 
 :productionServers a dms:Tier;
@@ -139,7 +139,7 @@
     dms:publishStateAction "epr/dupublishState";
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
-    dms:operation :upgradeOp;
+    dms:operation :upgradeOp, :resetDataOp;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -161,4 +161,12 @@
     dms:action "default/upgrade";
     skos:notation "upgradeOp";
     dms:removeFromLB true;
+    .
+
+:resetDataOp
+    rdfs:label "Reset database";
+    rdfs:comment "Relace current data from lastest image on S3";
+    dms:action "generic/resetDB";
+    skos:notation "resetDataOp";
+    dms:tierOnly true;
     .
