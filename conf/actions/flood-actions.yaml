@@ -56,10 +56,18 @@
 "@args" :
     -  "serverDir"
 ---
-# Publish state via S3 upload
+# Publish state via S3 upload - legacy layout used in production
 "@name" : floods/dupublishState
 "@type" : script
 "@script" : "floods/duPublishState.sh"
+"@env"  :
+    "STATE_FOLDER"  : "s3://dms-deploy/images/flood-monitoring"
+"@args" : json
+---
+# Publish state via S3 upload - modern layout used for testing
+"@name" : floods/dupublishStateByPS
+"@type" : script
+"@script" : "ops/duPublishState.sh"
 "@env"  :
     "STATE_FOLDER"  : "s3://dms-deploy/images/flood-monitoring"
 "@args" : json
