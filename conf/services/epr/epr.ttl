@@ -140,6 +140,7 @@
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
     dms:operation :upgradeOp, :resetDataOp;
+    dms:operation :updateDataOp;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -170,3 +171,11 @@
     skos:notation "resetDataOp";
     dms:tierOnly true;
     .
+
+:updateDataOp
+    rdfs:label "Full data update";
+    rdfs:comment "Fetch data, database rebuild and install";
+    dms:action "api/eprUpdate";
+    skos:notation "resetDataOp";
+    dms:tierOnly true;
+.

@@ -59,3 +59,8 @@
 "@env"  :
     "STATE_FOLDER"  : "s3://dms-deploy/images/epr"
 "@args" : json
+---
+# Trigger a full fetch and rebuild state dms-update
+"@name" : api/eprUpdate
+"@type" : script
+"@script" : "/var/opt/epr/bin/update.sh"
