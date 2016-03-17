@@ -139,7 +139,7 @@
     dms:publishStateAction "epr/dupublishState";
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
-    dms:operation :upgradeOp, :resetDataOp;
+    dms:operation :upgradeOp, :resetDataOp, :resetServerDataOp;
     dms:operation :updateDataOp;
     .
 
