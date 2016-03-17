@@ -12,7 +12,7 @@ readonly SERVER="$1"
 readonly IP=$( jq -r .address "$SERVER/config.json" )
 
 probe() {
-    curl -s "http://$IP/flood-monitoring/$1"
+    curl -s "http://$IP/$1"
 }
 
 report_error() {
