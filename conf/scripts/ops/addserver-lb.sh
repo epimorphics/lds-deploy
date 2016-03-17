@@ -4,8 +4,8 @@
 
 set -o errexit
 
-. ./config.sh
-. ./lib.sh
+. /opt/dms/conf/scripts/config.sh
+. /opt/dms/conf/scripts/lib.sh
 CheckInstalls
 
 [[ $# = 1 ]] || { echo "Internal error calling $0" 1>&2 ; exit 1 ; }
