@@ -63,4 +63,4 @@
 # Trigger a full fetch and rebuild state dms-update
 "@name" : api/eprUpdate
 "@type" : script
-"@script" : "/var/opt/epr/bin/update.sh"
+"@script" : "epr/update.sh"
