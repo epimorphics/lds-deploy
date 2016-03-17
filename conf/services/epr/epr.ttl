@@ -169,7 +169,15 @@
     rdfs:comment "Relace current data from lastest image on S3";
     dms:action "generic/resetDB";
     skos:notation "resetDataOp";
-#    dms:tierOnly true;
+    dms:tierOnly true;
+    .
+
+:resetServerDataOp
+    rdfs:label "Reset server database";
+    rdfs:comment "Relace current data from lastest image on S3, for single server";
+    dms:action "generic/loadState";
+    skos:notation "resetDataOp";
+    dms:tierOnly true;
     .
 
 :updateDataOp
