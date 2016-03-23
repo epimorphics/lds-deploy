@@ -344,7 +344,7 @@
           "<rdf:type>"                : [ "<org:Organization>", "<def-bw:AppointedSewerageUndertaker>" ],
           "<skos:prefLabel>"          : "{watercompany}@en",
           "<chterms:companyProfile>"  : "<{r_water_company_profile}>",
-          "<reg:registration>"        : "<{r_water_company_regitem}>",
+#          "<reg:registration>"        : "<{r_water_company_regitem}>",
           "^<def-bw:bathing-water>"   : "<{$id_bw}/{$eubwid}>"
         },
     #############################################################################################################################
