@@ -279,6 +279,7 @@
     "templates" : [ 
         "bwq-sites-bathing-water", 
         "bwq-sites-water-company",
+        "bwq-sites-water-company-profile",
         "bwq-sites-alt-bathing-water", 
         "bwq-sites-envelope", 
         "bwq-sites-envelope-lower", 
@@ -345,7 +346,15 @@
           "<skos:prefLabel>"          : "{watercompany}@en",
           "<chterms:companyProfile>"  : "<{r_water_company_profile}>",
 #          "<reg:registration>"        : "<{r_water_company_regitem}>",
-          "^<def-bw:bathing-water>"   : "<{$id_bw}/{$eubwid}>"
+          "<def-bw:bathing-water>"   : "<{$id_bw}/{$eubwid}>"
+        },
+     
+    #############################################################################################################################
+    # Add labelling for referenced Water company CH company profile
+    #############################################################################################################################
+        { "name"                      : "bwq-sites-water-company-profile",
+          "@id"                       : "<{r_water_company_profile}>",
+          "<rdfs:label>"              : "Companies House profile for {watercompany}@en"
         },
     #############################################################################################################################
     # Bathing-water zone of influence
