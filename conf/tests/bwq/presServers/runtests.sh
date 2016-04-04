@@ -19,10 +19,17 @@ check() {
     fi
 }
 
+checkDownload() {
+    echo "Checking downloadAPI"
+    curl -s -H "Host: localhost" "http://$IP/bwq/downloadAPI/requestDownload?report=profile&district=Blackpool&from=2015-05-01&to=2015-06-01" > /tmp/download.zip \
+    && zip -Tq /tmp/download.zip
+}
+
 checkAll() {
       check "Elda running" 5 $(curl -s -H "Host: localhost" http://$IP/doc/bathing-water.json?_pageSize=5 | jq -r ".result.items | length")  \
   &&  check "Landing page non-trivial" 10 $(curl -s -H "Host: localhost" http://$IP/bwq/profiles/ | grep "<div" | wc -l ) \
-  &&  check "Widget design page non-trivial" 10 $(curl -s -H "Host: localhost"  http://$IP/bwq/widget/design | grep "<div" | wc -l )
+  &&  check "Widget design page non-trivial" 10 $(curl -s -H "Host: localhost"  http://$IP/bwq/widget/design | grep "<div" | wc -l ) \
+  &&  checkDownload
 }
 
 sleep 5s
