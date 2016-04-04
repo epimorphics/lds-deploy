@@ -45,7 +45,7 @@
             "$bwspid"             : "{samplingpoint.format('%05d')}",
             "$pubDateTime"        : "{$exectime.asDate('xsd:dateTime').toWholeSeconds().toLocalTime()}",
             "$ns"                 : "{= asResource($$).replaceAll('#$','') }",
-            "$parseDate"          : "{= $$.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|yyyyMMdd|dd-MMM-yyyy|MMM-dd-yyyy|dd-MMM-yy|MMM-dd-yy','xsd:date')}"
+            "$parseDate"          : "{= $$.asDate('dd/MM/yyyy|dd-MM-yyyy|yyyy-MM-dd|yyyy/MM/dd|yyyyMMdd|dd-MMM-yyyy|MMM-dd-yyyy|dd-MMM-yy|MMM-dd-yy|dd/MM/yyyy HH:mm:ss|dd-MM-yyyy HH:mm:ss|yyyy-MM-dd HH:mm:ss|yyyy/MM/dd HH:mm:ss|yyyyMMdd HH:mm:ss|dd-MMM-yyyy HH:mm:ss|MMM-dd-yyyy HH:mm:ss|dd-MMM-yy HH:mm:ss|MMM-dd-yy HH:mm:ss','xsd:date')}"
         },{
             "$pubDateTimeSlug"              : "{$pubDateTime.format('yyyyMMdd-HHmmss')}",
             "$complianceDataset"            : "{$data_base}/compliance-rBWD",
