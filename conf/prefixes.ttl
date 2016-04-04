@@ -37,6 +37,9 @@
 @prefix def-geom: <http://location.data.gov.uk/def/common/Geometry/> .
 @prefix def-ver:  <http://environment.data.gov.uk/def/version/> .
 
+@prefix chterms:  <http://business.data.gov.uk/companies/def/terms/> .
+@prefix reg:      <http://purl.org/linked-data/registry#> .
+
 @prefix geowgs84:  <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 
 @prefix so-sp:   <http://location.data.gov.uk/so/ef/SamplingPoint/bwsp.eaew/> .

@@ -22,7 +22,9 @@
         "bb_ymin",
         "bb_ymax",
         "des_year",
-        "ea_region"
+        "ea_region" #,
+#        "watercompany",
+#        "companieshouseid"
     ],
     "bind" : [
         {
@@ -100,6 +102,10 @@
             "$qb_voc"               : "{$qb_ns.replaceAll('#$','')}",
             "$void_voc"             : "{$void_ns.replaceAll('#$','')}",
             "$time_voc"             : "{$time_ns.replaceAll('#$','')}"
+        },{
+             r_water_company           : "http://business.data.gov.uk/id/company/{companieshouseid}",
+             r_water_company_profile   : "http://business.data.gov.uk/companies/profile/{companieshouseid}",
+             r_water_company_regitem   : "http://environment.data.gov.uk/registry/water-companies/{companieshouseid}",
         }
     ],
     "oneOffs" : [
@@ -272,6 +278,8 @@
     ],
     "templates" : [ 
         "bwq-sites-bathing-water", 
+        "bwq-sites-water-company",
+        "bwq-sites-water-company-profile",
         "bwq-sites-alt-bathing-water", 
         "bwq-sites-envelope", 
         "bwq-sites-envelope-lower", 
@@ -325,8 +333,29 @@
                               label != null && label.lexicalForm.toLowerCase().matches('.*county.*') ? r_district : null ;                 
                      county != null ? county.getURI().fetch('rdf:type','rdfs:label','skos:prefLabel','skos:altLabel') : null ;
                      return county ;                 
-                 } }"
+                 } }",
+             "<def-bw:appointedSewerageUndertaker>"   : "<{r_water_company}>"
                                                                                                                  
+        },
+    #############################################################################################################################
+    # Water company
+    #############################################################################################################################
+        { "name"                      : "bwq-sites-water-company",
+          "@id"                       : "<{r_water_company}>",
+          "<rdf:type>"                : [ "<org:Organization>", "<def-bw:AppointedSewerageUndertaker>" ],
+          "<skos:prefLabel>"          : "{watercompany}@en",
+          "<org:identifier>"          : "{empty(companieshouseid)? '' : companieshouseid.asString()}",
+          "<chterms:companyProfile>"  : "<{r_water_company_profile}>",
+#          "<reg:registration>"        : "<{r_water_company_regitem}>",
+          "<def-bw:bathing-water>"   : "<{$id_bw}/{$eubwid}>"
+        },
+     
+    #############################################################################################################################
+    # Add labelling for referenced Water company CH company profile
+    #############################################################################################################################
+        { "name"                      : "bwq-sites-water-company-profile",
+          "@id"                       : "<{r_water_company_profile}>",
+          "<rdfs:label>"              : "Companies House profile for {watercompany}@en"
         },
     #############################################################################################################################
     # Bathing-water zone of influence
