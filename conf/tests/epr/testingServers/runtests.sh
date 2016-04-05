@@ -6,6 +6,8 @@
 set -o errexit
 set -o pipefail
 
+. /opt/dms/conf/scripts/config.sh
+
 [[ $# = 1 ]] || { echo "Internal error calling runtests, expected server address" 1>&2 ; exit 1 ; }
 
 readonly SERVER="$1"
@@ -21,8 +23,8 @@ report_error() {
 }
 
 checkAll() {
-    local    RESULT=$( probe "public-register/api/search.csv?name-number-search=smith" | wc -l )
-    readonly LIMIT=10
+    local RESULT=$( probe "public-register/api/search.csv?name-number-search=smith" | wc -l )
+    local LIMIT=10
     if (( $RESULT < $LIMIT )); then
         echo "Failed, suspiciously few entries for smith"
         return 1
@@ -32,6 +34,10 @@ checkAll() {
 }
 
 sleep 5s
+
+echo "Clear cache on $SERVER"
+FLAGS="$SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem"
+ssh -t -t $FLAGS -l ubuntu $IP sudo /usr/local/bin/ps_cache_clean
 
 if ! checkAll ; then
     echo "Failed first try, retry after wait"
