@@ -20,4 +20,24 @@ report_error() {
     exit 1
 }
 
-(( $( probe "public-register/api/search.csv?name-number-search=smith" | wc -l ) > 10 ))   || report_error "Suspiciously few entries for smith"
+checkAll() {
+    local    RESULT=$( probe "public-register/api/search.csv?name-number-search=smith" | wc -l )
+    readonly LIMIT=10
+    if (( $RESULT < $LIMIT )); then
+        echo "Failed, suspiciously few entries for smith"
+        return 1
+    else
+        return 0
+    fi    
+}
+
+sleep 5s
+
+if ! checkAll ; then
+    echo "Failed first try, retry after wait"
+    sleep 15s
+    if ! checkAll ; then
+        echo "Failed tests"
+        exit 1
+    fi
+fi
