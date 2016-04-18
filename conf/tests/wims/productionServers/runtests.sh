@@ -27,8 +27,8 @@ checkDownload() {
 }
 
 checkAll() {
-      check "API non trivial" 20 $(curl -s -H "Host: localhost" http://$IP/water-quality/def/sampling-point-types.json | jq -r ".result.items | length")  \
-  &&  check "Landing page non-trivial" 10 $(curl -s -H "Host: localhost" http://$IP/water-quality/view/ | grep "<div" | wc -l ) 
+      check "API non trivial" 20 $(curl -s -H "Host: localhost" http://$IP/water-quality/def/sampling-point-types.json | jq -r ".items | length")  \
+  &&  check "Landing page non-trivial" 20 $(curl -s -H "Host: localhost" http://$IP/water-quality/view/ | grep "<div" | wc -l ) 
 }
 
 sleep 5s
