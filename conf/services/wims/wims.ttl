@@ -92,7 +92,7 @@
     dms:queryEndpoint  "http://{address}:3030/ds/query";
     dms:loadBalancer  :pdataLB;
     dms:configureAction "wims/server/configure";
-    dms:allocateAction "wims/erver/production/allocate";
+    dms:allocateAction "wims/server/production/allocate";
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;  # Irrelevant due to next line
     dms:externalState  true;
