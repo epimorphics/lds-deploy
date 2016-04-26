@@ -15,9 +15,11 @@ DELETE { GRAPH ugraph:in-season {
     ?update      dct:replaces     ?predecessor .
     ?predecessor dct:isReplacedBy ?update . } }
 WHERE {
-   ?update a                         def-som:SuspensionOfMonitoring .
+#   ?update a                         def-som:SuspensionOfMonitoring .
+#  If new update has been unpublished then still want to remove the links
    ?predecessor
-           a                         def-som:SuspensionOfMonitoring .
+           a                         def-som:SuspensionOfMonitoring;
+           ?predecessor dct:isReplacedBy ?update .
 };
 #
 # Build dct:replaces/dct:/isReplacedBy links between SoM records
