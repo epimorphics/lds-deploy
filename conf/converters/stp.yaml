@@ -120,7 +120,8 @@
                                    "<{$ns.apply('qb:')    }>" ],
          "<dct:modified>"    : "{$pubDateTime}",
 # @@TODO 3: rationalise dump file name
-         "<void:dataDump>"   : "<{$source_base}/{$body_slug}/output/{$filebasename}-{$pubDateTime}.ttl>"
+#         "<void:dataDump>"   : "<{$source_base}/{$body_slug}/output/{$filebasename}-{$pubDateTime}.ttl>"
+         "<void:dataDump>"   : "<{$source_base}/{$body_slug}/output/{$filename.replaceAll('\\.csv$','')}.ttl>"
        }
     ],
  ##########################################################################################################
