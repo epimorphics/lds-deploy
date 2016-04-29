@@ -20,6 +20,10 @@ report_error() {
     exit 1
 }
 
+sleep 10s
+
+# TODO restructure as a set of retry cycles
+
 (( $( probe "data/readings.csv?latest" | wc -l ) > 1000 ))   || report_error "Not enough readings"
 [[ $( probe "id/floods" | jq ".items" ) != "null" ]]         || report_error "No items in flood warnings"
 (( $( probe "id/floodAreas.csv?_limit=10" | wc -l ) > 9 ))   || report_error "Not enough flood areas"
