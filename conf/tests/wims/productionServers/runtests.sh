@@ -31,11 +31,11 @@ checkAll() {
   &&  check "Landing page non-trivial" 20 $(curl -s -H "Host: localhost" http://$IP/water-quality/view/ | grep "<div" | wc -l ) 
 }
 
-sleep 5s
+sleep 20s
 
 if ! checkAll ; then
     echo "Failed first try, retry after wait"
-    sleep 15s
+    sleep 30s
     if ! checkAll ; then
         echo "Failed tests"
         exit 1
