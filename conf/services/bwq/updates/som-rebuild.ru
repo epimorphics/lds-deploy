@@ -19,7 +19,7 @@ WHERE {
 #  If new update has been unpublished then still want to remove the links
    ?predecessor
            a                         def-som:SuspensionOfMonitoring;
-           ?predecessor dct:isReplacedBy ?update .
+           dct:isReplacedBy ?update .
 };
 #
 # Build dct:replaces/dct:/isReplacedBy links between SoM records
