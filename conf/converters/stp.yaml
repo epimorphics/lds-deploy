@@ -32,8 +32,7 @@
             "$so_zoi"             : "http://location.data.gov.uk/so/ef/ZoneOfInfluence/bwzoi.eaew",
             "$bwspid"             : "{site.format('%05d')}",
             "$pubDateTime"        : "{$exectime.asDate('xsd:dateTime').toWholeSeconds().toLocalTime()}",
-            "$predictionDateTime" : "{datetime.asDate('yyyy-MM-dd\\'T\\'hh:mm:ssZZ|yyyy-MM-dd\\'T\\'HH:mm:ssZ|yyyy-MM-dd\\'T\\'hh:mm:ss','xsd:dateTime').toLocalTime()}",
-            "$expiresDateTime"    : "{$predictionDateTime.plus(23,59,0)}",
+            "$predictionDateTime" : "{datetime.asDate('yyyy-MM-dd\\'T\\'hh:mm:ssZZ|yyyy-MM-dd\\'T\\'HH:mm:ssZ|yyyy-MM-dd\\'T\\'HH:mm:ss','xsd:dateTime').toLocalTime()}",
             "$ns"                 : "{= asResource($$).replaceAll('#$','') }"
         }, 
         {
@@ -42,6 +41,7 @@
 ############################################################################################################
 #            "$pubDateTimeSlug" : 
 #                 "{$pubDateTime.year.format('%04d')}{$pubDateTime.month.format('%02d')}{$pubDateTime.day.format('%02d')}-{$pubDateTime.hour.format('%02d')}{$pubDateTime.minute.format('%02d')}{$pubDateTime.fullSecond.format('%02d')}",
+            "$expiresDateTime"    : "{$predictionDateTime.plus(23,59,0)}",
             "$pubDateTimeSlug" : "{$pubDateTime.format('yyyyMMdd-HHmmss')}",
             "$stpDataset"      : "{$data_base}/stp-risk-prediction",
             "$bodyStpDataset"  : "{$data_base}/{$body_slug}/stp-risk-prediction"
