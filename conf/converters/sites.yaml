@@ -106,6 +106,18 @@
              r_water_company           : "http://business.data.gov.uk/id/company/{companieshouseid}",
              r_water_company_profile   : "http://business.data.gov.uk/companies/profile/{companieshouseid}",
              r_water_company_regitem   : "http://environment.data.gov.uk/registry/water-companies/{companieshouseid}",
+        },{
+             r_county               : 
+                   "{ { var r_district  = os_uri.asRDFNode().fetch('rdf:type','admingeo:inCounty', 'admingeo:gssCode') ;
+                     var inCounty    = r_district.getPropertyValue('admingeo:inCounty') ;
+                     var d_label     = r_district.getURI().map('bwq-os-admingeo-labels','label')
+                     var county = 
+                              r_district.hasPropertyValue('rdf:type', 'admingeo:County') ? r_district : 
+                              inCounty != null  ? inCounty : 
+                              d_label != null && d_label.lexicalForm.toLowerCase().matches('.*county.*') ? r_district : null ;                 
+                     county != null ? county.getURI().fetch('rdf:type') : null ;
+                     return county ;                 
+                 } }",
         }
     ],
     "oneOffs" : [
@@ -182,21 +194,24 @@
 # OS Country reference data
 #######################################################################################################################
         { "name"                  : "bwq-os-england",
-           "@id"                  : "<{$england.fetch()}>",
+##           "@id"                  : "<{$england.fetch()}>",
+           "@id"                  : "<{$england}>",
            "<rdf:type>"           : "<onsadmingeo:Country>",
            "<owl:sameAs>"         : [ "<{$snac_england}>", "<{$gss_england}>" ],
            "<rdfs:label>"         : [ "England@en","Lloegr@cy" ],
            "<skos:prefLabel>"     : [ "England@en","Lloegr@cy" ]
         },
         { "name"                  : "bwq-os-wales",
-           "@id"                  : "<{$wales.fetch()}>",
+##           "@id"                  : "<{$wales.fetch()}>",
+           "@id"                  : "<{$wales}>",
            "<rdf:type>"           : "<onsadmingeo:Country>",
            "<owl:sameAs>"         : [ "<{$snac_wales}>", "<{$gss_wales}>" ],
            "<rdfs:label>"         : [ "Wales@en","Cymru@cy" ],
            "<skos:prefLabel>"     : [ "Wales@en","Cymru@cy" ]
         },
         { "name"                  : "bwq-os-scotland",
-           "@id"                  : "<{$scotland.fetch()}>",
+##           "@id"                  : "<{$scotland.fetch()}>",
+           "@id"                  : "<{$scotland}>",
            "<rdf:type>"           : "<onsadmingeo:Country>",
            "<owl:sameAs>"         : [ "<{$snac_scotland}>", "<{$gss_scotland}>" ],
            "<rdfs:label>"         : [ "Scotland@en","Yr Alban@cy" ],
@@ -274,10 +289,17 @@
             "key"        : "code",
             "value"      : "bw_type",
             "makeURI"    : "true"
+        },{
+            "name"       : "bwq-os-admingeo-labels",
+            "sourceType" : "RDFSparql",
+            "source"     : "transform/bwq-os-admingeo-labels.nt",
+            "query"      : "SELECT ?key ?label ?prefLabel ?altLabel WHERE { ?key rdfs:label ?label OPTIONAL { ?key skos:prefLabel ?prefLabel } OPTIONAL { ?key skos:altLabel ?altLabel } }"
         }
     ],
     "templates" : [ 
-        "bwq-sites-bathing-water", 
+        "bwq-sites-bathing-water",
+        "bwq-sites-district-labels",
+        "bwq-sites-county-labels", 
         "bwq-sites-water-company",
         "bwq-sites-water-company-profile",
         "bwq-sites-alt-bathing-water", 
@@ -323,20 +345,37 @@
                                                           "<{empty(gss) ? null : 
                                                                          'http://statistics.data.gov.uk/id/statistical-geography/' + gss}>"
                                                         ],
-             "<onsadmingeo:county>"                   : 
-                "{ { var r_district = os_uri.asRDFNode().fetch('rdf:type','rdfs:label','skos:prefLabel','skos:altLabel','admingeo:inCounty', 'admingeo:gssCode') ;
-                     var inCounty = r_district.getPropertyValue('admingeo:inCounty') ;
-                     var label    = r_district.getPropertyValue('rdfs:label') ;
-                     var county = 
-                              r_district.hasPropertyValue('rdf:type', 'admingeo:County') ? r_district : 
-                              inCounty != null  ? inCounty : 
-                              label != null && label.lexicalForm.toLowerCase().matches('.*county.*') ? r_district : null ;                 
-                     county != null ? county.getURI().fetch('rdf:type','rdfs:label','skos:prefLabel','skos:altLabel') : null ;
-                     return county ;                 
-                 } }",
+ #            "<onsadmingeo:county>"                   : 
+ #               "{ { var r_district = os_uri.asRDFNode().fetch('rdf:type','rdfs:label','skos:prefLabel','skos:altLabel','admingeo:inCounty', 'admingeo:gssCode') ;
+ #                    var inCounty = r_district.getPropertyValue('admingeo:inCounty') ;
+ #                    var label    = r_district.getPropertyValue('rdfs:label') ;
+ #                    var county = 
+ #                             r_district.hasPropertyValue('rdf:type', 'admingeo:County') ? r_district : 
+ #                             inCounty != null  ? inCounty : 
+ #                             label != null && label.lexicalForm.toLowerCase().matches('.*county.*') ? r_district : null ;                 
+ #                    county != null ? county.getURI().fetch('rdf:type','rdfs:label','skos:prefLabel','skos:altLabel') : null ;
+ #                    return county ;                 
+ #                } }",
+ 
+             "<onsadmingeo:county>"                   : "<{r_county}>",
              "<def-bw:appointedSewerageUndertaker>"   : "<{r_water_company}>"
                                                                                                                  
         },
+    #############################################################################################################################
+    # District and County Labels
+    #############################################################################################################################
+    {   "name" : "bwq-sites-district-labels",
+        "@id"  : "<{os_uri}>",
+        "<rdfs:label>"     : "{os_uri.map('bwq-os-admingeo-labels','label',false)}@en",
+        "<skos:prefLabel>" : "{os_uri.map('bwq-os-admingeo-labels','prefLabel',false)}@en",
+        "<skos:altLabel>"  : "{os_uri.map('bwq-os-admingeo-labels','altLabel',false)}@en",
+    },
+    {   "name" : "bwq-sites-county-labels",
+        "@id"  : "<{r_county}>",
+        "<rdfs:label>"     : "{r_county.map('bwq-os-admingeo-labels','label',false)}@en",
+        "<skos:prefLabel>" : "{r_county.map('bwq-os-admingeo-labels','prefLabel',false)}@en",
+        "<skos:altLabel>"  : "{r_county.map('bwq-os-admingeo-labels','altLabel',false)}@en",
+    },
     #############################################################################################################################
     # Water company
     #############################################################################################################################
