@@ -293,7 +293,12 @@
             "name"       : "bwq-os-admingeo-labels",
             "sourceType" : "RDFSparql",
             "source"     : "transform/bwq-os-admingeo-labels.nt",
-            "query"      : "SELECT ?key ?label ?prefLabel ?altLabel WHERE { ?key rdfs:label ?label OPTIONAL { ?key skos:prefLabel ?prefLabel } OPTIONAL { ?key skos:altLabel ?altLabel } }"
+            "query"      : "SELECT ?key ?label_en ?prefLabel_en  ?label_cy ?prefLabel_cy  WHERE 
+                            { ?key rdfs:label ?label_en FILTER (lang(?label_en)='' || lang(?label_en='en'))  
+                              OPTIONAL { ?key skos:prefLabel ?prefLabel_en FILTER (lang(?prefLabel_en)='' || lang(?prefLabel_en='en')) } 
+                              OPTIONAL { ?key rdfs:label ?label_cy FILTER (lang(?label_cy)='cy') } 
+                              OPTIONAL { ?key skos:prefLabel ?prefLabel_cy FILTER (lang(?prefLabel_cy)='cy')  }
+                            }"
         }
     ],
     "templates" : [ 
@@ -366,15 +371,17 @@
     #############################################################################################################################
     {   "name" : "bwq-sites-district-labels",
         "@id"  : "<{os_uri}>",
-        "<rdfs:label>"     : "{os_uri.map('bwq-os-admingeo-labels','label',false)}@en",
-        "<skos:prefLabel>" : "{os_uri.map('bwq-os-admingeo-labels','prefLabel',false)}@en",
-        "<skos:altLabel>"  : "{os_uri.map('bwq-os-admingeo-labels','altLabel',false)}@en",
+        "<rdfs:label>"     : [ "{os_uri.map('bwq-os-admingeo-labels','label_en',false)}@en",
+                               "{os_uri.map('bwq-os-admingeo-labels','label_cy',false)}@cy" ],
+        "<skos:prefLabel>" : [ "{os_uri.map('bwq-os-admingeo-labels','prefLabel_en',false)}@en",
+                               "{os_uri.map('bwq-os-admingeo-labels','prefLabel_cy',false)}@cy" ]
     },
     {   "name" : "bwq-sites-county-labels",
         "@id"  : "<{r_county}>",
-        "<rdfs:label>"     : "{r_county.map('bwq-os-admingeo-labels','label',false)}@en",
-        "<skos:prefLabel>" : "{r_county.map('bwq-os-admingeo-labels','prefLabel',false)}@en",
-        "<skos:altLabel>"  : "{r_county.map('bwq-os-admingeo-labels','altLabel',false)}@en",
+        "<rdfs:label>"     : [ "{r_county.map('bwq-os-admingeo-labels','label_en',false)}@en",
+                               "{r_county.map('bwq-os-admingeo-labels','label_cy',false)}@cy"] ,
+        "<skos:prefLabel>" : [ "{r_county.map('bwq-os-admingeo-labels','prefLabel_en',false)}@en",
+                               "{r_county.map('bwq-os-admingeo-labels','prefLabel_cy',false)}@cy" ]
     },
     #############################################################################################################################
     # Water company
