@@ -164,4 +164,58 @@ WHERE {
      FILTER NOT EXISTS { ?probeFollowingAssessment def-bwq:recordStatus def-bwq:withdrawal }
      FILTER (?pfSampleDateTime>?startOfSuspension && ?pfSampleDateTime < ?fSampleDateTime )
    } 
+};
+##
+## Remove 'old' links from bathing-waters to their most recent active suspension
+##
+DELETE { 
+  GRAPH ugraph:in-season { ?bw def-som:latestActiveSuspension ?item } 
+} WHERE {
+ ?bw def-som:latestActiveSuspension ?item 
+}; 
+##
+## Link bathing-waters to their most recent active suspension
+##
+INSERT { 
+  GRAPH ugraph:in-season { ?bw def-som:latestActiveSuspension ?item }
+}
+#select ?bw ?item
+WHERE {
+  {
+    { ?item     a def-som:SuspensionOfMonitoring ;
+                def-bw:bathingWater ?bw;
+                def-som:startOfSuspension ?startOfSuspension;
+                def-som:recordDateTime    ?recordDateTime ;
+                .
+    } OPTIONAL { 
+      ?item2    a                         def-som:SuspensionOfMonitoring ;
+                def-bw:bathingWater       ?bw;
+                def-som:startOfSuspension ?startOfSuspension;
+                def-som:recordDateTime    ?recordDateTime2 ;
+      FILTER (?recordDateTime2>?recordDateTime)
+    } 
+    FILTER (!bound(?item2))
+    FILTER NOT EXISTS { ?item def-som:endOfSuspension ?end } 
+  } OPTIONAL {
+  # Now look for a second incomplete suspension that started later.
+  # Want to only have *one* latestActiveSuspension per bw.
+    {
+      { ?itemb  a def-som:SuspensionOfMonitoring ;
+                def-bw:bathingWater ?bw;
+                def-som:startOfSuspension ?startOfSuspensionb;
+                def-som:recordDateTime    ?recordDateTimeb ;
+              .
+        FILTER (?startOfSuspensionb > ?startOfSuspension)
+      } OPTIONAL { 
+        ?item2b    a                      def-som:SuspensionOfMonitoring ;
+                   def-bw:bathingWater       ?bw;
+                   def-som:startOfSuspension ?startOfSuspensionb;
+                   def-som:recordDateTime    ?recordDateTime2b ;
+        FILTER (?recordDateTime2b>?recordDateTimeb)
+      } 
+      FILTER (!bound(?item2b))
+      FILTER NOT EXISTS { ?itemb def-som:endOfSuspension ?endb }  
+    }
+  }
+  FILTER (!bound(?itemb))
 }
