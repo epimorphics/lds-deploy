@@ -229,7 +229,8 @@
          "<def-som:recordDateTime>"          : "{$l_recordDateTime}",
 # Narrative fields
          "<dct:description>"                 : "{situation_description}@en",
-         "<rdfs:comment>"                    : "{additional_comments}@en"       
+         "<rdfs:comment>"                    : "{additional_comments}@en",
+         "<def-som:nirsRef>      "           : "{empty(nirs_ref) ? null : nirs_ref.asString()}"       
       } 
    ]
 }
