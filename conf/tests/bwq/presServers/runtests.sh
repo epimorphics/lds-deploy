@@ -20,9 +20,9 @@ check() {
 }
 
 checkDownload() {
-    echo "Checking downloadAPI - SUPRESSED"
-#    curl -s -H "Host: localhost" "http://$IP/bwq/downloadAPI/requestDownload?report=profile&district=Blackpool&from=2015-05-01&to=2015-06-01" > /tmp/download.zip \
-#    && zip -Tq /tmp/download.zip
+    echo "Checking downloadAPI"
+    curl -s -H "Host: localhost" "http://$IP/bwq/downloadAPI/requestDownload?report=profile&district=Blackpool&from=2015-05-01&to=2015-06-01" > /tmp/download.zip \
+    && zip -Tq /tmp/download.zip
     return 0
 }
 
