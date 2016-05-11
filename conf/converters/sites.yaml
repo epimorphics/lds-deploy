@@ -295,7 +295,7 @@
             "source"     : "transform/bwq-os-admingeo-labels.nt",
             "query"      : 
 "SELECT ?key ?label_en ?prefLabel_en  ?label_cy ?prefLabel_cy  WHERE 
-{ ?key rdfs:label ?label_en                     FILTER (lang(?label_en)=''     || lang(?label_en='en'))  
+{ ?key rdfs:label ?label_en                     FILTER (lang(?label_en)=''     || lang(?label_en)='en')  
    OPTIONAL { ?key skos:prefLabel ?prefLabel_en FILTER (lang(?prefLabel_en)='' || lang(?prefLabel_en)='en') }
    OPTIONAL { ?key rdfs:label ?label_cy         FILTER (lang(?label_cy)='cy') } 
    OPTIONAL { ?key skos:prefLabel ?prefLabel_cy FILTER (lang(?prefLabel_cy)='cy')  }
