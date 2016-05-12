@@ -25,7 +25,7 @@ checkDownload() {
     && zip -Tq /tmp/download.zip
     local ok=$?
     rm -f /tmp/download.zip
-    return ok
+    return $ok
 }
 
 checkAll() {
