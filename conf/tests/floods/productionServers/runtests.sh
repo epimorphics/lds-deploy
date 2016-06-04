@@ -16,6 +16,7 @@ probe() {
 }
 
 check_time() {
+    echo "Checking query performance"
     local timer=$SECONDS
     curl -s "http://$IP:8080/api/$1" > /dev/null
     local duration=$(( $SECONDS - $timer ))
