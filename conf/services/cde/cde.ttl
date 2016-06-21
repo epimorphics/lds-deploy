@@ -1,0 +1,153 @@
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix version:  <http://purl.org/linked-data/version#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qb:   <http://purl.org/linked-data/cube#> .
+@prefix org:  <http://www.w3.org/ns/org#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+
+@prefix dms: <http://www.epimorphics.com/public/vocabulary/dms#> .
+
+@prefix : <http://localhost/dms/metadata/cde/> .
+
+:cde a dms:DataService;
+    rdfs:label "cde"@en;
+    rdfs:comment "Catchment Data Explorer"@en;
+    skos:notation "cde";
+    dms:defaultPublicationSet :production;
+    dms:publicationSet :dev, :production;
+    dms:notifyUser "dave@epimorphics.com";
+    .
+
+# -- Data components --------------------------------
+
+:vocabularies a dms:DataComponent;
+    rdfs:label "Vocabularies"@en;
+    rdfs:comment "Collection of vocabularies/ontologies used to publish cde data."@en;
+    skos:notation "vocabularies";
+    dct:isPartOf :cde;
+    dms:updatePolicy dms:multiple;
+    dms:sourcePublishDir  "def";
+    dms:dataPublishDir    "def";
+    .
+
+# -- Publication sets --------------------------------
+
+:dev a dms:PublicationSet;
+    rdfs:label "Dev"@en;
+    skos:notation "dev";
+    dct:description "The publications released to the dev service."@en;
+    dms:publishAction "default/publish";
+    dms:publicationTier :devServers;
+    dms:consolidatedUpdates false;
+    dms:postPublishAction "cde/postPublish";
+    .
+
+:production a dms:PublicationSet;
+    rdfs:label "Production"@en;
+    skos:notation "production";
+    dct:description "The publications released to production."@en;
+    dms:publishAction "default/publish";
+    dms:publicationTier :productionServers;
+    dms:consolidatedUpdates false;
+    dms:postPublishAction "cde/postPublish";
+    .
+
+# -- Tiers --------------------------------
+
+:devServers a dms:Tier;
+    rdfs:label "Data servers/pub in dev"@en;
+    dct:description "Data servers holding published data for the dev service."@en;
+    skos:notation "devServers";
+    dms:tierRole "dataServers";
+    dms:graphEndpoint   "http://{address}:3030/ds/data";
+    dms:updateEndpoint  "http://{address}:3030/ds/update";
+    dms:queryEndpoint  "http://{address}:3030/ds/query";
+    dms:configureAction "cde/server/configure";
+    dms:allocateAction "cde/server/allocate";
+    dms:terminateAction "default/terminate";
+    dms:parallelPublish true ;
+    dms:externalState  true;
+    dms:loadStateAction "generic/loadState";
+    dms:catchupStateAction "generic/catchupState";
+    dms:publishStateAction "cde/dupublishState";
+    dms:publishAction      "generic/dupublish";
+    dms:operation :clearCacheOp;
+    dms:operation :upgradeOp, :resetDataOp, :resetServerDataOp;
+    dms:operation :webSyncOp;
+    .
+
+:productionServers a dms:Tier;
+    rdfs:label "Data servers/pub in production"@en;
+    dct:description "Data servers holding published data for the production service."@en;
+    skos:notation "productionServers";
+    dms:tierRole "dataServers";
+    dms:graphEndpoint   "http://{address}:3030/ds/data";
+    dms:updateEndpoint  "http://{address}:3030/ds/update";
+    dms:queryEndpoint  "http://{address}:3030/ds/query";
+    dms:loadBalancer  :pdataLB;
+    dms:configureAction "cde/server/configure";
+    dms:allocateAction "cde/server/production/allocate";
+    dms:terminateAction "default/terminate";
+    dms:parallelPublish true ;  # Irrelevant due to next line
+    dms:externalState  true;
+    dms:loadStateAction "generic/loadState";
+    dms:catchupStateAction "generic/catchupState";
+    dms:publishStateAction "cde/dupublishState";
+    dms:publishAction      "generic/dupublish";
+    dms:operation :clearCacheOp;
+    dms:operation :upgradeOp, :resetDataOp, :resetServerDataOp;
+    dms:operation :webSyncOp;
+    .
+
+:pdataLB a dms:LoadBalancer;
+    rdfs:label "Production Data LB"@en;
+    rdfs:comment "Load balancer for the production server tier"@en;
+    # Use only the default actions
+    . 
+
+:clearCacheOp
+    rdfs:label "Clear caches";
+    rdfs:comment "Clear the caches for this tier";
+    dms:action "default/clearCache";
+    skos:notation "clearCacheOp";
+    dms:tierOnly true;
+    .
+
+:upgradeOp
+    rdfs:label "Upgrade server";
+    dms:action "default/upgrade";
+    skos:notation "upgradeOp";
+    dms:removeFromLB true;
+    .
+
+:resetDataOp
+    rdfs:label "Reset database";
+    rdfs:comment "Relace current data from lastest image on S3";
+    dms:action "generic/resetDB";
+    skos:notation "resetDataOp";
+    dms:tierOnly true;
+    .
+
+:resetServerDataOp
+    rdfs:label "Reset server database";
+    rdfs:comment "Relace current data from lastest image on S3, for single server";
+    dms:action "generic/loadState";
+    skos:notation "resetServerDataOp";
+    .
+
+:webSyncOp
+    rdfs:label "Web sync";
+    rdfs:comment "Synchronize shared web content";
+    dms:action "cde/webSync";
+    skos:notation "webSyncOp";
+    dms:tierOnly true;
+    .

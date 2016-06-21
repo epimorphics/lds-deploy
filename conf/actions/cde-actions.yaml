@@ -1,0 +1,75 @@
+# Actions customized for the LDS epr service
+
+# Data server allocation
+"@name" : cde/server/allocate
+"@type" : script
+"@script" : "ops/generic-allocate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "AWS_EBS" : 16
+    "AWS_INSTANCE_STORE" : "no"
+    "AWS_INSTANCE_TYPE" : "m4.large"
+    "AWS_AMI" : "ami-cda130ba"
+#    "AWS_SG" : "sg-b815c7dd"   # lds-front-end
+    "AWS_SG" : "sg-091c6a6c"   # lds-combined
+    "CHEF_ENV"  : "lds-cde-dev"
+    "CHEF_ROLE" : "ea-cde-pub"
+    "AWS_IAM_ROLE_ARN" : "arn:aws:iam::853478862498:instance-profile/dms-update"
+---
+# Data server allocation
+"@name" : cde/server/production/allocate
+"@type" : script
+"@script" : "ops/generic-allocate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+#    "AWS_EBS" : 8
+    "AWS_INSTANCE_STORE" : "yes"
+    "AWS_INSTANCE_TYPE" : "m3.large"
+    "AWS_AMI" : "ami-cda130ba"
+#    "AWS_SG" : "sg-b815c7dd"   # lds-front-end
+    "AWS_SG" : "sg-091c6a6c"   # lds-combined
+    "CHEF_ENV"  : "lds-cde-production"
+    "CHEF_ROLE" : "ea-cde-pub"
+    "AWS_IAM_ROLE_ARN" : "arn:aws:iam::853478862498:instance-profile/dms-update"
+---
+# Server configuration  
+"@name" : cde/server/configure
+"@type" : script
+"@script" : "ops/generic-configure.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "NRC_HOSTGROUP"  : "cde-server"
+    "NRC_SERVICESET" : "BWQ-data-ss"
+    "NRC_SERVICE"    : "check_http_ping"
+---
+# General publication processing
+"@name" : cde/postPublish
+"@type" : script
+"@script" : "cde/post-publish.sh"
+"@args" :
+    -  "servers"
+---
+# Publish state via S3 upload
+"@name" : cde/dupublishState
+"@type" : script
+"@script" : "ops/duPublishState.sh"
+"@env"  :
+    "STATE_FOLDER"  : "s3://dms-deploy/images/cde"
+"@args" : json
+---
+# Synchronize web content - whole tier
+"@name" : cde/webSync
+"@type" : script
+"@script" : "cde/web-sync.sh"
+"@args" :
+  - "tier"
+---
+# Synchronize web content - single server
+"@name" : cde/webSyncServer
+"@type" : script
+"@script" : "cde/web-sync-server.sh"
+"@args" :
+  - "serverDir"
