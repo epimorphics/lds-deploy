@@ -64,8 +64,8 @@
 # -- Tiers --------------------------------
 
 :devServers a dms:Tier;
-    rdfs:label "Data servers/pub in dev"@en;
-    dct:description "Data servers holding published data for the dev service."@en;
+    rdfs:label "Pub servers in dev"@en;
+    dct:description "Pub servers holding published data for the dev service."@en;
     skos:notation "devServers";
     dms:tierRole "dataServers";
     dms:graphEndpoint   "http://{address}:3030/ds/data";
@@ -86,8 +86,8 @@
     .
 
 :productionServers a dms:Tier;
-    rdfs:label "Data servers/pub in production"@en;
-    dct:description "Data servers holding published data for the production service."@en;
+    rdfs:label "Dub servers in production"@en;
+    dct:description "Pub servers holding published data for the production service."@en;
     skos:notation "productionServers";
     dms:tierRole "dataServers";
     dms:graphEndpoint   "http://{address}:3030/ds/data";
