@@ -13,4 +13,4 @@ echo "Synchronizing web content, including source/dump files"
 cd $serverDir/../../../../Web
 FLAGS="$SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem"
 IP=$( jq -r .address "$serverDir/config.json" )
-rsync -a --delete -e "ssh $FLAGS" * ubuntu@$IP:/var/www/cde/html
+rsync -a --delete -e "ssh $FLAGS" --rsync-path="sudo rsync" * ubuntu@$IP:/var/www/cde/html

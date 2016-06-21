@@ -19,7 +19,7 @@ do
         FLAGS="$SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem"
         echo "Sync to $server"
         IP=$( jq -r .address "$server/config.json" )
-        rsync -a --delete -e "ssh $FLAGS" * ubuntu@$IP:/var/www/cde/html
+        rsync -a --delete -e "ssh $FLAGS" --rsync-path="sudo rsync" * ubuntu@$IP:/var/www/cde/html
 
         echo "Clear caches"
         ssh -t -t $FLAGS -l ubuntu $IP sudo /usr/local/bin/ps_cache_clean 
