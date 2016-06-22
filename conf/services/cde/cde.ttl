@@ -19,7 +19,7 @@
 @prefix : <http://localhost/dms/metadata/cde/> .
 
 :cde a dms:DataService;
-    rdfs:label "cde"@en;
+    rdfs:label "CDE"@en;
     rdfs:comment "Catchment Data Explorer"@en;
     skos:notation "cde";
     dms:defaultPublicationSet :production;
