@@ -140,7 +140,7 @@
 :resetServerDataOp
     rdfs:label "Reset server database";
     rdfs:comment "Relace current data from lastest image on S3, for single server";
-    dms:action "generic/loadState";
+    dms:action "cde/loadState";
     skos:notation "resetServerDataOp";
     .
 
@@ -149,7 +149,6 @@
     rdfs:comment "Synchronize shared web content";
     dms:action "cde/webSync";
     skos:notation "webSyncOp";
-    dms:tierOnly true;
     .
 
 :testServerOp
