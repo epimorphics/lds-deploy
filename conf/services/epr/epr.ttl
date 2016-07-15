@@ -190,6 +190,6 @@
 :testServerOp
     rdfs:label "Integration test";
     rdfs:comment "Run integration test defined for this server class";
-    dms:action "default/testServer"
+    dms:action "default/testServer";
     skos:notation "testServerDataOp";
     .
