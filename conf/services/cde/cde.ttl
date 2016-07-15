@@ -82,7 +82,7 @@
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
     dms:operation :upgradeOp, :resetDataOp, :resetServerDataOp;
-    dms:operation :webSyncOp, testServerOp;
+    dms:operation :webSyncOp, :testServerOp;
     .
 
 :productionServers a dms:Tier;
