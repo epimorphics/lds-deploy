@@ -76,7 +76,7 @@
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;
     dms:externalState  true;
-    dms:loadStateAction "generic/loadState";
+    dms:loadStateAction "cde/loadState";
     dms:catchupStateAction "generic/catchupState";
     dms:publishStateAction "cde/dupublishState";
     dms:publishAction      "generic/dupublish";
@@ -99,7 +99,7 @@
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;  # Irrelevant due to next line
     dms:externalState  true;
-    dms:loadStateAction "generic/loadState";
+    dms:loadStateAction "cde/loadState";
     dms:catchupStateAction "generic/catchupState";
     dms:publishStateAction "cde/dupublishState";
     dms:publishAction      "generic/dupublish";

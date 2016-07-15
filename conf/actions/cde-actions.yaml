@@ -76,3 +76,15 @@
 "@script" : "cde/web-sync-server.sh"
 "@args" :
   - "serverDir"
+---
+# initialize database from S3 and sync web content
+"@name" : cde/loadState
+"@type" : script
+"@script" : "dbutil/resetServerData.sh"
+"@args" :
+    -  "serverDir"
+"@onSuccess" :
+    "@type"   : script
+    "@script" : "cde/web-sync.sh"
+    "@args"   :
+        - "tier"
