@@ -100,7 +100,7 @@
     dms:publishStateAction "floods/dupublishStateByPS";
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
-    dms:operation :upgradeOp;
+    dms:operation :upgradeOp, :testServerOp;
     .
 
 :productionServers a dms:Tier;
@@ -122,7 +122,7 @@
     dms:publishStateAction "floods/dupublishState";
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp, :rebuildDBOp;
-    dms:operation :upgradeOp;
+    dms:operation :upgradeOp, :testServerOp;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -152,5 +152,12 @@
     dms:action "default/upgrade";
     skos:notation "upgradeOp";
     dms:removeFromLB true;
+    .
+
+:testServerOp
+    rdfs:label "Integration test";
+    rdfs:comment "Run integration test defined for this server class";
+    dms:action "default/testServer";
+    skos:notation "testServerOp";
     .
     

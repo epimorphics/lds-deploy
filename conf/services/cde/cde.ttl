@@ -82,7 +82,7 @@
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
     dms:operation :upgradeOp, :resetDataOp, :resetServerDataOp;
-    dms:operation :webSyncOp;
+    dms:operation :webSyncOp, testServerOp;
     .
 
 :productionServers a dms:Tier;
@@ -105,7 +105,7 @@
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
     dms:operation :upgradeOp, :resetDataOp, :resetServerDataOp;
-    dms:operation :webSyncOp;
+    dms:operation :webSyncOp, :testServerOp;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -150,4 +150,11 @@
     dms:action "cde/webSync";
     skos:notation "webSyncOp";
     dms:tierOnly true;
+    .
+
+:testServerOp
+    rdfs:label "Integration test";
+    rdfs:comment "Run integration test defined for this server class";
+    dms:action "default/testServer";
+    skos:notation "testServerOp";
     .

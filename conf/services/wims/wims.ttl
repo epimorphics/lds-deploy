@@ -79,7 +79,7 @@
     dms:publishStateAction "wims/dupublishState";
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp, :resetDataOp;
-    dms:operation :upgradeOp;
+    dms:operation :upgradeOp, :testServerOp;
     .
 
 :productionServers a dms:Tier;
@@ -101,7 +101,7 @@
     dms:publishStateAction "wims/dupublishState";
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp, :resetDataOp;
-    dms:operation :upgradeOp;
+    dms:operation :upgradeOp, :testServerOp;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -131,4 +131,11 @@
     dms:action "generic/resetDB";
     skos:notation "resetDataOp";
     dms:tierOnly true;
+    .
+
+:testServerOp
+    rdfs:label "Integration test";
+    rdfs:comment "Run integration test defined for this server class";
+    dms:action "default/testServer";
+    skos:notation "testServerOp";
     .
