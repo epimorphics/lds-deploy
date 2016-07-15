@@ -117,7 +117,7 @@
     dms:publishStateAction "epr/dupublishState";
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
-    dms:operation :upgradeOp, :resetDataOp;
+    dms:operation :upgradeOp, :resetDataOp, :testServerOp;
     .
 
 :productionServers a dms:Tier;
@@ -140,7 +140,7 @@
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
     dms:operation :upgradeOp, :resetDataOp, :resetServerDataOp;
-    dms:operation :updateDataOp;
+    dms:operation :updateDataOp,:testServerOp;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -186,3 +186,10 @@
     skos:notation "updateDataOp";
     dms:tierOnly true;
 .
+
+:testServerOp
+    rdfs:label "Integration test";
+    rdfs:comment "Run integration test defined for this server class";
+    dms:action "default/testServer"
+    skos:notation "testServerDataOp";
+    .
