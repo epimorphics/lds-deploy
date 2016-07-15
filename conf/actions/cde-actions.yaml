@@ -85,6 +85,6 @@
     -  "serverDir"
 "@onSuccess" :
     "@type"   : script
-    "@script" : "cde/web-sync.sh"
+    "@script" : "cde/web-sync-server.sh"
     "@args"   :
-        - "tier"
+        - "serverDir"
