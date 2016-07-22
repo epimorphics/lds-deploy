@@ -86,7 +86,7 @@
     .
 
 :productionServers a dms:Tier;
-    rdfs:label "Dub servers in production"@en;
+    rdfs:label "Pub servers in production"@en;
     dct:description "Pub servers holding published data for the production service."@en;
     skos:notation "productionServers";
     dms:tierRole "dataServers";
