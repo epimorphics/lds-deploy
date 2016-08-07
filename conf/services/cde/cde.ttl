@@ -76,17 +76,17 @@
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;
     dms:externalState  true;
-    dms:loadStateAction "generic/loadState";
+    dms:loadStateAction "cde/loadState";
     dms:catchupStateAction "generic/catchupState";
     dms:publishStateAction "cde/dupublishState";
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
     dms:operation :upgradeOp, :resetDataOp, :resetServerDataOp;
-    dms:operation :webSyncOp;
+    dms:operation :webSyncOp, :testServerOp;
     .
 
 :productionServers a dms:Tier;
-    rdfs:label "Dub servers in production"@en;
+    rdfs:label "Pub servers in production"@en;
     dct:description "Pub servers holding published data for the production service."@en;
     skos:notation "productionServers";
     dms:tierRole "dataServers";
@@ -99,13 +99,13 @@
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;  # Irrelevant due to next line
     dms:externalState  true;
-    dms:loadStateAction "generic/loadState";
+    dms:loadStateAction "cde/loadState";
     dms:catchupStateAction "generic/catchupState";
     dms:publishStateAction "cde/dupublishState";
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
     dms:operation :upgradeOp, :resetDataOp, :resetServerDataOp;
-    dms:operation :webSyncOp;
+    dms:operation :webSyncOp, :testServerOp;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -140,7 +140,7 @@
 :resetServerDataOp
     rdfs:label "Reset server database";
     rdfs:comment "Relace current data from lastest image on S3, for single server";
-    dms:action "generic/loadState";
+    dms:action "cde/loadState";
     skos:notation "resetServerDataOp";
     .
 
@@ -149,5 +149,11 @@
     rdfs:comment "Synchronize shared web content";
     dms:action "cde/webSync";
     skos:notation "webSyncOp";
-    dms:tierOnly true;
+    .
+
+:testServerOp
+    rdfs:label "Integration test";
+    rdfs:comment "Run integration test defined for this server class";
+    dms:action "default/testServer";
+    skos:notation "testServerOp";
     .
