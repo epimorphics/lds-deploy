@@ -7,7 +7,7 @@ readonly IP=$( jq -r .address "$SERVER/config.json" )
 
 export TEST_HOST=$IP
 cd /opt/dms/conf/tests/cde/ea_cde_pub/test/cucumber
-if [[ ! bundle check ]]; then
+if ! bundle check ; then
     bundle install
 fi
 bundle exec cucumber
