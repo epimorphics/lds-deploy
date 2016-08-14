@@ -7,4 +7,4 @@ readonly IP=$( jq -r .address "$SERVER/config.json" )
 
 export TEST_HOST=$IP
 cd /opt/dms/conf/tests/cde/ea_cde_pub/test/cucumber
-/usr/local/bin/bundle exec /usr/local/bin/cucumber
+xvfb-run -a /usr/local/bin/bundle exec /usr/local/bin/cucumber
