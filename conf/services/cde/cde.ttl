@@ -149,6 +149,7 @@
     rdfs:comment "Synchronize shared web content";
     dms:action "cde/webSync";
     skos:notation "webSyncOp";
+    .
 
 :webSyncServerOp
     rdfs:label "Web sync single server";
