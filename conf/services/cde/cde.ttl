@@ -82,7 +82,7 @@
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
     dms:operation :upgradeOp, :resetDataOp, :resetServerDataOp;
-    dms:operation :webSyncOp, :testServerOp;
+    dms:operation :webSyncServerOp, :testServerOp;
     .
 
 :productionServers a dms:Tier;
@@ -105,7 +105,7 @@
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
     dms:operation :upgradeOp, :resetDataOp, :resetServerDataOp;
-    dms:operation :webSyncOp, :testServerOp;
+    dms:operation :webSyncServerOp, :testServerOp;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -149,6 +149,12 @@
     rdfs:comment "Synchronize shared web content";
     dms:action "cde/webSync";
     skos:notation "webSyncOp";
+
+:webSyncServerOp
+    rdfs:label "Web sync single server";
+    rdfs:comment "Synchronize shared web content";
+    dms:action "cde/webSyncServer";
+    skos:notation "webSyncServerOp";
     .
 
 :testServerOp
