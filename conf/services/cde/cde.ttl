@@ -16,12 +16,12 @@
 
 @prefix dms: <http://www.epimorphics.com/public/vocabulary/dms#> .
 
-@prefix : <http://localhost/dms/metadata/wims/> .
+@prefix : <http://localhost/dms/metadata/cde/> .
 
-:wims a dms:DataService;
-    rdfs:label "WIMS"@en;
-    rdfs:comment "Data from Water Information Management System"@en;
-    skos:notation "wims";
+:cde a dms:DataService;
+    rdfs:label "CDE"@en;
+    rdfs:comment "Catchment Data Explorer"@en;
+    skos:notation "cde";
     dms:defaultPublicationSet :production;
     dms:publicationSet :dev, :production;
     dms:notifyUser "dave@epimorphics.com";
@@ -31,12 +31,12 @@
 
 :vocabularies a dms:DataComponent;
     rdfs:label "Vocabularies"@en;
-    rdfs:comment "Collection of vocabularies/ontologies used to publish WIMS data."@en;
+    rdfs:comment "Collection of vocabularies/ontologies used to publish cde data."@en;
     skos:notation "vocabularies";
-    dct:isPartOf :wims;
+    dct:isPartOf :cde;
     dms:updatePolicy dms:multiple;
-    dms:sourcePublishDir  "water-quality/sources/def";
-    dms:dataPublishDir    "water-quality/sources/def";
+    dms:sourcePublishDir  "def";
+    dms:dataPublishDir    "def";
     .
 
 # -- Publication sets --------------------------------
@@ -48,6 +48,7 @@
     dms:publishAction "default/publish";
     dms:publicationTier :devServers;
     dms:consolidatedUpdates false;
+    dms:postPublishAction "cde/postPublish";
     .
 
 :production a dms:PublicationSet;
@@ -57,51 +58,54 @@
     dms:publishAction "default/publish";
     dms:publicationTier :productionServers;
     dms:consolidatedUpdates false;
+    dms:postPublishAction "cde/postPublish";
     .
 
 # -- Tiers --------------------------------
 
 :devServers a dms:Tier;
-    rdfs:label "Data servers/pub in dev"@en;
-    dct:description "Data servers holding published data for the dev service."@en;
+    rdfs:label "Pub servers in dev"@en;
+    dct:description "Pub servers holding published data for the dev service."@en;
     skos:notation "devServers";
     dms:tierRole "dataServers";
     dms:graphEndpoint   "http://{address}:3030/ds/data";
     dms:updateEndpoint  "http://{address}:3030/ds/update";
     dms:queryEndpoint  "http://{address}:3030/ds/query";
-    dms:configureAction "wims/server/configure";
-    dms:allocateAction "wims/server/allocate";
+    dms:configureAction "cde/server/configure";
+    dms:allocateAction "cde/server/allocate";
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;
     dms:externalState  true;
-    dms:loadStateAction "generic/loadState";
+    dms:loadStateAction "cde/loadState";
     dms:catchupStateAction "generic/catchupState";
-    dms:publishStateAction "wims/dupublishState";
+    dms:publishStateAction "cde/dupublishState";
     dms:publishAction      "generic/dupublish";
-    dms:operation :clearCacheOp, :resetDataOp;
-    dms:operation :upgradeOp, :testServerOp;
+    dms:operation :clearCacheOp;
+    dms:operation :upgradeOp, :resetDataOp, :resetServerDataOp;
+    dms:operation :webSyncServerOp, :testServerOp;
     .
 
 :productionServers a dms:Tier;
-    rdfs:label "Data servers/pub in production"@en;
-    dct:description "Data servers holding published data for the production service."@en;
+    rdfs:label "Pub servers in production"@en;
+    dct:description "Pub servers holding published data for the production service."@en;
     skos:notation "productionServers";
     dms:tierRole "dataServers";
     dms:graphEndpoint   "http://{address}:3030/ds/data";
     dms:updateEndpoint  "http://{address}:3030/ds/update";
     dms:queryEndpoint  "http://{address}:3030/ds/query";
     dms:loadBalancer  :pdataLB;
-    dms:configureAction "wims/server/configure";
-    dms:allocateAction "wims/server/production/allocate";
+    dms:configureAction "cde/server/configure";
+    dms:allocateAction "cde/server/production/allocate";
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;  # Irrelevant due to next line
     dms:externalState  true;
-    dms:loadStateAction "generic/loadState";
+    dms:loadStateAction "cde/loadState";
     dms:catchupStateAction "generic/catchupState";
-    dms:publishStateAction "wims/dupublishState";
+    dms:publishStateAction "cde/dupublishState";
     dms:publishAction      "generic/dupublish";
-    dms:operation :clearCacheOp, :resetDataOp;
-    dms:operation :upgradeOp, :testServerOp;
+    dms:operation :clearCacheOp;
+    dms:operation :upgradeOp, :resetDataOp, :resetServerDataOp;
+    dms:operation :webSyncServerOp, :testServerOp;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -131,6 +135,27 @@
     dms:action "generic/resetDB";
     skos:notation "resetDataOp";
     dms:tierOnly true;
+    .
+
+:resetServerDataOp
+    rdfs:label "Reset server database";
+    rdfs:comment "Relace current data from lastest image on S3, for single server";
+    dms:action "cde/loadState";
+    skos:notation "resetServerDataOp";
+    .
+
+:webSyncOp
+    rdfs:label "Web sync";
+    rdfs:comment "Synchronize shared web content";
+    dms:action "cde/webSync";
+    skos:notation "webSyncOp";
+    .
+
+:webSyncServerOp
+    rdfs:label "Web sync single server";
+    rdfs:comment "Synchronize shared web content";
+    dms:action "cde/webSyncServer";
+    skos:notation "webSyncServerOp";
     .
 
 :testServerOp

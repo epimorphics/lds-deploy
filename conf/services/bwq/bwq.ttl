@@ -209,7 +209,7 @@
     dms:allocateAction "bwq/dataserver/allocate";
     dms:terminateAction "bwq/dataserver/terminate";
     dms:parallelPublish true ;
-    dms:operation :upgradeOp;
+    dms:operation :upgradeOp, :testServerOp;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -231,7 +231,7 @@
     dms:allocateAction "bwq/dataserver/allocate";
     dms:terminateAction "bwq/dataserver/terminate";
     dms:parallelPublish true ;
-    dms:operation :upgradeOp;
+    dms:operation :upgradeOp, :testServerOp;
     .
 
 :tdataLB a dms:LoadBalancer;
@@ -250,7 +250,7 @@
     dms:terminateAction "bwq/presserver/terminate";
     dms:activateAction "bwq/webSyncServer";
     dms:operation :clearCacheOp, :webSyncOp;
-    dms:operation :upgradeOp;
+    dms:operation :upgradeOp, :testServerOp;
     .    
 
 :pPresLB a dms:LoadBalancer;
@@ -268,7 +268,7 @@
     dms:terminateAction "bwq/presserver/terminate";
     dms:activateAction "bwq/webSyncServer";
     dms:operation :clearCacheOp, :webSyncOp;
-    dms:operation :upgradeOp;
+    dms:operation :upgradeOp, :testServerOp;
     .    
 
 :upgradeOp
@@ -305,6 +305,13 @@
     rdfs:label "Testing presentation LB"@en;
     rdfs:comment "Load balancer for the testing presentation tier"@en;
     .    
+
+:testServerOp
+    rdfs:label "Integration test";
+    rdfs:comment "Run integration test defined for this server class";
+    dms:action "default/testServer";
+    skos:notation "testServerOp";
+    .
 
 # -- Base images --------------------------------
 
