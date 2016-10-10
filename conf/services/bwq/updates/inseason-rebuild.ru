@@ -22,13 +22,16 @@ PREFIX ugraph:  <http://environment.data.gov.uk/bwq/graph/updates/>
 DELETE { GRAPH ugraph:in-season {
      ?update      dct:replaces     ?predecessor .
      ?predecessor dct:isReplacedBy ?update . } }
+# Updated to a pair or unioned clauses (rather than a conjuction) 
+# in case things become out of step.
 WHERE {
-     ?update      a                bwq:SampleAssessment ;
-                  dct:replaces     ?predecessor .
-
-     ?predecessor a                bwq:SampleAssessment ;
-                  dct:isReplacedBy ?update . } ;
-
+     { ?update      a                bwq:SampleAssessment ;
+                    dct:replaces     ?predecessor . 
+     } UNION {
+       ?predecessor a                bwq:SampleAssessment ;
+                    dct:isReplacedBy ?update . 
+     }
+} ;
 # Reconstruct links based on current replacements/withdrawals
 INSERT { GRAPH ugraph:in-season {
     ?update    dct:replaces ?predecessor .
@@ -171,10 +174,15 @@ INSERT { GRAPH ugraph:in-season {
 DELETE { GRAPH ugraph:in-season {
     ?update      dct:replaces     ?predecessor .
     ?predecessor dct:isReplacedBy ?update . } }
+# Updated to disjunctive UNION (cf. SampleAssessments) rather than open cross-product
+# Also this should be faster.
 WHERE {
-   ?update a                         def-som:SuspensionOfMonitoring .
-   ?predecessor
-           a                         def-som:SuspensionOfMonitoring .
+   { ?update      a                  def-som:SuspensionOfMonitoring ;
+                  dct:replaces       ?predecessor .
+   } UNION {
+     ?predecessor a                  def-som:SuspensionOfMonitoring ;
+                  dct:isReplacedBy   ?update .
+   }
 };
 #
 # Build dct:replaces/dct:/isReplacedBy links between SoM records
