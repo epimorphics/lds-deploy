@@ -31,10 +31,10 @@ install_disk() {
                 echo "$MOUNT already set up"
             else
                 umount $DEV || true
-                sed -i "s@$DEV.*\$@$DEV  $MOUNT  auto  defaults,nodev,nobootwait 0 2@" /etc/fstab
+                sed -i "s@$DEV.*\$@$DEV  $MOUNT  auto  defaults,nodev 0 2@" /etc/fstab
             fi
         else
-            echo "$DEV  $MOUNT  auto  defaults,nodev,nobootwait 0 2" >> /etc/fstab
+            echo "$DEV  $MOUNT  auto  defaults,nodev 0 2" >> /etc/fstab
         fi
 
         echo "Mount disk at $MOUNT"
