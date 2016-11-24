@@ -23,7 +23,7 @@
     rdfs:comment "Data service providing information on assets such as flood risk assets, e.g. culverts, embankements, groynes etc."@en;
     skos:notation "aims";
     dms:defaultPublicationSet :production;
-    dms:publicationSet :production, :test;
+    dms:publicationSet :production, :testing;
     dms:notifyUser "brian@epimorphics.com";
     .
 
