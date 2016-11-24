@@ -16,7 +16,7 @@
 
 @prefix dms: <http://www.epimorphics.com/public/vocabulary/dms#> .
 
-@prefix : <http://localhost/dms/metadata/bwq/> .
+@prefix : <http://localhost/dms/metadata/aims/> .
 
 :aims a dms:DataService;
     rdfs:label "Asset Information Management System"@en;
@@ -133,7 +133,7 @@
 :clearCacheOp
     rdfs:label "Clear caches";
     rdfs:comment "Clear the caches for this tier";
-    dms:action "bwq/clearCache";
+    dms:action "aims/clearCache";
     skos:notation "clearCacheOp";
     dms:tierOnly true;
 .
