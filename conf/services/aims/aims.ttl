@@ -39,26 +39,26 @@
 
 # -- Publication sets --------------------------------
 
-:test a dms:PublicationSet;
-    rdfs:label "Test"@en;
+:testing a dms:PublicationSet;
+    rdfs:label "Testing"@en;
     skos:notation "testing";
     dct:description "The publications released to the testing service."@en;
     dms:publicationTier :testingPubServers;
-    dms:tier :tPubServers;
     dms:publishAction "default/publish";
+    dms:consolidatedUpdates false;
     .
+    
 :production a dms:PublicationSet;
     rdfs:label "Production"@en;
     skos:notation "production";
     dct:description "The publications released to the production service."@en;
     dms:publicationTier :productionPubServers;
-    dms:tier ptPubServers;
     dms:publishAction "default/publish";
     .
 
 # -- Tiers --------------------------------
 
-:tPubServers a dms:Tier;
+:testingPubServers a dms:Tier;
     rdfs:label "Pub servers in testing"@en;
     dct:description "Publication servers for testing testing service."@en;
     skos:notation "pubServers";
@@ -87,7 +87,7 @@
     # Use only the default actions
     .    
 
-:pPubServers a dms:Tier;
+:productionPubServers a dms:Tier;
     rdfs:label "Pub servers in production"@en;
     dct:description "Publication servers for production service."@en;
     skos:notation "pubServers";
