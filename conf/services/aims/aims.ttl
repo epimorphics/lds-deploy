@@ -44,6 +44,7 @@
     skos:notation "testing";
     dct:description "The publications released to the testing service."@en;
     dms:publicationTier :testingPubServers;
+    dms:tier :testingPubServers ;
     dms:publishAction "default/publish";
     dms:consolidatedUpdates false;
     .
@@ -53,6 +54,7 @@
     skos:notation "production";
     dct:description "The publications released to the production service."@en;
     dms:publicationTier :productionPubServers;
+    dms:tier :productionPubServers ;
     dms:publishAction "default/publish";
     .
 
