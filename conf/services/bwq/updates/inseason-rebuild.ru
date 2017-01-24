@@ -44,7 +44,7 @@ INSERT { GRAPH ugraph:in-season {
               bwq:sampleDateTime  ?u_stime ;
               bwq:recordDate      ?u_recordDate;
    } UNION {
-     ?update a                        bwq:SampleAssessment;
+     ?update a                    bwq:SampleAssessment;
               bwq:recordStatus    bwq:replacement;
               bwq:bathingWater    ?bw;
               bwq:samplingPoint   ?sp;
@@ -168,20 +168,44 @@ INSERT { GRAPH ugraph:in-season {
 
   ?o bwq:bathingWater ?bw.
 };
+
+###############################################################################
+# From here on matches  som-rebuild.ru
+###############################################################################
 #
-# Delete all dct:replaces/dct:/isReplacedBy links between SoM records 
+# Delete all dct:replaces/dct:/isReplacedBy links between SoM and PI records 
 #
 DELETE { GRAPH ugraph:in-season {
     ?update      dct:replaces     ?predecessor .
     ?predecessor dct:isReplacedBy ?update . } }
-# Updated to disjunctive UNION (cf. SampleAssessments) rather than open cross-product
-# Also this should be faster.
 WHERE {
-   { ?update      a                  def-som:SuspensionOfMonitoring ;
-                  dct:replaces       ?predecessor .
+#   ?update a                         def-som:SuspensionOfMonitoring .
+#  If new update has been unpublished then still want to remove the links
+
+   VALUES ?type { 
+     def-som:SuspensionOfMonitoring 
+     def-som:PollutionIncident 
+   }
+
+   # Find replaces/isReplacedBy links for ?type's to delete
+   # Also delete orphaned links (between things with no rdf:type).
+   { ?predecessor
+             a                ?type;
+             dct:isReplacedBy ?update .
    } UNION {
-     ?predecessor a                  def-som:SuspensionOfMonitoring ;
-                  dct:isReplacedBy   ?update .
+        ?update
+           a                  ?type;
+           dct:replaces       ?predecessor .
+   } UNION {
+     ?update 
+            dct:replaces     ?predecessor .
+     FILTER (    NOT EXISTS { ?predecessor a ?p_type }
+              || NOT EXISTS { ?update a ?u_type } )
+   } UNION {
+     ?predecessor 
+            dct:isReplacedBy     ?update .
+     FILTER (    NOT EXISTS { ?predecessor a ?p_type }
+              || NOT EXISTS { ?update a ?u_type } )       
    }
 };
 #
@@ -191,19 +215,22 @@ INSERT { GRAPH ugraph:in-season {
     ?update      dct:replaces     ?predecessor .
     ?predecessor dct:isReplacedBy ?update . 
 } } WHERE {
-   ?update a                         def-som:SuspensionOfMonitoring ;
-           def-bw:bathingWater      ?bw;
-           def-sp:samplingPoint     ?sp;
-           def-som:startOfSuspension ?stime ;
+   VALUES ( ?type ?keyProp ?startProp ) { 
+          ( def-som:SuspensionOfMonitoring def-bw:bathingWater def-som:startOfSuspension ) 
+          ( def-som:PollutionIncident      def-som:incidentNotation def-som:startOfIncident ) 
+   }
+   
+   ?update a                        ?type ;
+           ?keyProp                 ?key;
+           ?startProp               ?stime ;
            def-som:recordDateTime   ?u_recordDate;
            .
 
     # Find a ?prececessor
     ?predecessor
-            a                        def-som:SuspensionOfMonitoring;
-           def-bw:bathingWater      ?bw;
-           def-sp:samplingPoint     ?sp;
-           def-som:startOfSuspension ?stime ;
+            a                       ?type;
+           ?keyProp                 ?key;
+           ?startProp               ?stime ;
            def-som:recordDateTime   ?p_recordDate;
            .
 
@@ -212,10 +239,9 @@ INSERT { GRAPH ugraph:in-season {
      # Make sure that the is no ?probe between ?update and its immediate predecessor.
       OPTIONAL {
        ?probe
-           a                      def-som:SuspensionOfMonitoring;
-           def-bw:bathingWater    ?bw;
-           def-sp:samplingPoint   ?sp;
-           def-som:startOfSuspension ?stime ;
+           a                      ?type;
+           ?keyProp               ?key;
+           ?startProp             ?stime ;
            def-som:recordDateTime ?pr_recordDate;
            .
         FILTER ( ?pr_recordDate > ?p_recordDate && ?u_recordDate > ?pr_recordDate)
@@ -271,7 +297,7 @@ WHERE {
          def-som:recordDateTime           ?recordDateTime;
          def-bwq:sampleYear               ?sampleYear;
             .
-         
+
    # Bind the point year slice for the corresponding bw/sample year assessments 
    ?slice
          a                                def-bwq:BySamplingPointYearSlice;
@@ -279,15 +305,7 @@ WHERE {
          def-bwq:samplingPoint            ?sp;
          .       
    # Make sure that its the most recent record for the given suspension
-   FILTER NOT EXISTS {
-      ?probeSuspension 
-            def-som:startOfSuspension        ?startOfSuspension;
-            def-sp:samplingPoint             ?sp; 
-            def-som:recordDateTime           ?pRecordDateTime;
-            def-bwq:sampleYear               ?sampleYear;
-            .
-      FILTER(?pRecordDateTime > ?recordDateTime)
-   }
+   FILTER NOT EXISTS { ?suspension dct:isReplacedBy ?other_som }
 
    # Pick an unwithdrawn prior sample assessment.
    OPTIONAL { 
@@ -332,53 +350,48 @@ WHERE {
 ## Remove 'old' links from bathing-waters to their most recent active suspension
 ##
 DELETE { 
-  GRAPH ugraph:in-season { ?bw def-som:latestActiveSuspension ?item } 
+  GRAPH ugraph:in-season { ?bw ?latestProp ?item } 
 } WHERE {
- ?bw def-som:latestActiveSuspension ?item 
+ VALUES ?latestProp {
+   def-som:latestActiveSuspension 
+   def-som:latestOpenIncident 
+ }
+ ?bw ?latestProp ?item 
 }; 
 ##
 ## Link bathing-waters to their most recent active suspension
 ##
 INSERT { 
-  GRAPH ugraph:in-season { ?bw def-som:latestActiveSuspension ?item }
+  GRAPH ugraph:in-season { ?bw ?latestProp ?item }
 }
 #select ?bw ?item
 WHERE {
-  {
-    { ?item     a def-som:SuspensionOfMonitoring ;
-                def-bw:bathingWater ?bw;
-                def-som:startOfSuspension ?startOfSuspension;
-                def-som:recordDateTime    ?recordDateTime ;
-                .
-    } OPTIONAL { 
-      ?item2    a                         def-som:SuspensionOfMonitoring ;
-                def-bw:bathingWater       ?bw;
-                def-som:startOfSuspension ?startOfSuspension;
-                def-som:recordDateTime    ?recordDateTime2 ;
-      FILTER (?recordDateTime2>?recordDateTime)
-    } 
-    FILTER (!bound(?item2))
-    FILTER NOT EXISTS { ?item def-som:endOfSuspension ?end } 
-  } OPTIONAL {
-  # Now look for a second incomplete suspension that started later.
-  # Want to only have *one* latestActiveSuspension per bw.
-    {
-      { ?itemb  a def-som:SuspensionOfMonitoring ;
-                def-bw:bathingWater ?bw;
-                def-som:startOfSuspension ?startOfSuspensionb;
-                def-som:recordDateTime    ?recordDateTimeb ;
-              .
-        FILTER (?startOfSuspensionb > ?startOfSuspension)
-      } OPTIONAL { 
-        ?item2b    a                      def-som:SuspensionOfMonitoring ;
-                   def-bw:bathingWater       ?bw;
-                   def-som:startOfSuspension ?startOfSuspensionb;
-                   def-som:recordDateTime    ?recordDateTime2b ;
-        FILTER (?recordDateTime2b>?recordDateTimeb)
-      } 
-      FILTER (!bound(?item2b))
-      FILTER NOT EXISTS { ?itemb def-som:endOfSuspension ?endb }  
+  { 
+     { 
+       VALUES (?type ?keyProp ?startProp ?endProp ?latestProp ) { 
+              ( def-som:SuspensionOfMonitoring def-bw:bathingWater      def-som:startOfSuspension def-som:endOfSuspension def-som:latestActiveSuspension ) 
+              ( def-som:PollutionIncident      def-som:incidentNotation def-som:startOfIncident   def-som:endOfIncident   def-som:latestOpenIncident ) 
+       }
+  
+       ?item     a                         ?type ;
+                 ?keyProp                  ?key ;
+                 ?startProp                ?start;
+                 def-som:recordDateTime    ?recordDateTime ;
+                 .
+       FILTER NOT EXISTS { ?item dct:isReplacedBy ?other }                
+       FILTER NOT EXISTS { ?item ?endProp ?end }                .
+     } OPTIONAL {
+       # Now look for a second incomplete suspension/incident that started later.
+       # Want to only have *one* latestActiveSuspension/latesOpenIncident per bw.
+       ?itemb  a                         ?type ;
+               ?keyProp                  ?key ;
+               ?startProp                ?startb;
+               def-som:recordDateTime    ?recordDateTimeb ;
+            .
+       FILTER NOT EXISTS { ?itemb dct:isReplacedBy ?otherb }               
+       FILTER NOT EXISTS { ?itemb ?endProp ?endb }  
+       FILTER (?startb > ?start)
     }
-  }
-  FILTER (!bound(?itemb))
+     FILTER (!bound(?itemb))
+  } OPTIONAL { ?item def-bw:bathingWater ?bw }
 }
