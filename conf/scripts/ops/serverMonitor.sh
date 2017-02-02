@@ -29,7 +29,7 @@ apacheRestart() {
     ssh -t -t $FLAGS -l ubuntu $IP sudo service apache2 restart
 }
 
-echo "-- $date Starting apache check on $tierDir"
+echo "-- $(date) Starting apache check on $tierDir"
 for server in $SERVERS_BASE/*
 do
     if grep -q Running $server/status 
