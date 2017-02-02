@@ -2,8 +2,6 @@
 # Check apache status for stuck processes, force apache restart if two processes stalled
 #  serverMonitor.sh tierDir
 
-set -o errexit
-
 [[ $# = 1 ]] || { echo "Internal error calling $0" 1>&2 ; exit 1 ; }
 readonly tierDir="$1"
 readonly SERVERS_BASE=$tierDir/servers
@@ -29,6 +27,10 @@ apacheRestart() {
     ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo service apache2 restart
 }
 
+notify() {
+    aws sns publish --topic-arn $TOPIC_ARN --subject "Floods server warning" --message "$1"
+}
+
 echo "-- $(date) Starting apache check on $tierDir"
 for server in $SERVERS_BASE/*
 do
@@ -39,9 +41,9 @@ do
         if (( $count > 40 )); then
             echo "$restarting apache on $server"
             suspendServer $server
-            apacheRestart $server
+            apacheRestart $server || notify "Problem restarting apache on $server"
             unsuspendServer $server
-            aws sns publish --topic-arn $TOPIC_ARN --subject "Floods server warning" --message "Stuck thread count of $count, restarting apache on $server"
+            notify "Stuck thread count of $count, restarting apache on $server"
         fi
     fi
 done
