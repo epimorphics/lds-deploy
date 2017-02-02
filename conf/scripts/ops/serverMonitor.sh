@@ -19,7 +19,7 @@ checkServer() {
     [[ $# = 1 ]] || { echo "Internal error calling checkServer" 1>&2 ; exit 1 ; }
     local server=$1
     IP=$( jq -r .address "$server/config.json" )
-    ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds-user.pem -l ubuntu $IP "curl -s http://localhost/server-status | tr '\n' ' ' | grep -o '<pre>.*</pre>' | grep -o W | wc -l"
+    ssh $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP "curl -s http://localhost/server-status | tr '\n' ' ' | grep -o '<pre>.*</pre>' | grep -o W | wc -l"
 }
 
 apacheRestart() {
