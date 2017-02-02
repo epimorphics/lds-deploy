@@ -1,0 +1,69 @@
+# Actions customized for the AIMS service
+
+# test pub server allocation
+"@name" : aims/test-pubserver/allocate
+"@type" : script
+"@script" : "ops/generic-allocate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "AWS_EBS" : 64
+    "AWS_INSTANCE_STORE" : "yes"
+    "AWS_INSTANCE_TYPE" : "r3.large"
+    "AWS_AMI" : "ami-1c4a046f"
+    "AWS_SG" : "sg-b815c7dd"  
+    "CHEF_ENV"  : "lds-aims-test-pub"
+    "CHEF_ROLE" : "ea_aims_pub"
+    "AWS_IAM_ROLE_ARN" : "arn:aws:iam::853478862498:instance-profile/dms-update"
+---
+# production pub server allocation
+"@name" : aims/production-pubserver/allocate
+"@type" : script
+"@script" : "ops/generic-allocate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "AWS_EBS" : 64
+    "AWS_INSTANCE_STORE" : "yes"
+    "AWS_INSTANCE_TYPE" : "r3.large"
+    "AWS_AMI" : "ami-1c4a046f"
+    "AWS_SG" : "sg-b815c7dd"  
+    "CHEF_ENV"  : "lds-aims-test-pub"
+    "CHEF_ROLE" : "ea_aims_pub"
+    "AWS_IAM_ROLE_ARN" : "arn:aws:iam::853478862498:instance-profile/dms-update"
+---
+# pub server termination  
+"@name" : aims/pubserver/terminate
+"@type" : script
+"@script" : "ops/terminate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "NRC_SERVICE"    : "check_http_ping"
+---
+# Pub server configuration  
+"@name" : aims/pubserver/configure
+"@type" : script
+"@script" : "ops/generic-configure.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "NRC_HOSTGROUP"  : "AIMS-pub"
+    "NRC_SERVICESET" : "AIMS-pub-ss"
+    "NRC_SERVICE"    : "check_http_ping"
+---
+# Presentation server termination  
+"@name" : aims/presserver/terminate
+"@type" : script
+"@script" : "ops/terminate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "NRC_SERVICE"    : "check_http_ping"
+---
+# Clear caches
+"@name" : aims/clearCache
+"@type" : script
+"@script" : "aims/clear-caches.sh"
+"@args" :
+  - "tier"
