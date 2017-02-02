@@ -29,14 +29,15 @@ apacheRestart() {
     ssh -t -t $FLAGS -l ubuntu $IP sudo service apache2 restart
 }
 
+echo "-- $date Starting apache check on $tierDir"
 for server in $SERVERS_BASE/*
 do
     if grep -q Running $server/status 
     then
         count=$( checkServer $server )
-        echo "$date Apache write count = $count for $server"
+        echo "$Apache write count = $count for $server"
         if (( $count > 40 )); then
-            echo "$date restarting apache on $server"
+            echo "$restarting apache on $server"
             suspendServer $server
             apacheRestart $server
             unsuspendServer $server
@@ -44,3 +45,4 @@ do
         fi
     fi
 done
+echo "."
