@@ -26,7 +26,7 @@ apacheRestart() {
     [[ $# = 1 ]] || { echo "Internal error calling apacheRestart" 1>&2 ; exit 1 ; }
     local server=$1
     IP=$( jq -r .address "$server/config.json" )
-    ssh -t -t $FLAGS -l ubuntu $IP sudo service apache2 restart
+    ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo service apache2 restart
 }
 
 echo "-- $(date) Starting apache check on $tierDir"
