@@ -115,8 +115,8 @@
     .
 
 :suspensions a dms:DataComponent;
-    rdfs:label "Abnormal situations"@en;
-    rdfs:comment "Records of abnormal situations (which lead to suspensions of monitoring)."@en;
+    rdfs:label "Abnormal situations and Pollution incidents"@en;
+    rdfs:comment "Records of abnormal situations (which lead to suspensions of monitoring) or Pollution incidents."@en;
     skos:notation "suspensions";
     dct:isPartOf :bwq;
     dms:dataConverter "bwq-suspension-of-monitoring";
