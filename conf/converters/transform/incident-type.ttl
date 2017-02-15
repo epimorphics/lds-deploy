@@ -1,0 +1,81 @@
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix def-geom: <http://location.data.gov.uk/def/common/Geometry/> .
+@prefix def-sp: <http://location.data.gov.uk/def/ef/SamplingPoint/> .
+@prefix def-cc12: <http://environment.data.gov.uk/def/bwq-cc-2012/> .
+@prefix def-bwp: <http://environment.data.gov.uk/def/bathing-water-profile/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix spatialrelations: <http://data.ordnancesurvey.co.uk/ontology/spatialrelations/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix def-bwq: <http://environment.data.gov.uk/def/bathing-water-quality/> .
+@prefix geo:   <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix chterms: <http://business.data.gov.uk/companies/def/terms/> .
+@prefix qb:    <http://purl.org/linked-data/cube#> .
+@prefix dgu:   <http://reference.data.gov.uk/def/reference/> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix reg:   <http://purl.org/linked-data/registry#> .
+@prefix def-incident-type: <http://environment.data.gov.uk/def/incident-type/> .
+@prefix def-stp: <http://environment.data.gov.uk/def/bwq-stp/> .
+@prefix admingeo: <http://data.ordnancesurvey.co.uk/ontology/admingeo/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix void:  <http://rdfs.org/ns/void#> .
+@prefix onsadmingeo: <http://statistics.data.gov.uk/def/administrative-geography/> .
+@prefix org:   <http://www.w3.org/ns/org#> .
+@prefix def-ver: <http://environment.data.gov.uk/def/version/> .
+@prefix so-sp: <http://location.data.gov.uk/so/ef/SamplingPoint/bwsp.eaew/> .
+@prefix def-zoi: <http://location.data.gov.uk/def/ef/ZoneOfInfluence/> .
+@prefix id-bw: <http://environment.data.gov.uk/id/bathing-water/> .
+@prefix intervals: <http://reference.data.gov.uk/def/intervals/> .
+@prefix def-som: <http://environment.data.gov.uk/def/bwq-som/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix def-feat: <http://location.data.gov.uk/def/ef/BathingWaterProfileFeature/> .
+@prefix geometry: <http://data.ordnancesurvey.co.uk/ontology/geometry/> .
+@prefix geowgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix time:  <http://www.w3.org/2006/time#> .
+@prefix status: <http://reference.data.gov.uk/def/status/> .
+@prefix def-bw: <http://environment.data.gov.uk/def/bathing-water/> .
+
+def-incident-type:001
+        a                  def-som:TypeOfIncident , skos:Concept ;
+        rdfs:label         "Bacterial contamination"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "001" ;
+        skos:prefLabel     "Bacterial contamination"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
+
+def-incident-type:004
+        a                  def-som:TypeOfIncident , skos:Concept ;
+        rdfs:label         "Localised Flooding"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "004" ;
+        skos:prefLabel     "Localised Flooding"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
+
+def-incident-type:002
+        a                  def-som:TypeOfIncident , skos:Concept ;
+        rdfs:label         "Potential contamination from sewage"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "002" ;
+        skos:prefLabel     "Potential contamination from sewage"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
+
+def-incident-type:005
+        a                  def-som:TypeOfIncident , skos:Concept ;
+        rdfs:label         "Contamination from sewage"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "005" ;
+        skos:prefLabel     "Contamination from sewage"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
+
+def-incident-type:scheme
+        a                   skos:ConceptScheme ;
+        rdfs:comment        "A concept scheme for types of Pollution Incident types."@en ;
+        skos:hasTopConcept  def-incident-type:005 , def-incident-type:004 , def-incident-type:003 , def-incident-type:002 , def-incident-type:001 .
+
+def-incident-type:003
+        a                  def-som:TypeOfIncident , skos:Concept ;
+        rdfs:label         "Non-bacterial contamination"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "003" ;
+        skos:prefLabel     "Non-bacterial contamination"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
