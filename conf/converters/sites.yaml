@@ -181,15 +181,17 @@
           "<dgu:itemType>"         : "<def-sp:SamplingPoint>",
           "<dgu:status>"           : "<status:draft>"         
         },
-        { "name"                 : "bwq-public-body-import",
-          "@id"                  : 
-             "<{{
-                  var r_ea = $EA.fetch().asRDFNode() ;               
-                  r_ea.listPropertyValues('org:hasUnit').fetch('rdfs:label','rdf:type', 'skos:prefLabel');
-                  return r_ea
-              }}>",
+#######################################################################################################################
+#       Removed because reference.data.gov.uk has died
+#        { "name"                 : "bwq-public-body-import",
+#          "@id"                  : 
+#             "<{{
+#                  var r_ea = $EA.fetch().asRDFNode() ;               
+#                  r_ea.listPropertyValues('org:hasUnit').fetch('rdfs:label','rdf:type', 'skos:prefLabel');
+#                  return r_ea
+#              }}>",
 #          "<rdfs:label>"         : "{$EA.fetch().asRDFNode().getPropertyValue('rdfs:label').lexicalForm}"
-        },
+#        },
 #######################################################################################################################
 # OS Country reference data
 #######################################################################################################################
