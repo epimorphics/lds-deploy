@@ -99,14 +99,28 @@
 ---
 # STP auto-publish endpoint
 "@name" : api/publishTesting
-"@type" : sequence
-"@actions" :
+"@type"   : script
+"@script" : "bwq/prf-intercept.rb"
+"@args" :
+  - filename
+"@onSuccess" :
+  "@type" : sequence
+  "@actions" :
   - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
     "publicationSet" : testing
   - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
     "message" :    "Publications to testing completed"
     "notifyuser" : "dave@epimorphics.com"
 "@onError" :
+  "@type" : sequence
+  "@actions" :
+  - "@javaclass" : com.epimorphics.dms.tasks.UploadAction
+  - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
+    "publicationSet" : testing
+  - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+    "message" :    "Publications to testing completed"
+    "notifyuser" : "dave@epimorphics.com"
+  "@onError" :
     "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
     "message"    : "publication to testing FAILED"
     "notifyuser" : "dave@epimorphics.com"
