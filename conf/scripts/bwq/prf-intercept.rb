@@ -12,6 +12,7 @@ require 'json'
 require 'pp'
 require 'csv'
 require 'fileutils'
+require 'set'
 
 #
 # Support for fetching published pollution incidents
@@ -57,6 +58,8 @@ end
 # Support for processing PRF csvs
 #
 class PRFCsv
+  PRF_HEADERS = Set.new(["Site", "Datetime", "Prediction", "Prediction_text_en"])
+
   @rows
   @file
 
@@ -71,6 +74,10 @@ class PRFCsv
       @rows << row
     end
     @rows
+  end
+
+  def prf?
+    @rows.size > 0 && PRF_HEADERS == Set.new( @rows[0].headers )
   end
 
   def map_csv( piMap )
@@ -112,6 +119,10 @@ end
 # Start of main execution
 #
 csv = PRFCsv.new( ARGV[0] )
+if !csv.prf?
+  puts "Skipping #{csv.basename}, not a PRF file"
+  exit 0
+end
 puts "Checking PRF #{csv.basename}"
 
 count = csv.map_csv( PollutionIncidents.new.incidents )

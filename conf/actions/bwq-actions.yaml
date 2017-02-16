@@ -118,7 +118,7 @@
   - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
     "publicationSet" : testing
   - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
-    "message" :    "Publications to testing completed"
+    "message" :    "Publications to testing with modified PRFs completed"
     "notifyuser" : "dave@epimorphics.com"
   "@onError" :
     "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
