@@ -100,7 +100,7 @@
 # STP auto-publish endpoint
 "@name" : api/publishTesting
 "@type"   : script
-"@script" : "bwq/prf-intercept.rb"
+"@script" : "bwq/run-prf-intercept.rb"
 "@args" :
   - filename
 "@onSuccess" :
