@@ -14,6 +14,7 @@
 @prefix dgu:   <http://reference.data.gov.uk/def/reference/> .
 @prefix dct:   <http://purl.org/dc/terms/> .
 @prefix reg:   <http://purl.org/linked-data/registry#> .
+@prefix wqa-sp: <http://environment.data.gov.uk/water-quality/def/sampling-point/> .
 @prefix def-incident-type: <http://environment.data.gov.uk/def/incident-type/> .
 @prefix def-stp: <http://environment.data.gov.uk/def/bwq-stp/> .
 @prefix admingeo: <http://data.ordnancesurvey.co.uk/ontology/admingeo/> .
@@ -35,33 +36,101 @@
 @prefix status: <http://reference.data.gov.uk/def/status/> .
 @prefix def-bw: <http://environment.data.gov.uk/def/bathing-water/> .
 
+def-incident-type:017
+        a                  def-som:IncidentType , skos:Concept ;
+        rdfs:label         "dredging/construction work"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "017" ;
+        skos:prefLabel     "dredging/construction work"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
+
+def-incident-type:012
+        a                  def-som:IncidentType , skos:Concept ;
+        rdfs:label         "animal waste"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "012" ;
+        skos:prefLabel     "animal waste"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
+
 def-incident-type:001
-        a                  def-som:TypeOfIncident , skos:Concept ;
+        a                  def-som:IncidentType , skos:Concept ;
         rdfs:label         "Bacterial contamination"@en ;
+        owl:deprecated     true ;
         skos:inScheme      def-incident-type:scheme ;
         skos:notation      "001" ;
         skos:prefLabel     "Bacterial contamination"@en ;
         skos:topConceptOf  def-incident-type:scheme .
 
+def-incident-type:010
+        a                  def-som:IncidentType , skos:Concept ;
+        rdfs:label         "sewage"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "010" ;
+        skos:prefLabel     "sewage"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
+
+def-incident-type:015
+        a                  def-som:IncidentType , skos:Concept ;
+        rdfs:label         "oil/fuel"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "015" ;
+        skos:prefLabel     "oil/fuel"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
+
 def-incident-type:004
-        a                  def-som:TypeOfIncident , skos:Concept ;
+        a                  def-som:IncidentType , skos:Concept ;
         rdfs:label         "Localised Flooding"@en ;
+        owl:deprecated     true ;
         skos:inScheme      def-incident-type:scheme ;
         skos:notation      "004" ;
         skos:prefLabel     "Localised Flooding"@en ;
         skos:topConceptOf  def-incident-type:scheme .
 
+def-incident-type:018
+        a                  def-som:IncidentType , skos:Concept ;
+        rdfs:label         "landslip"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "018" ;
+        skos:prefLabel     "landslip"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
+
+def-incident-type:013
+        a                  def-som:IncidentType , skos:Concept ;
+        rdfs:label         "decaying marine life on beach"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "013" ;
+        skos:prefLabel     "decaying marine life on beach"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
+
 def-incident-type:002
-        a                  def-som:TypeOfIncident , skos:Concept ;
+        a                  def-som:IncidentType , skos:Concept ;
         rdfs:label         "Potential contamination from sewage"@en ;
+        owl:deprecated     true ;
         skos:inScheme      def-incident-type:scheme ;
         skos:notation      "002" ;
         skos:prefLabel     "Potential contamination from sewage"@en ;
         skos:topConceptOf  def-incident-type:scheme .
 
+def-incident-type:011
+        a                  def-som:IncidentType , skos:Concept ;
+        rdfs:label         "agricultural waste"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "011" ;
+        skos:prefLabel     "agricultural waste"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
+
+def-incident-type:016
+        a                  def-som:IncidentType , skos:Concept ;
+        rdfs:label         "chemicals"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "016" ;
+        skos:prefLabel     "chemicals"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
+
 def-incident-type:005
-        a                  def-som:TypeOfIncident , skos:Concept ;
+        a                  def-som:IncidentType , skos:Concept ;
         rdfs:label         "Contamination from sewage"@en ;
+        owl:deprecated     true ;
         skos:inScheme      def-incident-type:scheme ;
         skos:notation      "005" ;
         skos:prefLabel     "Contamination from sewage"@en ;
@@ -70,11 +139,36 @@ def-incident-type:005
 def-incident-type:scheme
         a                   skos:ConceptScheme ;
         rdfs:comment        "A concept scheme for types of Pollution Incident types."@en ;
-        skos:hasTopConcept  def-incident-type:005 , def-incident-type:004 , def-incident-type:003 , def-incident-type:002 , def-incident-type:001 .
+        skos:hasTopConcept  def-incident-type:017 , def-incident-type:001 , def-incident-type:019 , def-incident-type:010 , def-incident-type:005 , def-incident-type:014 , def-incident-type:002 , def-incident-type:011 , def-incident-type:012 , def-incident-type:015 , def-incident-type:016 , def-incident-type:020 , def-incident-type:018 , def-incident-type:004 , def-incident-type:013 , def-incident-type:003 .
+
+def-incident-type:020
+        a                  def-som:IncidentType , skos:Concept ;
+        rdfs:label         "other"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "020" ;
+        skos:prefLabel     "other"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
+
+def-incident-type:019
+        a                  def-som:IncidentType , skos:Concept ;
+        rdfs:label         "drain/road runoff"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "019" ;
+        skos:prefLabel     "drain/road runoff"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
+
+def-incident-type:014
+        a                  def-som:IncidentType , skos:Concept ;
+        rdfs:label         "harmful algae"@en ;
+        skos:inScheme      def-incident-type:scheme ;
+        skos:notation      "014" ;
+        skos:prefLabel     "harmful algae"@en ;
+        skos:topConceptOf  def-incident-type:scheme .
 
 def-incident-type:003
-        a                  def-som:TypeOfIncident , skos:Concept ;
+        a                  def-som:IncidentType , skos:Concept ;
         rdfs:label         "Non-bacterial contamination"@en ;
+        owl:deprecated     true ;
         skos:inScheme      def-incident-type:scheme ;
         skos:notation      "003" ;
         skos:prefLabel     "Non-bacterial contamination"@en ;
