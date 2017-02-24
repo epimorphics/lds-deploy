@@ -287,6 +287,7 @@ referenced :
      "<def-bwq:sampleYear>"              : "<{bw_season.asDate('xsd:gYear').referenceTime()}>"
      "<def-som:startOfIncident>"         : "{l_incStartDateTime}"
      "<def-som:endOfIncident>"           : "{l_incEndDateTime}"
+     "<def-som:expectedEndOfIncident>"   : "{l_expectedEndOfSuspension}"
      "<def-som:incidentNotation>"        : "{inc_id.datatype('def-som:piID')}"
      "<skos:notation>"                   : [ "{inc_id.datatype('def-som:piID')}","{inc_id}" ]
      "<def-som:recordDateTime>"          : "{l_recordDateTime}"

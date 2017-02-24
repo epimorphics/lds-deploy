@@ -1,0 +1,536 @@
+@prefix def-dclg: <http://opendatacommunities.org/def/local-government/> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix def-geom: <http://location.data.gov.uk/def/common/Geometry/> .
+@prefix def-sp: <http://location.data.gov.uk/def/ef/SamplingPoint/> .
+@prefix def-cc12: <http://environment.data.gov.uk/def/bwq-cc-2012/> .
+@prefix def-bwp: <http://environment.data.gov.uk/def/bathing-water-profile/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix spatialrelations: <http://data.ordnancesurvey.co.uk/ontology/spatialrelations/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix def-bwq: <http://environment.data.gov.uk/def/bathing-water-quality/> .
+@prefix geo:   <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix chterms: <http://business.data.gov.uk/companies/def/terms/> .
+@prefix qb:    <http://purl.org/linked-data/cube#> .
+@prefix dgu:   <http://reference.data.gov.uk/def/reference/> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix reg:   <http://purl.org/linked-data/registry#> .
+@prefix wqa-sp: <http://environment.data.gov.uk/water-quality/def/sampling-point/> .
+@prefix def-incident-type: <http://environment.data.gov.uk/def/incident-type/> .
+@prefix def-stp: <http://environment.data.gov.uk/def/bwq-stp/> .
+@prefix admingeo: <http://data.ordnancesurvey.co.uk/ontology/admingeo/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix void:  <http://rdfs.org/ns/void#> .
+@prefix onsadmingeo: <http://statistics.data.gov.uk/def/administrative-geography/> .
+@prefix org:   <http://www.w3.org/ns/org#> .
+@prefix def-ver: <http://environment.data.gov.uk/def/version/> .
+@prefix so-sp: <http://location.data.gov.uk/so/ef/SamplingPoint/bwsp.eaew/> .
+@prefix def-zoi: <http://location.data.gov.uk/def/ef/ZoneOfInfluence/> .
+@prefix id-bw: <http://environment.data.gov.uk/id/bathing-water/> .
+@prefix intervals: <http://reference.data.gov.uk/def/intervals/> .
+@prefix def-som: <http://environment.data.gov.uk/def/bwq-som/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix def-feat: <http://location.data.gov.uk/def/ef/BathingWaterProfileFeature/> .
+@prefix geometry: <http://data.ordnancesurvey.co.uk/ontology/geometry/> .
+@prefix geowgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix time:  <http://www.w3.org/2006/time#> .
+@prefix status: <http://reference.data.gov.uk/def/status/> .
+@prefix def-bw: <http://environment.data.gov.uk/def/bathing-water/> .
+
+<http://opendatacommunities.org/id/district-council/allerdale>
+        a                    def-dclg:LocalAuthority , def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Allerdale"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000013065> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000026> .
+
+<http://opendatacommunities.org/id/district-council/north-devon>
+        a                    def-dclg:DistrictCouncil , def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "North Devon"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000022933> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000043> .
+
+<http://opendatacommunities.org/id/london-borough-council/westminster>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:LondonBoroughCouncil ;
+        rdfs:label           "City of Westminster"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000011164> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E09000033> .
+
+<http://opendatacommunities.org/id/district-council/purbeck>
+        a                    def-dclg:LocalAuthority , def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Purbeck"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000014363> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000051> .
+
+<http://opendatacommunities.org/id/district-council/arun>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:DistrictCouncil ;
+        rdfs:label           "Arun"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000016438> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000224> .
+
+<http://opendatacommunities.org/id/unitary-authority/north-somerset>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:UnitaryAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "North Somerset"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000025504> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000024> .
+
+<http://opendatacommunities.org/id/district-council/east-devon>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:DistrictCouncil , def-dclg:LocalAuthority ;
+        rdfs:label           "East Devon"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000022713> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000040> .
+
+<http://data.ordnancesurvey.co.uk/id/7000000000023081>
+        a                    admingeo:CivilParish ;
+        rdfs:label           "Combe Martin"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000023081> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E04003083> .
+
+<http://opendatacommunities.org/id/unitary-authority/north-east-lincolnshire>
+        a                    def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority , def-dclg:UnitaryAuthority ;
+        rdfs:label           "North East Lincolnshire"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000025650> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000012> .
+
+<http://opendatacommunities.org/id/district-council/west-somerset>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:DistrictCouncil , def-dclg:LocalAuthority ;
+        rdfs:label           "West Somerset"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000010687> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000191> .
+
+<http://opendatacommunities.org/id/unitary-authority/northumberland>
+        a                    def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority , def-dclg:UnitaryAuthority ;
+        rdfs:label           "Northumberland"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000043674> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000057> .
+
+<http://opendatacommunities.org/id/district-council/fareham>
+        a                    def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "Fareham"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000017544> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000087> .
+
+<http://opendatacommunities.org/id/unitary-authority/portsmouth>
+        a                    def-dclg:UnitaryAuthority , def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "City of Portsmouth"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000037254> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000044> .
+
+<http://opendatacommunities.org/id/district-council/havant>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:DistrictCouncil ;
+        rdfs:label           "Havant"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000017297> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000090> .
+
+<http://opendatacommunities.org/id/district-council/waveney>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:DistrictCouncil ;
+        rdfs:label           "Waveney"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000015440> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000206> .
+
+<http://opendatacommunities.org/id/metropolitan-district-council/sefton>
+        a                    def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority , def-dclg:MetropolitanDistrictCouncil ;
+        rdfs:label           "Sefton"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000005960> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E08000014> .
+
+<http://opendatacommunities.org/id/unitary-authority/blackpool>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:UnitaryAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "Blackpool"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000038861> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000009> .
+
+<http://opendatacommunities.org/id/unitary-authority/bristol>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:UnitaryAuthority ;
+        rdfs:label           "City of Bristol"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000025523> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000023> .
+
+<http://opendatacommunities.org/id/district-council/rother>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:DistrictCouncil ;
+        rdfs:label           "Rother"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000002852> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000064> .
+
+<http://opendatacommunities.org/id/district-council/gosport>
+        a                    def-dclg:DistrictCouncil , def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Gosport"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000017378> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000088> .
+
+<http://opendatacommunities.org/id/district-council/teignbridge>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:DistrictCouncil ;
+        rdfs:label           "Teignbridge"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000022881> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000045> .
+
+<http://opendatacommunities.org/id/district-council/north-norfolk>
+        a                    def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "North Norfolk"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000007024> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000147> .
+
+<http://opendatacommunities.org/id/district-council/east-lindsey>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:DistrictCouncil ;
+        rdfs:label           "East Lindsey"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000005317> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000137> .
+
+<http://opendatacommunities.org/id/district-council/suffolk-coastal>
+        a                    def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority , def-dclg:DistrictCouncil ;
+        rdfs:label           "Suffolk Coastal"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000015508> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000205> .
+
+<http://opendatacommunities.org/id/unitary-authority/east-riding>
+        a                    def-dclg:UnitaryAuthority , def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "East Riding of Yorkshire"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000025635> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000011> .
+
+<http://opendatacommunities.org/id/district-council/west-norfolk>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:DistrictCouncil , def-dclg:LocalAuthority ;
+        rdfs:label           "King's Lynn and West Norfolk"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000007016> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000146> .
+
+<http://opendatacommunities.org/id/county-council/hampshire>
+        a                    def-dclg:CountyCouncil , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Hampshire"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000017765> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E10000014> .
+
+<http://opendatacommunities.org/id/district-council/scarborough>
+        a                    def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority , def-dclg:DistrictCouncil ;
+        rdfs:label           "Scarborough"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000021355> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000168> .
+
+<http://opendatacommunities.org/id/district-council/great-yarmouth>
+        a                    def-dclg:DistrictCouncil , def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Great Yarmouth"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000006392> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000145> .
+
+<http://opendatacommunities.org/id/unitary-authority/county-durham>
+        a                    def-dclg:LocalAuthority , def-dclg:UnitaryAuthority , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "County Durham"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000043607> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000047> .
+
+<http://opendatacommunities.org/id/unitary-authority/nottingham>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:UnitaryAuthority ;
+        rdfs:label           "City of Nottingham"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000038857> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000018> .
+
+<http://opendatacommunities.org/id/london-borough-council/city-of-london>
+        a                    def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority , def-dclg:LondonBoroughCouncil ;
+        rdfs:label           "City and County of the City of London"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000011105> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E09000001> .
+
+<http://data.ordnancesurvey.co.uk/id/7000000000014268>
+        a                    admingeo:CivilParish ;
+        rdfs:label           "Swanage"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000014268> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E04003483> .
+
+<http://opendatacommunities.org/id/district-council/worthing>
+        a                    def-dclg:LocalAuthority , def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Worthing"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000016261> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000229> .
+
+<http://opendatacommunities.org/id/district-council/lewes>
+        a                    def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "Lewes"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000002896> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000063> .
+
+<http://opendatacommunities.org/id/district-council/cotswold>
+        a                    def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority , def-dclg:DistrictCouncil ;
+        rdfs:label           "Cotswold"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000020224> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000079> .
+
+<http://opendatacommunities.org/id/district-council/lancaster>
+        a                    def-dclg:LocalAuthority , def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Lancaster"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000004925> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000121> .
+
+<http://opendatacommunities.org/id/district-council/torridge>
+        a                    def-dclg:LocalAuthority , def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Torridge"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000022970> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000046> .
+
+<http://opendatacommunities.org/id/district-council/chichester>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:DistrictCouncil ;
+        rdfs:label           "Chichester"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000016444> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000225> .
+
+<http://opendatacommunities.org/id/district-council/barrow-in-furness>
+        a                    def-dclg:DistrictCouncil , def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Barrow-in-Furness"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000012941> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000027> .
+
+<http://opendatacommunities.org/id/district-council/wyre>
+        a                    def-dclg:LocalAuthority , def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Wyre"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000004922> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000128> .
+
+<http://opendatacommunities.org/id/unitary-authority/isle-of-wight>
+        a                    def-dclg:UnitaryAuthority , def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "Isle of Wight"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000025469> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000046> .
+
+<http://opendatacommunities.org/id/unitary-authority/torbay>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:UnitaryAuthority ;
+        rdfs:label           "Torbay"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000038883> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000027> .
+
+<http://opendatacommunities.org/id/unitary-authority/plymouth>
+        a                    def-dclg:UnitaryAuthority , def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "City of Plymouth"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000038872> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000026> .
+
+<http://opendatacommunities.org/id/metropolitan-district-council/south-tyneside>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:MetropolitanDistrictCouncil ;
+        rdfs:label           "South Tyneside"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000009685> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E08000023> .
+
+<http://data.ordnancesurvey.co.uk/id/7000000000024488>
+        a                    admingeo:CivilParish ;
+        rdfs:label           "Perranzabuloe"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000024488> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E04011508> .
+
+<http://opendatacommunities.org/id/district-council/weymouth-and-portland>
+        a                    def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "Weymouth and Portland"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000014503> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000053> .
+
+<http://opendatacommunities.org/id/district-council/hastings>
+        a                    def-dclg:LocalAuthority , def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Hastings"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000002583> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000062> .
+
+<http://opendatacommunities.org/id/district-council/thanet>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:DistrictCouncil , def-dclg:LocalAuthority ;
+        rdfs:label           "Thanet"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000018130> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000114> .
+
+<http://data.ordnancesurvey.co.uk/id/7000000000023050>
+        a                    admingeo:CivilParish ;
+        rdfs:label           "Instow"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000023050> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E04003096> .
+
+<http://opendatacommunities.org/id/district-council/shepway>
+        a                    def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "Shepway"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000018085> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000112> .
+
+<http://opendatacommunities.org/id/county-council/lincolnshire>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:CountyCouncil ;
+        rdfs:label           "Lincolnshire"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000005942> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E10000019> .
+
+<http://data.ordnancesurvey.co.uk/id/7000000000023101>
+        a                    admingeo:CivilParish ;
+        rdfs:label           "Mortehoe"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000023101> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E04003108> .
+
+<http://opendatacommunities.org/id/district-council/west-dorset>
+        a                    def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority , def-dclg:DistrictCouncil ;
+        rdfs:label           "West Dorset"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000014539> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000052> .
+
+<http://opendatacommunities.org/id/district-council/eastbourne>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:DistrictCouncil ;
+        rdfs:label           "Eastbourne"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000002632> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000061> .
+
+<http://opendatacommunities.org/id/unitary-authority/redcar-and-cleveland>
+        a                    def-dclg:LocalAuthority , def-dclg:UnitaryAuthority , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Redcar and Cleveland"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000025588> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000003> .
+
+<http://opendatacommunities.org/id/district-council/dover>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:DistrictCouncil , def-dclg:LocalAuthority ;
+        rdfs:label           "Dover"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000017977> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000108> .
+
+<http://opendatacommunities.org/id/district-council/colchester>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:DistrictCouncil , def-dclg:LocalAuthority ;
+        rdfs:label           "Colchester"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000019569> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000071> .
+
+<http://opendatacommunities.org/id/district-council/south-lakeland>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:DistrictCouncil , def-dclg:LocalAuthority ;
+        rdfs:label           "South Lakeland"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000012934> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000031> .
+
+<http://opendatacommunities.org/id/district-council/waverley>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:DistrictCouncil ;
+        rdfs:label           "Waverley"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000014119> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000216> .
+
+<http://data.ordnancesurvey.co.uk/id/7000000000024182>
+        a                    admingeo:CivilParish ;
+        rdfs:label           "St Goran"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000024182> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E04011552> .
+
+<http://opendatacommunities.org/id/unitary-authority/southend>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:UnitaryAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "Southend-on-Sea"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000038907> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000033> .
+
+<http://opendatacommunities.org/id/unitary-authority/bournemouth>
+        a                    def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority , def-dclg:UnitaryAuthority ;
+        rdfs:label           "Bournemouth"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000038340> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000028> .
+
+<http://data.ordnancesurvey.co.uk/id/7000000000024566>
+        a                    admingeo:CivilParish ;
+        rdfs:label           "St. Gennys"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000024566> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E04011549> .
+
+<http://opendatacommunities.org/id/district-council/christchurch>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:DistrictCouncil ;
+        rdfs:label           "Christchurch"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000014202> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000048> .
+
+<http://data.ordnancesurvey.co.uk/id/7000000000005174>
+        a                    admingeo:CivilParish ;
+        rdfs:label           "Chapel St. Leonards"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000005174> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E04005615> .
+
+<http://opendatacommunities.org/id/district-council/wealden>
+        a                    def-dclg:DistrictCouncil , def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Wealden"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000002678> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000065> .
+
+<http://opendatacommunities.org/id/unitary-authority/poole>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:UnitaryAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "Poole"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000038339> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000029> .
+
+<http://opendatacommunities.org/id/metropolitan-district-council/sunderland>
+        a                    def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority , def-dclg:MetropolitanDistrictCouncil ;
+        rdfs:label           "Sunderland"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000009731> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E08000024> .
+
+<http://opendatacommunities.org/id/district-council/adur>
+        a                    def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "Adur"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000016223> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000223> .
+
+<http://opendatacommunities.org/id/district-council/fylde>
+        a                    def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "Fylde"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000004985> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000119> .
+
+<http://opendatacommunities.org/id/district-council/canterbury>
+        a                    def-dclg:DistrictCouncil , def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Canterbury"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000018139> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000106> .
+
+<http://opendatacommunities.org/id/district-council/new-forest>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:DistrictCouncil , def-dclg:LocalAuthority ;
+        rdfs:label           "New Forest"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000017733> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000091> .
+
+<http://opendatacommunities.org/id/unitary-authority/brighton-and-hove>
+        a                    def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority , def-dclg:UnitaryAuthority ;
+        rdfs:label           "The City of Brighton and Hove"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000036749> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000043> .
+
+<http://opendatacommunities.org/id/district-council/copeland>
+        a                    def-dclg:LocalAuthority , def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Copeland"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000012966> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000029> .
+
+<http://opendatacommunities.org/id/district-council/swale>
+        a                    def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "Swale"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000018242> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000113> .
+
+<http://opendatacommunities.org/id/unitary-authority/cornwall>
+        a                    def-dclg:UnitaryAuthority , def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Cornwall"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000043750> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000052> .
+
+<http://opendatacommunities.org/id/district-council/sedgemoor>
+        a                    def-dclg:LocalAuthority , def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Sedgemoor"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000010575> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000188> .
+
+<http://opendatacommunities.org/id/metropolitan-district-council/north-tyneside>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:LocalAuthority , def-dclg:MetropolitanDistrictCouncil ;
+        rdfs:label           "North Tyneside"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000009699> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E08000022> .
+
+<http://opendatacommunities.org/id/district-council/tendring>
+        a                    def-dclg:LocalAuthority , def-dclg:DistrictCouncil , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "Tendring"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000019547> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000076> .
+
+<http://opendatacommunities.org/id/district-council/south-hams>
+        a                    def-dclg:DistrictCouncil , def-dclg:LocalAuthority , def-dclg:CivilAdministrativeAuthority ;
+        rdfs:label           "South Hams"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000022569> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E07000044> .
+
+<http://opendatacommunities.org/id/unitary-authority/hartlepool>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:UnitaryAuthority , def-dclg:LocalAuthority ;
+        rdfs:label           "Hartlepool"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000025589> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E06000001> .
+
+<http://opendatacommunities.org/id/metropolitan-district-council/wirral>
+        a                    def-dclg:CivilAdministrativeAuthority , def-dclg:MetropolitanDistrictCouncil , def-dclg:LocalAuthority ;
+        rdfs:label           "Wirral"@en ;
+        def-dclg:governs     <http://data.ordnancesurvey.co.uk/id/7000000000006068> ;
+        def-dclg:governsGSS  <http://statistics.data.gov.uk/id/statistical-geography/E08000015> .
