@@ -20,7 +20,7 @@ require 'set'
 class PollutionIncidents 
   SERVER     = 'http://ea-rbwd-staging.epimorphics.net'
   #SERVER     = 'http://environment.data.gov.uk'
-  PI_REQUEST = 'doc/bathing-water-quality/pollution-incident.json?_view=pollution-incident&_pageSize=100'
+  PI_REQUEST = 'doc/bathing-water-quality/pollution-incident/open.json?_view=pollution-incident&_pageSize=100'
 
   @ok = false
   @data = nil
@@ -41,9 +41,17 @@ class PollutionIncidents
   def incidents
     map = {}
     asJson.each do |incident|
-      bw = sampling_point_from_bwid( incident["bathingWater"]["notation"] )
       msg = incident["incidentType"]["label"][0]["_value"]
-      map[bw] = msg
+      bwdetails = incident["bathingWater"]
+      if (bwdetails.kind_of? Array)
+        bwdetails.each do |x|
+          bw = sampling_point_from_bwid( x["notation"] )
+          map[bw] = msg
+        end
+      else
+        bw = sampling_point_from_bwid( bwdetails["notation"] )
+        map[bw] = msg
+      end
     end
     map
   end
