@@ -1,3 +1,4 @@
+@prefix def-dclg: <http://opendatacommunities.org/def/local-government/> .
 @prefix owl:   <http://www.w3.org/2002/07/owl#> .
 @prefix def-geom: <http://location.data.gov.uk/def/common/Geometry/> .
 @prefix def-sp: <http://location.data.gov.uk/def/ef/SamplingPoint/> .
@@ -38,10 +39,10 @@
 
 def-incident-type:017
         a                  def-som:IncidentType , skos:Concept ;
-        rdfs:label         "dredging/construction work"@en ;
+        rdfs:label         "dredging or construction work"@en ;
         skos:inScheme      def-incident-type:scheme ;
         skos:notation      "017" ;
-        skos:prefLabel     "dredging/construction work"@en ;
+        skos:prefLabel     "dredging or construction work"@en ;
         skos:topConceptOf  def-incident-type:scheme .
 
 def-incident-type:012
@@ -71,10 +72,10 @@ def-incident-type:010
 
 def-incident-type:015
         a                  def-som:IncidentType , skos:Concept ;
-        rdfs:label         "oil/fuel"@en ;
+        rdfs:label         "oil or fuel"@en ;
         skos:inScheme      def-incident-type:scheme ;
         skos:notation      "015" ;
-        skos:prefLabel     "oil/fuel"@en ;
+        skos:prefLabel     "oil or fuel"@en ;
         skos:topConceptOf  def-incident-type:scheme .
 
 def-incident-type:004
@@ -151,10 +152,10 @@ def-incident-type:020
 
 def-incident-type:019
         a                  def-som:IncidentType , skos:Concept ;
-        rdfs:label         "drain/road runoff"@en ;
+        rdfs:label         "drain or road runoff"@en ;
         skos:inScheme      def-incident-type:scheme ;
         skos:notation      "019" ;
-        skos:prefLabel     "drain/road runoff"@en ;
+        skos:prefLabel     "drain or road runoff"@en ;
         skos:topConceptOf  def-incident-type:scheme .
 
 def-incident-type:014
