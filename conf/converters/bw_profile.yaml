@@ -39,6 +39,17 @@ bind :
     "$bw"                 : "{$sp.map('bwq-sp-to-bw')}"
 
 sources :
+################################################################################
+# BW Controller lookup.
+# Deliberately does NOT enrich with labelling data to avoid labels on 
+# old profiles conflicting with labelling changes in future profile
+# Separately load a copy of 'bwq-controllers' via DMS.
+################################################################################
+  - name       : 'bwq-controller-lookup'
+    sourceType : RDF
+    source     : transform/bwq-controllers.ttl
+    key        : "rdfs:label"
+    
 ###############################################################################
 # Source for testing only, replace in live service
 ###############################################################################
@@ -150,6 +161,9 @@ referenced :
       "<dct:isVersionOf>"        : "{$endurantRes}"
       "<def-bwp:webResImage>"    : "<{$imagesURI}/{$eubwid}_1-webres.jpg>"
       "<dct:source>"             : "<{$source_base}/{$body_slug}/input/{$filename}#row={value($row.number+1).format('%04d')}>"
+      "<def-bwp:controller>"        : "<{bathing_water_controller.map('bwq-controller-lookup')}>"
+      "<def-bwp:samplingFrequency>" : "{sampling_frequency}"
+      
 
     # Standard language - for 2014 there is a different SLC for every profile(!)
     - "@id"                      : "{$slcRes}"
