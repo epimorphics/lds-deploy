@@ -93,7 +93,7 @@ class PRFCsv
     @rows[1..(@rows.size-1)].each do |row|
       msg = piMap[ row['Site'] ]
       if (msg)
-        unless (row['Prediction'] == '0' && row['Prediction_text_en'].include?("pollution incident ended"))
+        unless (row['Prediction'] == '0' && row['Prediction_text_en'].include?("Pollution incident ended"))
           row['Prediction'] = 2
           row['Prediction_text_en'] = "Risk of reduced water quality due to #{msg}"
           count = count+1
