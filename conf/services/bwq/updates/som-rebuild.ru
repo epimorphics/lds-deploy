@@ -9,7 +9,7 @@ PREFIX dct:     <http://purl.org/dc/terms/>
 PREFIX ugraph:  <http://environment.data.gov.uk/bwq/graph/updates/>
 
 #
-# Delete all dct:replaces/dct:/isReplacedBy links between SoM and PI records 
+# Delete all dct:replaces/dct:isReplacedBy links between SoM and PI records 
 #
 DELETE { GRAPH ugraph:in-season {
     ?update      dct:replaces     ?predecessor .
@@ -51,14 +51,13 @@ INSERT { GRAPH ugraph:in-season {
     ?update      dct:replaces     ?predecessor .
     ?predecessor dct:isReplacedBy ?update . 
 } } WHERE {
-   VALUES ( ?type ?keyProp ?startProp ) { 
-          ( def-som:SuspensionOfMonitoring def-bw:bathingWater def-som:startOfSuspension ) 
-          ( def-som:PollutionIncident      def-som:incidentNotation def-som:startOfIncident ) 
+   VALUES ( ?type                          ?keyProp ) { 
+          ( def-som:SuspensionOfMonitoring def-som:notation  ) 
+          ( def-som:PollutionIncident      def-som:incidentNotation ) 
    }
    
    ?update a                        ?type ;
            ?keyProp                 ?key;
-           ?startProp               ?stime ;
            def-som:recordDateTime   ?u_recordDate;
            .
 
@@ -66,7 +65,6 @@ INSERT { GRAPH ugraph:in-season {
     ?predecessor
             a                       ?type;
            ?keyProp                 ?key;
-           ?startProp               ?stime ;
            def-som:recordDateTime   ?p_recordDate;
            .
 
@@ -77,7 +75,6 @@ INSERT { GRAPH ugraph:in-season {
        ?probe
            a                      ?type;
            ?keyProp               ?key;
-           ?startProp             ?stime ;
            def-som:recordDateTime ?pr_recordDate;
            .
         FILTER ( ?pr_recordDate > ?p_recordDate && ?u_recordDate > ?pr_recordDate)
@@ -204,13 +201,13 @@ INSERT {
 WHERE {
   { 
      { 
-       VALUES (?type ?keyProp ?startProp ?endProp ?latestProp ) { 
-              ( def-som:SuspensionOfMonitoring def-bw:bathingWater      def-som:startOfSuspension def-som:endOfSuspension def-som:latestActiveSuspension ) 
+       VALUES (?type                           ?keyProp                 ?startProp                ?endProp                ?latestProp ) { 
+              ( def-som:SuspensionOfMonitoring def-som:notation         def-som:startOfSuspension def-som:endOfSuspension def-som:latestActiveSuspension ) 
               ( def-som:PollutionIncident      def-som:incidentNotation def-som:startOfIncident   def-som:endOfIncident   def-som:latestOpenIncident ) 
        }
   
        ?item     a                         ?type ;
-                 ?keyProp                  ?key ;
+                 def-bw:bathingWater       ?bw ;
                  ?startProp                ?start;
                  def-som:recordDateTime    ?recordDateTime ;
                  .
@@ -220,7 +217,7 @@ WHERE {
        # Now look for a second incomplete suspension/incident that started later.
        # Want to only have *one* latestActiveSuspension/latesOpenIncident per bw.
        ?itemb  a                         ?type ;
-               ?keyProp                  ?key ;
+               def-bw:bathingWater       ?bw ;
                ?startProp                ?startb;
                def-som:recordDateTime    ?recordDateTimeb ;
             .
@@ -228,6 +225,6 @@ WHERE {
        FILTER NOT EXISTS { ?itemb ?endProp ?endb }  
        FILTER (?startb > ?start)
     }
-     FILTER (!bound(?itemb))
-  } OPTIONAL { ?item def-bw:bathingWater ?bw }
+    FILTER (!bound(?itemb))
+  } 
 }
