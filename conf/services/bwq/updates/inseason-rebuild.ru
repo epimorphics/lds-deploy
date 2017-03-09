@@ -173,7 +173,7 @@ INSERT { GRAPH ugraph:in-season {
 # From here on matches  som-rebuild.ru
 ###############################################################################
 #
-# Delete all dct:replaces/dct:/isReplacedBy links between SoM and PI records 
+# Delete all dct:replaces/dct:isReplacedBy links between SoM and PI records 
 #
 DELETE { GRAPH ugraph:in-season {
     ?update      dct:replaces     ?predecessor .
@@ -209,42 +209,44 @@ WHERE {
    }
 };
 #
-# Build dct:replaces/dct:/isReplacedBy links between SoM records
+# Build dct:replaces/dct:isReplacedBy links between SoM records
 #
 INSERT { GRAPH ugraph:in-season {
     ?update      dct:replaces     ?predecessor .
     ?predecessor dct:isReplacedBy ?update . 
-} } WHERE {
-   VALUES ( ?type ?keyProp ?startProp ) { 
-          ( def-som:SuspensionOfMonitoring def-bw:bathingWater def-som:startOfSuspension ) 
-          ( def-som:PollutionIncident      def-som:incidentNotation def-som:startOfIncident ) 
+}} WHERE {
+   VALUES ( ?type                          ?keyProp1                ?keyProp2 ) { 
+          ( def-som:SuspensionOfMonitoring def-bw:bathingWater      def-som:startOfSuspension ) 
+          ( def-som:PollutionIncident      def-som:incidentNotation def-som:incidentNotation ) 
    }
    
    ?update a                        ?type ;
-           ?keyProp                 ?key;
-           ?startProp               ?stime ;
+           ?keyProp1                ?key1;
+           ?keyProp2                ?key2 ;
            def-som:recordDateTime   ?u_recordDate;
            .
 
     # Find a ?prececessor
     ?predecessor
             a                       ?type;
-           ?keyProp                 ?key;
-           ?startProp               ?stime ;
+           ?keyProp1                ?key1;
+           ?keyProp2                ?key2 ;
            def-som:recordDateTime   ?p_recordDate;
            .
 
-     FILTER (?p_recordDate<?u_recordDate)
+     FILTER (?predecessor!= ?update && ?p_recordDate<?u_recordDate)
 
      # Make sure that the is no ?probe between ?update and its immediate predecessor.
       OPTIONAL {
        ?probe
-           a                      ?type;
-           ?keyProp               ?key;
-           ?startProp             ?stime ;
+           a                      ?type ;
+           ?keyProp1              ?key1 ;
+           ?keyProp2              ?key2 ;
            def-som:recordDateTime ?pr_recordDate;
            .
-        FILTER ( ?pr_recordDate > ?p_recordDate && ?u_recordDate > ?pr_recordDate)
+        FILTER ( ?probe!=?update && ?probe!=?successor && 
+                 ?p_recordDate < ?pr_recordDate && ?pr_recordDate < ?u_recordDate )
+#        FILTER ( ?pr_recordDate > ?p_recordDate && ?u_recordDate > ?pr_recordDate)
      } FILTER (!bound(?probe))
 } ; 
 #
@@ -368,13 +370,13 @@ INSERT {
 WHERE {
   { 
      { 
-       VALUES (?type ?keyProp ?startProp ?endProp ?latestProp ) { 
-              ( def-som:SuspensionOfMonitoring def-bw:bathingWater      def-som:startOfSuspension def-som:endOfSuspension def-som:latestActiveSuspension ) 
-              ( def-som:PollutionIncident      def-som:incidentNotation def-som:startOfIncident   def-som:endOfIncident   def-som:latestOpenIncident ) 
+       VALUES (?type                            ?startProp                ?endProp                ?latestProp ) { 
+              ( def-som:SuspensionOfMonitoring  def-som:startOfSuspension def-som:endOfSuspension def-som:latestActiveSuspension ) 
+              ( def-som:PollutionIncident       def-som:startOfIncident   def-som:endOfIncident   def-som:latestOpenIncident ) 
        }
   
        ?item     a                         ?type ;
-                 ?keyProp                  ?key ;
+                 def-bw:bathingWater       ?bw ;
                  ?startProp                ?start;
                  def-som:recordDateTime    ?recordDateTime ;
                  .
@@ -384,7 +386,7 @@ WHERE {
        # Now look for a second incomplete suspension/incident that started later.
        # Want to only have *one* latestActiveSuspension/latesOpenIncident per bw.
        ?itemb  a                         ?type ;
-               ?keyProp                  ?key ;
+               def-bw:bathingWater       ?bw ;
                ?startProp                ?startb;
                def-som:recordDateTime    ?recordDateTimeb ;
             .
@@ -393,5 +395,6 @@ WHERE {
        FILTER (?startb > ?start)
     }
      FILTER (!bound(?itemb))
-  } OPTIONAL { ?item def-bw:bathingWater ?bw }
+  } 
 }
+
