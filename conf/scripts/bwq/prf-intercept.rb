@@ -48,9 +48,11 @@ class PollutionIncidents
           bw = sampling_point_from_bwid( x["notation"] )
           map[bw] = msg
         end
-      else
+      elsif bwdetails
         bw = sampling_point_from_bwid( bwdetails["notation"] )
         map[bw] = msg
+      else
+        puts "Incident with no associated bathing water, skipping"
       end
     end
     map
