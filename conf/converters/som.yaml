@@ -111,8 +111,8 @@ required:
      "l_incStartDateTime"    : "{empty(s_incStartDate) || empty(s_incStartTime) ? null : s_incStartDate.append('T').append(s_incStartTime).asDate('xsd:dateTime')}"
      "l_incEndDateTime"      : "{empty(s_incEndDate)   || empty(s_incEndTime)   ? null : s_incEndDate.append('T').append(s_incEndTime).asDate('xsd:dateTime')}"
 
-   - r_som                   : "{data_base}/suspension/point/{bwspid}/date/{empty(l_startDateTime)? null : l_startDateTime.format('yyyyMMdd')}/time/{l_startDateTime.format('HHmmss')}/recordDateTime/{l_recordDateTime.format('yyyyMMddHHmm')}"
-     r_incident              : "{data_base}/pollution-incident/{empty(inc_id) ? null : inc_id.toCleanSegment()}/recordDateTime/{l_recordDateTime.format('yyyyMMddHHmm')}"
+   - r_som                   : "{data_base}/suspension/point/{bwspid}/date/{empty(l_startDateTime)? null : l_startDateTime.format('yyyyMMdd')}/time/{l_startDateTime.format('HHmmss')}/recordDateTime/{l_recordDateTime.format('yyyyMMddHHmmss')}"
+     r_incident              : "{data_base}/pollution-incident/{empty(inc_id) ? null : inc_id.toCleanSegment()}/recordDateTime/{l_recordDateTime.format('yyyyMMddHHmmss')}"
 
    - r_incidentType          : "{empty(situation_description) ? null : situation_description.map('bwq-incident-type')}"
 
