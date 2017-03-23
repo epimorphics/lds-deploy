@@ -106,7 +106,7 @@ sources :
 # old profiles conflicting with labelling changes in future profile
 # Separately load a copy of 'bwq-controllers' via DMS.
 ################################################################################
-  - name : 'bwq-controller-lookup'
+  - name       : bwq-controller-lookup
     sourceType : RDF
     source     : transform/bwq-controllers.ttl
     key        : "rdfs:label"
