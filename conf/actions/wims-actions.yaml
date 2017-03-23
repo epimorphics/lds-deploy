@@ -7,7 +7,7 @@
 "@args" :
   - "serverDir"
 "@env"  :
-    "AWS_EBS" : 8
+#    "AWS_EBS" : 8
     "AWS_INSTANCE_STORE" : "yes"
     "AWS_INSTANCE_TYPE" : "i3.large"
     "AWS_AMI" : "ami-fc1f2a9a"
