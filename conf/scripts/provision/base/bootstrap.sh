@@ -43,8 +43,9 @@ install_disk() {
     fi 
 }
 
-install_disk /dev/xvdg  /mnt/ephemeral0
-install_disk /dev/xvdf  /mnt/disk1
+install_disk /dev/xvdg    /mnt/ephemeral0
+install_disk /dev/nvme0n1 /mnt/ephemeral0
+install_disk /dev/xvdf    /mnt/disk1
 
 # Basic packages - probably should leave these to chef but can't see how
 apt-get -q -y update
