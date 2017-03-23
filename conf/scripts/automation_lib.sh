@@ -112,3 +112,23 @@ checkWorkArea() {
         ln -s /mnt/ephemeral0/dms-work/ $DEFAULT_WORK_DIR
     fi
 }
+
+# Acquire a lock on a tier, waits for up to 90s
+lockTier() {
+    [[ $# = 1 ]] || { echo "Internal error calling $0" 1>&2 ; exit 1 ; }
+    local tierDir="$1"
+    for i in $(seq 1 30)
+    do
+      if mkdir $tierDir/lock 2> /dev/null; then
+        return 0
+      fi
+      sleep 3
+    done
+    return 1
+}
+
+unlockTier() {
+    [[ $# = 1 ]] || { echo "Internal error calling $0" 1>&2 ; exit 1 ; }
+    local tierDir="$1"
+    rm -f $tierDir/lock    
+}
