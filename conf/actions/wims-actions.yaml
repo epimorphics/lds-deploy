@@ -7,11 +7,10 @@
 "@args" :
   - "serverDir"
 "@env"  :
-#    "AWS_EBS" : 8
+    "AWS_EBS" : 8
     "AWS_INSTANCE_STORE" : "yes"
-#    "AWS_INSTANCE_TYPE" : "r3.xlarge"
     "AWS_INSTANCE_TYPE" : "i3.large"
-    "AWS_AMI" : "ami-4e2d7d39"
+    "AWS_AMI" : "ami-fc1f2a9a"
 #    "AWS_SG" : "sg-b815c7dd"   # lds-front-end
     "AWS_SG" : "sg-091c6a6c"   # lds-combined
     "CHEF_ENV"  : "lds-wims-dev-server"
