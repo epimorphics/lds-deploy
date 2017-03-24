@@ -55,8 +55,7 @@
 ---
 "@name" : api/resetDataTesting
 "@type"   : script
-#"@script" : "dbutil/resetTierData.sh"
-"@script" : "test.sh"
+"@script" : "dbutil/resetTierData.sh"
 "@args" :
   - "tier"
 "@onSuccess" :
