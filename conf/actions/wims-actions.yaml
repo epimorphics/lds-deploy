@@ -53,12 +53,22 @@
     "STATE_FOLDER"  : "s3://dms-deploy/images/wims"
 "@args" : json
 ---
-"@name" : api/resetDataTesting
+"@name" : api/resetTier
 "@type"   : script
 "@script" : "dbutil/resetTierData.sh"
 "@args" :
   - "tier"
 "@onSuccess" :
     "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
-    "message" :    "Publication of WIMS to servers completed"
+    "message" :    "Data reset on WIMS completed"
+    "notifyuser" : "dave@epimorphics.com"
+---
+"@name" : api/publishTier
+"@type"   : script
+"@script" : "dbutil/tierCatchupState.sh"
+"@args" :
+  - "tier"
+"@onSuccess" :
+    "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+    "message" :    "Data publish on WIMS completed"
     "notifyuser" : "dave@epimorphics.com"
