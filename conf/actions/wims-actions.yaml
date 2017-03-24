@@ -55,9 +55,10 @@
 ---
 "@name" : api/resetDataTesting
 "@type"   : script
+#"@script" : "dbutil/resetTierData.sh"
 "@script" : "test.sh"
-"@args" : "json"
-#"@onSuccess" :
-#  - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
-#    "message" :    "Publication of WIMS to dev servers completed"
-#    "notifyuser" : "dave@epimorphics.com"
+"@args" : tier
+"@onSuccess" :
+  - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+    "message" :    "Publication of WIMS to servers completed"
+    "notifyuser" : "dave@epimorphics.com"
