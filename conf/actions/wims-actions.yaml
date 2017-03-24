@@ -52,3 +52,12 @@
 "@env"  :
     "STATE_FOLDER"  : "s3://dms-deploy/images/wims"
 "@args" : json
+---
+"@name" : api/resetDataTesting
+"@type"   : script
+"@script" : "test.sh"
+"@args" : "json"
+#"@onSuccess" :
+#  - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+#    "message" :    "Publication of WIMS to dev servers completed"
+#    "notifyuser" : "dave@epimorphics.com"
