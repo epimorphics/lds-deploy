@@ -74,14 +74,17 @@
             "$gss_wales"    : "http://statistics.data.gov.uk/id/statistical-geography/W92000004",
          ## Add 0.0 to coerce decimal literals
            "$northing" : "{ncsy.value}^^xsd:decimal",
-           "$easting"  : "{ncsx.value}^^xsd:decimal",        
+           "$easting"  : "{ncsx.value}^^xsd:decimal",
+           "missing_bb_coords" :  "{(empty(bb_xmax) || empty(bb_xmin) || empty(bb_ymax) || empty(bb_ymin))}"
+        },
+        {
          #######################################################################################################################
          # Rectify and round min and max x and y bounding box values up (max's) and down (min's)
          #######################################################################################################################  
-            "$bb_xmax" : "{round((bb_xmax.value >= bb_xmin.value ? bb_xmax : bb_xmin).value + 0.5).value + 0.0}",
-            "$bb_xmin" : "{round((bb_xmax.value >= bb_xmin.value ? bb_xmin : bb_xmax).value - 0.5).value + 0.0}",
-            "$bb_ymax" : "{round((bb_ymax.value >= bb_ymin.value ? bb_ymax : bb_ymin).value + 0.5).value + 0.0}",
-            "$bb_ymin" : "{round((bb_ymax.value >= bb_ymin.value ? bb_ymin : bb_ymax).value - 0.5).value + 0.0}"
+            "$bb_xmax" : "{missing_bb_coords ? null : round((bb_xmax.value >= bb_xmin.value ? bb_xmax : bb_xmin).value + 0.5).value + 0.0}",
+            "$bb_xmin" : "{missing_bb_coords ? null : round((bb_xmax.value >= bb_xmin.value ? bb_xmin : bb_xmax).value - 0.5).value + 0.0}",
+            "$bb_ymax" : "{missing_bb_coords ? null : round((bb_ymax.value >= bb_ymin.value ? bb_ymax : bb_ymin).value + 0.5).value + 0.0}",
+            "$bb_ymin" : "{missing_bb_coords ? null : round((bb_ymax.value >= bb_ymin.value ? bb_ymin : bb_ymax).value - 0.5).value + 0.0}"
         },
         {
             "$envelopeGML" : "\\<gml:Envelope xmlns:gml=\"http://www.opengis.net/gml/3.2\" srsName=\"http://www.opengis.net/def/crs/EPSG/0/27700\"> <gml:lowerCorner>{$bb_xmin} {$bb_ymin}</gml:lowerCorner><gml:upperCorner>{$bb_xmax} {$bb_ymax}</gml:upperCorner></gml:Envelope>",
@@ -311,9 +314,9 @@
         "bwq-sites-water-company",
         "bwq-sites-water-company-profile",
         "bwq-sites-alt-bathing-water", 
-        "bwq-sites-envelope", 
-        "bwq-sites-envelope-lower", 
-        "bwq-sites-envelope-upper", 
+        "bwq-sites-envelope-outer", 
+#        "bwq-sites-envelope-lower", 
+#        "bwq-sites-envelope-upper", 
         "bwq-sites-zone-of-influence",
         "bwq-sites-sampling-point",  
         "bwq-sites-os-district", 
@@ -347,7 +350,7 @@
             "<def-bw:sedimentTypesPresent>"            : "<{$sediment.split(',').map('bwq-sediment')}>",
             "<def-bw:waterQualityImpactedByHeavyRain>" : "{impact_from_heavy_rainfall.toLowerCase()=='yes' ? true :
                                                            impact_from_heavy_rainfall.toLowerCase()=='no'  ? false : null }",
-            "<def-geom:envelope>"                      : "<{$so_env}/{$eubwid}:1>",
+            "<def-geom:envelope>"                      : "<{missing_bb_coords ? null : $so_env.append('/').append($eubwid).append(':1')}>",
             "<def-zoi:zoneOfInfluence>"                : "<{$so_zoi}/{$eubwid}:1>",
             "<onsadmingeo:district>"                  : [ "<{os_uri}>" ,
                                                           "<{empty(gss) ? null : 
@@ -458,49 +461,55 @@
                                                           ,"{empty(description_welsh) ? null : description_welsh.lang('cy')}" 
                                                         ]
         },
+        { "name"                                      : "bwq-sites-envelope-outer",
+          "type"                                      : "Composite",
+          "onlyIf"                                    : "{!missing_bb_coords}",
+          "templates" : [
     #############################################################################################################################
     # Map-bound envelope for a bathing-water
     #############################################################################################################################
-       {    "name"                                    : "bwq-sites-envelope",
-            "@id"                                     : "<{$so_env}/{$eubwid}:1>",
-            "<rdf:type>"                              : [ "<def-geom:Envelope>", 
+          {   "name"                                    : "bwq-sites-envelope",
+              "@id"                                     : "<{$so_env}/{$eubwid}:1>",
+              "<rdf:type>"                              : [ "<def-geom:Envelope>", 
                                                           "<geometry:AbstractGeometry>", 
                                                           "<def-geom:Geometry>" 
                                                         ],
-            "<rdfs:label>"                            : "Map bounds for {description_english}@en",
-            "<def-bw:bathingWater>"                   : "<{$id_bw}/{$eubwid}>",
-#            "<dgu:uriSet>"                            : "<{$so_env}/>",
-            "<geometry:asGML>"                        : "{$envelopeGML}^^rdf:XMLLiteral",
-            "<def-geom:dimensions>"                   : "{$srsDim}^^xsd:integer",
-            "<def-geom:srs>"                          : "<{$srs}>",
-            "<def-geom:lowerCorner>"                  : "<{$so_env}/{$eubwid}:1/lowerCorner>",
-            "<def-geom:upperCorner>"                  : "<{$so_env}/{$eubwid}:1/upperCorner>"
-        },
+              "<rdfs:label>"                            : "Map bounds for {description_english}@en",
+              "<def-bw:bathingWater>"                   : "<{$id_bw}/{$eubwid}>",
+#              "<dgu:uriSet>"                            : "<{$so_env}/>",
+              "<geometry:asGML>"                        : "{$envelopeGML}^^rdf:XMLLiteral",
+              "<def-geom:dimensions>"                   : "{$srsDim}^^xsd:integer",
+              "<def-geom:srs>"                          : "<{$srs}>",
+              "<def-geom:lowerCorner>"                  : "<{$so_env}/{$eubwid}:1/lowerCorner>",
+              "<def-geom:upperCorner>"                  : "<{$so_env}/{$eubwid}:1/upperCorner>"
+          },
     #############################################################################################################################
     # Map-bound envelope lower corner
     #############################################################################################################################
-        {   "name"                                    : "bwq-sites-envelope-lower",
-            "@id"                                     : "<{$so_env}/{$eubwid}:1/lowerCorner>",
-            "<rdf:type>"                              : "<def-geom:Point>",
-            "<def-geom:dimensions>"                   : "{$srsDim}^^xsd:integer",
-            "<def-geom:srs>"                          : "<{$srs}>",
-            "<def-geom:x>"                            : "{$bb_xmin}^^xsd:decimal",
-            "<def-geom:y>"                            : "{$bb_ymin}^^xsd:decimal",
-            "<spatialrelations:easting>"              : "{$bb_xmin}^^xsd:decimal",
-            "<spatialrelations:northing>"             : "{$bb_ymin}^^xsd:decimal"
-        },
+          {   "name"                                    : "bwq-sites-envelope-lower",
+              "@id"                                     : "<{$so_env}/{$eubwid}:1/lowerCorner>",
+              "<rdf:type>"                              : "<def-geom:Point>",
+              "<def-geom:dimensions>"                   : "{$srsDim}^^xsd:integer",
+              "<def-geom:srs>"                          : "<{$srs}>",
+              "<def-geom:x>"                            : "{$bb_xmin}^^xsd:decimal",
+              "<def-geom:y>"                            : "{$bb_ymin}^^xsd:decimal",
+              "<spatialrelations:easting>"              : "{$bb_xmin}^^xsd:decimal",
+              "<spatialrelations:northing>"             : "{$bb_ymin}^^xsd:decimal"
+          },
     #############################################################################################################################
     # Map-bound envelope upper corner
     #############################################################################################################################
-        {   "name"                                    : "bwq-sites-envelope-upper",
-            "@id"                                     : "<{$so_env}/{$eubwid}:1/upperCorner>",
-            "<rdf:type>"                              : "<def-geom:Point>",
-            "<def-geom:dimensions>"                   : "{$srsDim}^^xsd:integer",
-            "<def-geom:srs>"                          : "<{$srs}>",
-            "<def-geom:x>"                            : "{$bb_xmax}^^xsd:decimal",
-            "<def-geom:y>"                            : "{$bb_ymax}^^xsd:decimal",
-            "<spatialrelations:easting>"              : "{$bb_xmax}^^xsd:decimal",
-            "<spatialrelations:northing>"             : "{$bb_ymax}^^xsd:decimal"
+          {   "name"                                    : "bwq-sites-envelope-upper",
+              "@id"                                     : "<{$so_env}/{$eubwid}:1/upperCorner>",
+              "<rdf:type>"                              : "<def-geom:Point>",
+              "<def-geom:dimensions>"                   : "{$srsDim}^^xsd:integer",
+              "<def-geom:srs>"                          : "<{$srs}>",
+              "<def-geom:x>"                            : "{$bb_xmax}^^xsd:decimal",
+              "<def-geom:y>"                            : "{$bb_ymax}^^xsd:decimal",
+              "<spatialrelations:easting>"              : "{$bb_xmax}^^xsd:decimal",
+              "<spatialrelations:northing>"             : "{$bb_ymax}^^xsd:decimal"
+          }
+          ],
         },
     #############################################################################################################################
     # Bathing Water Sampling Point
@@ -538,7 +547,6 @@
           "@id"                                       : "<{empty(gss) ? null : 
                                                                        'http://statistics.data.gov.uk/id/statistical-geography/' + gss}>",
           "<admingeo:gssCode>"                        : "{gss}"
-        }
-        
+        } 
     ]
 }
