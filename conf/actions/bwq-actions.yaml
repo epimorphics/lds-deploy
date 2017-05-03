@@ -126,39 +126,35 @@
     "notifyuser" : "dave@epimorphics.com"
 ---
 # STP auto-publish endpoint
-
-#"@name" : api/publishProduction
-#"@type" : sequence
-#"@actions" :
-#  - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
-#    "publicationSet" : testing
-#  - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
-#    "message" :    "Publications to production (testing) completed"
-#    "notifyuser" : "dave@epimorphics.com"
-#"@onError" :
-#    "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
-#    "message"    : "publication to production (testing) FAILED"
-#    "notifyuser" : "dave@epimorphics.com"
-#---
 "@name"      : api/publishProduction
 ## Next two lines used out of season to suspend publication but allow files to be recieved
 #"@javaclass" : "com.epimorphics.dms.util.PrintAction"
 #"message"    : "PRF publication suspended (out of season)"
-"@type"      : script
-"@script"    : bwq/prf-nrw-check.sh
-"@args"      : [ "filename" ]
+"@type"   : script
+"@script" : "bwq/run-prf-intercept.sh"
+"@args" :
+  - filename
 "@onSuccess" :
-    "@type"  : sequence
-    "@actions" :
-    - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
-      "publicationSet" : production
-    - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
-      "message" :    "publication to production completed"
-      "notifyuser" : "dave@epimorphics.com"
-    "@onError" :
-      "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
-      "message"    : "publication to production FAILED"
-      "notifyuser" : "dave@epimorphics.com"
+  "@type" : sequence
+  "@actions" :
+  - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
+    "publicationSet" : production
+  - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+    "message" :    "Publications to production completed"
+    "notifyuser" : "dave@epimorphics.com"
+"@onError" :
+  "@type" : sequence
+  "@actions" :
+  - "@javaclass" : com.epimorphics.dms.tasks.UploadAction
+  - "@javaclass" : com.epimorphics.dms.tasks.EmbeddedPublishAction
+    "publicationSet" : production
+  - "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+    "message" :    "Publications to production with modified PRFs completed"
+    "notifyuser" : "dave@epimorphics.com"
+  "@onError" :
+    "@javaclass" : com.epimorphics.dms.tasks.NotifyAction
+    "message"    : "publication to production FAILED"
+    "notifyuser" : "dave@epimorphics.com"
 ---
 # STP auto-publish endpoint - to default publication environment
 "@name" : api/autoPublish
