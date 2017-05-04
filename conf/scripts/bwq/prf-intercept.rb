@@ -18,8 +18,8 @@ require 'set'
 # Support for fetching published pollution incidents
 #
 class PollutionIncidents 
-  SERVER     = 'http://ea-rbwd-staging.epimorphics.net'
-  #SERVER     = 'http://environment.data.gov.uk'
+  #SERVER     = 'http://ea-rbwd-staging.epimorphics.net'
+  SERVER     = 'http://environment.data.gov.uk'
   PI_REQUEST = 'doc/bathing-water-quality/pollution-incident/open.json?_view=pollution-incident&_pageSize=100'
 
   @ok = false
