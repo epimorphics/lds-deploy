@@ -27,7 +27,7 @@
     "AWS_INSTANCE_TYPE" : "i3.large"
     "AWS_AMI" : "ami-405f7226"
     "AWS_SG" : "sg-091c6a6c"   # lds-combined
-    "CHEF_ENV"  : "lds-cde-dev"
+    "CHEF_ENV"  : "lds-cde-production"
     "CHEF_ROLE" : "ea-cde-pub"
     "AWS_IAM_ROLE_ARN" : "arn:aws:iam::853478862498:instance-profile/dms-update"
 ---
