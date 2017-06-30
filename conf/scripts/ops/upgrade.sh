@@ -18,7 +18,7 @@ ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo apt-get $AP
 ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo DEBIAN_FRONTEND=noninteractive apt-get $APT_FLAGS autoremove
 
 # Force a reboot to install any dist upgrades
-ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo reboot
+ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo reboot || true
 
 # Wait for machine to come up again
 sleep 60s
