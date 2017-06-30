@@ -45,7 +45,7 @@ WHERE {
    }
 };
 #
-# Build dct:replaces/dct:isReplacedBy links between SoM records
+# Build dct:replaces/dct:isReplacedBy links between SoM and PI records
 #
 INSERT { GRAPH ugraph:in-season {
     ?update      dct:replaces     ?predecessor .
@@ -62,7 +62,7 @@ INSERT { GRAPH ugraph:in-season {
            def-som:recordDateTime   ?u_recordDate;
            .
 
-    # Find a ?prececessor
+    # Find a ?predecessor
     ?predecessor
             a                       ?type;
            ?keyProp1                ?key1;
@@ -80,9 +80,8 @@ INSERT { GRAPH ugraph:in-season {
            ?keyProp2              ?key2 ;
            def-som:recordDateTime ?pr_recordDate;
            .
-        FILTER ( ?probe!=?update && ?probe!=?successor && 
+        FILTER ( ?probe!=?update && ?probe!=?predecessor && 
                  ?p_recordDate < ?pr_recordDate && ?pr_recordDate < ?u_recordDate )
-#        FILTER ( ?pr_recordDate > ?p_recordDate && ?u_recordDate > ?pr_recordDate)
      } FILTER (!bound(?probe))
 } ; 
 #
