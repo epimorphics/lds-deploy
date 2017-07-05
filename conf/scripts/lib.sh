@@ -214,7 +214,7 @@ AllocateServer() {
 #    CHEF_ROLE    name of the top level role for this node
 #    CHEF_PARAMS  optional additional chef parameters in json syntax
 InstallChef() {
-    [[ $# = 1 ]] || { echo "Internal error calling AllocateServer" 1>&2 ; exit 1 ; }
+    [[ $# = 1 ]] || { echo "Internal error calling $0" 1>&2 ; exit 1 ; }
     local serverDir=$1
 
     IP=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
@@ -316,4 +316,28 @@ SendMetric() {
     local name="$1"
     local value="$2"
     echo "$name $value `date +%s`" | nc -q0 127.0.0.1 2003
+}
+
+# Reboot a server
+# Arguments
+#   RebootServer serverDir
+RebootServer() {
+    [[ $# = 1 ]] || { echo "Internal error calling $0" 1>&2 ; exit 1 ; }
+    local serverDir=$1
+    IP=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
+
+    ssh -t -t $SSH_FLAGS -i $AWS_KEY -l ubuntu $IP sudo reboot
+
+    # Wait for machine to come up again
+    for time in 30 60 90 120
+    do
+      sleep 30
+      echo "waited $time seconds of 120 seconds for $IP to reboot"
+      if ssh -t -t $SSH_FLAGS -i $AWS_KEY -l ubuntu $IP echo "Server up"; then
+        return 0
+      fi
+    done
+
+    echo "Server reboot failed"
+    exit 1
 }

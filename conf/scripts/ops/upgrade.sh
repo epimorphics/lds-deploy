@@ -17,12 +17,13 @@ ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo DEBIAN_FRON
 ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo apt-get $APT_FLAGS autoclean
 ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo DEBIAN_FRONTEND=noninteractive apt-get $APT_FLAGS autoremove
 
-# Force a reboot to install any dist upgrades
-ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo reboot || true
+RebootServer $SERVER
 
-# Wait for machine to come up again
-sleep 60s
-ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP echo "Server up" || ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP echo "Server up (2nd try)"
+## Force a reboot to install any dist upgrades
+#ssh -t -t $SSH_FLAGS -i $AWS_KEY -l ubuntu $IP sudo reboot
+## Wait for machine to come up again
+#sleep 60s
+#ssh -t -t $SSH_FLAGS -i $AWS_KEY -l ubuntu $IP echo "Server up"
 
 # Good luck pause to allow services to start as well
-sleep 5s
+sleep 10s

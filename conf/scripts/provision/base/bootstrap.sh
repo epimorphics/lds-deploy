@@ -51,3 +51,6 @@ install_disk /dev/xvdf    /mnt/disk1
 apt-get -q -y update
 DEBIAN_FRONTEND=noninteractive apt-get -q -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade 
 locale-gen en_GB.UTF-8
+
+# Patch udev problem that breaks NVMe disks on ubuntu (e.g. for i3 isntances)
+sed -i -e '/^SUBSYSTEM=="memory"/s/^/#/' /lib/udev/rules.d/40-vm-hotadd.rules || true
