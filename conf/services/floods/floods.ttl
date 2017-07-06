@@ -101,6 +101,7 @@
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp;
     dms:operation :upgradeOp, :testServerOp;
+    dms:operation :webSyncOp;
     .
 
 :productionServers a dms:Tier;
@@ -123,6 +124,7 @@
     dms:publishAction      "generic/dupublish";
     dms:operation :clearCacheOp, :rebuildDBOp;
     dms:operation :upgradeOp, :testServerOp;
+    dms:operation :webSyncOp;
     .
 
 :pdataLB a dms:LoadBalancer;
@@ -152,6 +154,13 @@
     dms:action "default/upgrade";
     skos:notation "upgradeOp";
     dms:removeFromLB true;
+    .
+
+:webSyncOp
+    rdfs:label "Web sync";
+    dms:action "default/upgrade";
+    skos:notation "floods/postPublish";
+    dms:tierOnly true;
     .
 
 :testServerOp
