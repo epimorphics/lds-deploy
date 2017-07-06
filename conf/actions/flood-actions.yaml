@@ -38,7 +38,7 @@
 # Sync the web data as a UI action
 "@name" : floods/webSync
 "@type" : script
-"@script" : "floods/post-publish.sh"
+"@script" : "floods/web-sync.sh"
 "@args" :
     -  "tier"
 ---
