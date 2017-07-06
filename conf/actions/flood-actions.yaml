@@ -35,6 +35,13 @@
 "@args" :
   - "tier"
 ---
+# Sync the web data as a UI action
+"@name" : floods/webSync
+"@type" : script
+"@script" : "floods/post-publish.sh"
+"@args" :
+    -  "tier"
+---
 # General publication processing
 "@name" : floods/postPublish
 "@type" : script

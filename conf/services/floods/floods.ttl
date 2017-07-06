@@ -158,7 +158,7 @@
 
 :webSyncOp
     rdfs:label "Web sync";
-    dms:action "floods/postPublish";
+    dms:action "floods/webSync";
     skos:notation "webSyncOp";
     dms:tierOnly true;
     .
