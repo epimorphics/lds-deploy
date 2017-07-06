@@ -29,8 +29,8 @@ fi
 
 AllocateServer "$serverDir"
 
-InstallChef "$serverDir"
-#InstallChefSolo "$serverDir" "../chef"
-
 # Reboot to allow package updates and udev patch to take effect
 RebootServer $serverDir
+
+InstallChef "$serverDir"
+#InstallChefSolo "$serverDir" "../chef"
