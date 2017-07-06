@@ -326,7 +326,7 @@ RebootServer() {
     local serverDir=$1
     IP=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
 
-    ssh -t -t $SSH_FLAGS -i $AWS_KEY -l ubuntu $IP sudo reboot
+    ssh -t -t $SSH_FLAGS -i $AWS_KEY -l ubuntu $IP sudo reboot  || true
 
     # Wait for machine to come up again
     for time in 30 60 90 120
