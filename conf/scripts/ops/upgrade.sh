@@ -9,6 +9,7 @@ readonly SERVER="$1"
 readonly IP=$( jq -r .address "$SERVER/config.json" )
 
 . /opt/dms/conf/scripts/config.sh
+. /opt/dms/conf/scripts/lib.sh
 
 # Complete update
 APT_FLAGS='-o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -q -y'
