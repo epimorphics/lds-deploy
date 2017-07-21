@@ -324,7 +324,7 @@ SendMetric() {
 RebootServer() {
     [[ $# = 1 ]] || { echo "Internal error calling $0" 1>&2 ; exit 1 ; }
     local serverDir=$1
-    IP=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
+    local IP=$(jq -r ".Instances[0].PublicDnsName" < $serverDir/aws-instance.json)
 
     ssh -t -t $SSH_FLAGS -i $AWS_KEY -l ubuntu $IP sudo reboot  || true
 
