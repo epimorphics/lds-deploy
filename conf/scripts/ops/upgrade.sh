@@ -6,7 +6,7 @@ set -o errexit
 [[ $# = 1 ]] || { echo "Internal error calling $0, expected server address" 1>&2 ; exit 1 ; }
 
 readonly SERVER="$1"
-readonly IP=$( jq -r .address "$SERVER/config.json" )
+IP=$( jq -r .address "$SERVER/config.json" )
 
 . /opt/dms/conf/scripts/config.sh
 . /opt/dms/conf/scripts/lib.sh
