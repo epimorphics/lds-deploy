@@ -1,0 +1,8 @@
+#!/bin/bash
+# Patch around I/O errors with nvme disks
+FILE=/lib/udev/rules.d/40-vm-hotadd.rules
+if [[ -f $FILE ]]; then
+  if egrep -q '^SUBSYSTEM=="memory' $FILE; then
+    sed -i -e 's/SUBSYSTEM=="memory/# SUBSYSTEM=="memory/' $FILE
+  fi
+fi
