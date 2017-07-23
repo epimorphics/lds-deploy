@@ -19,12 +19,8 @@ ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo apt-get $AP
 ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo DEBIAN_FRONTEND=noninteractive apt-get $APT_FLAGS autoremove
 
 # Reapply nvme patch for i3 servers in case broken by an update
-FILE=/lib/udev/rules.d/40-vm-hotadd.rules
-if [[ -f $FILE ]]; then
-  if egrep -q '^SUBSYSTEM=="memory' $FILE; then
-    sudo sed -i -e 's/SUBSYSTEM=="memory/# SUBSYSTEM=="memory/' $FILE
-  fi
-fi
+PATCH="FILE=/lib/udev/rules.d/40-vm-hotadd.rules ; if [[ -f $FILE ]]; then if egrep -q '^SUBSYSTEM==\"memory' $FILE; then sed -i -e 's/SUBSYSTEM==\"memory/# SUBSYSTEM==\"memory/' $FILE; fi; fi"
+ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP "sudo bash -c $PATCH"
 
 RebootServer $SERVER
 
