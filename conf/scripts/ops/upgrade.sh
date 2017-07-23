@@ -22,7 +22,7 @@ ssh -t -t $SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem -l ubuntu $IP sudo DEBIAN_FRON
 FILE=/lib/udev/rules.d/40-vm-hotadd.rules
 if [[ -f $FILE ]]; then
   if egrep -q '^SUBSYSTEM=="memory' $FILE; then
-    sed -i -e 's/SUBSYSTEM=="memory/# SUBSYSTEM=="memory/' $FILE
+    sudo sed -i -e 's/SUBSYSTEM=="memory/# SUBSYSTEM=="memory/' $FILE
   fi
 fi
 
