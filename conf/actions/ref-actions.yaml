@@ -54,7 +54,7 @@
 "@type" : script
 "@script" : "ops/duPublishState.sh"
 "@env"  :
-    "STATE_FOLDER"  : "s3://dms-deploy/images/cde"
+    "STATE_FOLDER"  : "s3://dms-deploy/images/ref"
 "@args" : json
 ---
 # initialize database from S3

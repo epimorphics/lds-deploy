@@ -69,14 +69,14 @@
     dms:loadBalancer  :tpubLB;
 
     dms:externalState  true;
-    dms:loadStateAction "generic/loadState";
+    dms:loadStateAction "ref/loadState";
     dms:catchupStateAction "generic/catchupState";
-    dms:publishStateAction "generic/publishState";
-    dms:publishAction      "generic/dupublish"; 
+    dms:publishStateAction "ref/dupublishState";
+    dms:publishAction      "generic/dupublish";
 
-    dms:configureAction "ref/pubserver/configure";
-    dms:allocateAction "ref/test-pubserver/allocate";
-    dms:terminateAction "ref/pubserver/terminate";
+    dms:configureAction "ref/server/configure";
+    dms:allocateAction "ref/server/allocate";
+    dms:terminateAction "default/terminate";
     dms:parallelPublish true ;
     dms:operation :upgradeOp ;
     .
@@ -98,14 +98,14 @@
     dms:loadBalancer  :ppubLB;
 
     dms:externalState  true;
-    dms:loadStateAction "generic/loadState";
+    dms:loadStateAction "ref/loadState";
     dms:catchupStateAction "generic/catchupState";
-    dms:publishStateAction "generic/publishState";
-    dms:publishAction      "generic/dupublish"; 
+    dms:publishStateAction "ref/dupublishState";
+    dms:publishAction      "generic/dupublish";
 
-    dms:configureAction "ref/pubserver/configure";
-    dms:allocateAction "ref/production-pubserver/allocate";
-    dms:terminateAction "ref/pubserver/terminate";
+    dms:configureAction "ref/server/configure";
+    dms:allocateAction "ref/server/production/allocate";
+    dms:terminateAction "default/terminate";
     dms:parallelPublish true ;
     dms:operation :upgradeOp ;
     .
