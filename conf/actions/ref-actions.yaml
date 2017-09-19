@@ -1,0 +1,65 @@
+# Actions customized for the LDS ref service
+
+# Data server allocation
+"@name" : ref/server/allocate
+"@type" : script
+"@script" : "ops/generic-allocate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "AWS_INSTANCE_STORE" : "yes"
+    "AWS_INSTANCE_TYPE" : "i3.large"
+    "AWS_AMI" : "ami-405f7226"
+    "AWS_SG" : "sg-091c6a6c"   # lds-combined
+    "CHEF_ENV"  : "lds-ref-dev"
+    "CHEF_ROLE" : "ea-ref-pub"
+    "AWS_IAM_ROLE_ARN" : "arn:aws:iam::853478862498:instance-profile/dms-update"
+---
+# Data server allocation
+"@name" : ref/server/production/allocate
+"@type" : script
+"@script" : "ops/generic-allocate.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+#    "AWS_EBS" : 16
+    "AWS_INSTANCE_STORE" : "yes"
+    "AWS_INSTANCE_TYPE" : "i3.large"
+    "AWS_AMI" : "ami-405f7226"
+    "AWS_SG" : "sg-091c6a6c"   # lds-combined
+    "CHEF_ENV"  : "lds-ref-production"
+    "CHEF_ROLE" : "ea-ref-pub"
+    "AWS_IAM_ROLE_ARN" : "arn:aws:iam::853478862498:instance-profile/dms-update"
+---
+# Server configuration  
+"@name" : ref/server/configure
+"@type" : script
+"@script" : "ops/generic-configure.sh"
+"@args" :
+  - "serverDir"
+"@env"  :
+    "NRC_HOSTGROUP"  : "ref-server"
+    "NRC_SERVICESET" : "BWQ-data-ss"
+    "NRC_SERVICE"    : "check_http_ping"
+---
+# General publication processing
+"@name" : ref/postPublish
+"@type" : script
+"@script" : "ref/post-publish.sh"
+"@args" :
+    -  "servers"
+---
+# Publish state via S3 upload
+"@name" : ref/dupublishState
+"@type" : script
+"@script" : "ops/duPublishState.sh"
+"@env"  :
+    "STATE_FOLDER"  : "s3://dms-deploy/images/cde"
+"@args" : json
+---
+# initialize database from S3
+"@name" : ref/loadState
+"@type" : script
+"@script" : "dbutil/resetServerData.sh"
+"@args" :
+    -  "serverDir"

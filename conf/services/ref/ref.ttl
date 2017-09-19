@@ -1,0 +1,139 @@
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix version:  <http://purl.org/linked-data/version#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix qb:   <http://purl.org/linked-data/cube#> .
+@prefix org:  <http://www.w3.org/ns/org#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+
+@prefix dms: <http://www.epimorphics.com/public/vocabulary/dms#> .
+
+@prefix : <http://localhost/dms/metadata/ref/> .
+
+:ref a dms:DataService;
+    rdfs:label "Reference"@en;
+    rdfs:comment "Experimental reference data service"@en;
+    skos:notation "ref";
+    dms:defaultPublicationSet :production;
+    dms:publicationSet :production, :testing;
+    dms:notifyUser "dave@epimorphics.com";
+    .
+
+# -- Data components --------------------------------
+
+:dummy a dms:DataComponent;
+    rdfs:label "dummy data component"@en;
+    rdfs:comment "not used"@en;
+    skos:notation "dummy";
+    dct:isPartOf :ref;
+    dms:updatePolicy dms:multiple;
+    .
+
+# -- Publication sets --------------------------------
+
+:testing a dms:PublicationSet;
+    rdfs:label "Testing"@en;
+    skos:notation "testing";
+    dct:description "The publications released to the testing service."@en;
+    dms:publicationTier :testingPubServers;
+    dms:publishAction "default/publish";
+    dms:consolidatedUpdates false;
+    .
+    
+:production a dms:PublicationSet;
+    rdfs:label "Production"@en;
+    skos:notation "production";
+    dct:description "The publications released to the production service."@en;
+    dms:publicationTier :productionPubServers;
+    dms:publishAction "default/publish";
+    .
+
+# -- Tiers --------------------------------
+
+:testingPubServers a dms:Tier;
+    rdfs:label "Pub servers in testing"@en;
+    dct:description "Publication servers for testing testing service."@en;
+    skos:notation "pubServers";
+    dms:tierRole "pubServers";
+    dms:graphEndpoint   "http://{address}:3030/ds/data";
+    dms:updateEndpoint  "http://{address}:3030/ds/update";
+    dms:queryEndpoint  "http://{address}:3030/ds/query";
+    dms:loadBalancer  :tpubLB;
+
+    dms:externalState  true;
+    dms:loadStateAction "generic/loadState";
+    dms:catchupStateAction "generic/catchupState";
+    dms:publishStateAction "generic/publishState";
+    dms:publishAction      "generic/dupublish"; 
+
+    dms:configureAction "ref/pubserver/configure";
+    dms:allocateAction "ref/test-pubserver/allocate";
+    dms:terminateAction "ref/pubserver/terminate";
+    dms:parallelPublish true ;
+    dms:operation :upgradeOp ;
+    .
+
+:tpubLB a dms:LoadBalancer;
+    rdfs:label "Test Pub LB"@en;
+    rdfs:comment "Load balancer for the test data server tier"@en;
+    # Use only the default actions
+    .    
+
+:productionPubServers a dms:Tier;
+    rdfs:label "Pub servers in production"@en;
+    dct:description "Publication servers for production service."@en;
+    skos:notation "pubServers";
+    dms:tierRole "pubServers";
+    dms:graphEndpoint   "http://{address}:3030/ds/data";
+    dms:updateEndpoint  "http://{address}:3030/ds/update";
+    dms:queryEndpoint  "http://{address}:3030/ds/query";
+    dms:loadBalancer  :ppubLB;
+
+    dms:externalState  true;
+    dms:loadStateAction "generic/loadState";
+    dms:catchupStateAction "generic/catchupState";
+    dms:publishStateAction "generic/publishState";
+    dms:publishAction      "generic/dupublish"; 
+
+    dms:configureAction "ref/pubserver/configure";
+    dms:allocateAction "ref/production-pubserver/allocate";
+    dms:terminateAction "ref/pubserver/terminate";
+    dms:parallelPublish true ;
+    dms:operation :upgradeOp ;
+    .
+
+:ppubLB a dms:LoadBalancer;
+    rdfs:label "Test Pub LB"@en;
+    rdfs:comment "Load balancer for the test data server tier"@en;
+    # Use only the default actions
+    .    
+
+:upgradeOp
+    rdfs:label "Upgrade server";
+    dms:action "default/upgrade";
+    skos:notation "upgradeOp";
+    dms:removeFromLB true;
+    .
+
+:debugOp
+    rdfs:label "Debug op";
+    dms:action "debug/tierOp";
+    skos:notation "debugOp";
+    dms:removeFromLB true;
+    .
+
+:clearCacheOp
+    rdfs:label "Clear caches";
+    rdfs:comment "Clear the caches for this tier";
+    dms:action "ref/clearCache";
+    skos:notation "clearCacheOp";
+    dms:tierOnly true;
+.
