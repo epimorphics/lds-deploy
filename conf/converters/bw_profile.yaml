@@ -226,6 +226,7 @@ referenced :
       "<def-bwp:workingWithPrivateOwnersStatement>" : "{working_po}@en"
       "<def-bwp:macroAlgaeStatement>"               : "{macroalgae}@en"
       "<def-bwp:phytoplanktonStatement>"            : "{phytoplankton}@en"
+      "<def-bwp:synopticStatement>"                 : "{synopsis}@en"
 
 ###############################################################################
 # Template for Welsh profiles
@@ -252,6 +253,7 @@ referenced :
       "<def-bwp:workingWithPrivateOwnersStatement>" : "{w_working_po}@cy"
       "<def-bwp:macroAlgaeStatement>"               : "{w_macroalgae}@cy"
       "<def-bwp:phytoplanktonStatement>"            : "{w_phytoplankton}@cy"
+      "<def-bwp:synopticStatement>"                 : "{w_synopsis}@cy"
 
     - "@id"                    : "{$laRes}"
       "<rdfs:label>"           : "{w_la}@cy"
