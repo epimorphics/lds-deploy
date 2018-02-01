@@ -226,7 +226,11 @@ referenced :
       "<def-bwp:workingWithPrivateOwnersStatement>" : "{working_po}@en"
       "<def-bwp:macroAlgaeStatement>"               : "{macroalgae}@en"
       "<def-bwp:phytoplanktonStatement>"            : "{phytoplankton}@en"
-      "<def-bwp:synopticStatement>"                 : "{synopsis}@en"
+
+      <def-bwp:signPollutionSourcesStatement>       : "{sign_pollution_sources}@en"
+      <def-bwp:signAlgaeStatement>                  : "{sign_algae}@en"
+      <def-bwp:signPRFSummary>                      : "{sign_prf_warning_summary}@en"
+      <def-bwp:signMeasuresSummary>                 : "{sign_measures_summary}@en"
 
 ###############################################################################
 # Template for Welsh profiles
@@ -253,7 +257,11 @@ referenced :
       "<def-bwp:workingWithPrivateOwnersStatement>" : "{w_working_po}@cy"
       "<def-bwp:macroAlgaeStatement>"               : "{w_macroalgae}@cy"
       "<def-bwp:phytoplanktonStatement>"            : "{w_phytoplankton}@cy"
-      "<def-bwp:synopticStatement>"                 : "{w_synopsis}@cy"
+
+      <def-bwp:signPollutionSourcesStatement>       : "{w_sign_pollution_sources}@cy"
+      <def-bwp:signAlgaeStatement>                  : "{w_sign_algae}@cy"
+      <def-bwp:signPRFSummary>                      : "{w_sign_prf_warning_summary}@cy"
+      <def-bwp:signMeasuresSummary>                 : "{w_sign_measures_summary}@cy"
 
     - "@id"                    : "{$laRes}"
       "<rdfs:label>"           : "{w_la}@cy"
