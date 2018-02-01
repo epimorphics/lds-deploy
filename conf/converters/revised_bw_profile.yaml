@@ -48,6 +48,11 @@
 # bathing_water_controller
 # sampling_frequency
 #
+# - New for 2018 season
+# sign_pollution_sources
+# sign_algae
+# sign_prf_warning_summary
+# sign_measures_summary
 #
 ################################################################################################################
 type : Composite
@@ -321,6 +326,11 @@ referenced :
       "<def-bwp:pollutionRiskForecastStatement>"     : "{prf_warning_summary}@en"
       "<def-bwp:visiblePollutionStatement>"          : "{visual_pollution}@en"
       "<def-bwp:otherPollutionSourcesStatement>"    : "{other_sources}@en"
+# Added next four fields for 2018 season     
+      <def-bwp:signPollutionSourcesStatement>       : "{sign_pollution_sources}@en"
+      <def-bwp:signAlgaeStatement>                  : "{sign_algae}@en"
+      <def-bwp:signPRFSummary>                      : "{sign_prf_warning_summary}@en"
+      <def-bwp:signMeasuresSummary>                 : "{sign_measures_summary}@en"      
 ###############################################################################
 # Template for profiles in Welsh
 ###############################################################################
@@ -348,9 +358,14 @@ referenced :
       "<def-bwp:phytoplanktonStatement>"            : "{w_phytoplankton}@cy"
 # Added Welsh versions for good measure.
       "<def-bwp:stepChangesStatement>"              : "{w_step_changes}@cy"
-      "<def-bwp:pollutionRiskForecastStatement>"      : "{w_prf_warning_summary}@cy"
-      "<def-bwp:visiblePollutionStatement>"          : "{w_visual_pollution}@cy"
+      "<def-bwp:pollutionRiskForecastStatement>"    : "{w_prf_warning_summary}@cy"
+      "<def-bwp:visiblePollutionStatement>"         : "{w_visual_pollution}@cy"
       "<def-bwp:otherPollutionSourcesStatement>"    : "{w_other_sources}@en"
+# Added next four fields for 2018 season     
+      <def-bwp:signPollutionSourcesStatement>       : "{w_sign_pollution_sources}@cy"
+      <def-bwp:signAlgaeStatement>                  : "{w_sign_algae}@cy"
+      <def-bwp:signPRFSummary>                      : "{w_sign_prf_warning_summary}@cy"
+      <def-bwp:signMeasuresSummary>                 : "{w_sign_measures_summary}@cy"      
 
     - "@id"                    : "{$laRes}"
       "<rdfs:label>"           : "{w_la}@cy"
