@@ -46,7 +46,7 @@
 #    "AWS_EBS" : 8
     "AWS_INSTANCE_STORE" : "yes"
     "AWS_INSTANCE_TYPE" : "m3.large"
-    "AWS_AMI" : "ami-cda130ba"
+    "AWS_AMI" : "ami-6f587e1c"    # was "ami-cda130ba"
     "AWS_SG" : "sg-b815c7dd"   # lds-front-end
     "CHEF_ENV"  : "lds-bwq-test-pres"
 #    "CHEF_ENV"  : "lds-bwq-pres"
@@ -64,7 +64,7 @@
 #    "AWS_EBS" : 8
     "AWS_INSTANCE_STORE" : "yes"
     "AWS_INSTANCE_TYPE" : "m3.large"
-    "AWS_AMI" : "ami-cda130ba"
+    "AWS_AMI" : "ami-6f587e1c"   # was "ami-cda130ba"
     "AWS_SG" : "sg-b815c7dd"   # lds-front-end
     "CHEF_ENV"  : "lds-bwq-pres"
     "CHEF_ROLE" : "ea-bwq-pres-production"
