@@ -29,10 +29,58 @@
 
 # -- Data components --------------------------------
 
-:dummy a dms:DataComponent;
-    rdfs:label "dummy data component"@en;
-    rdfs:comment "not used"@en;
-    skos:notation "dummy";
+:aims a dms:DataComponent;
+    rdfs:label "AIMS data"@en;
+    rdfs:comment "AIMS data"@en;
+    skos:notation "aims";
+    dct:isPartOf :ref;
+    dms:updatePolicy dms:multiple;
+    .
+
+:bw a dms:DataComponent;
+    rdfs:label "Bathing Water data"@en;
+    rdfs:comment "Bathign Water data"@en;
+    skos:notation "bw";
+    dct:isPartOf :ref;
+    dms:updatePolicy dms:multiple;
+    .
+
+:cde a dms:DataComponent;
+    rdfs:label "CDE data"@en;
+    rdfs:comment "CDE data"@en;
+    skos:notation "cde";
+    dct:isPartOf :ref;
+    dms:updatePolicy dms:multiple;
+    .
+
+:meta a dms:DataComponent;
+    rdfs:label "Metadata"@en;
+    rdfs:comment "Dataset metadata"@en;
+    skos:notation "meta";
+    dct:isPartOf :ref;
+    dms:updatePolicy dms:multiple;
+    .
+
+:stations a dms:DataComponent;
+    rdfs:label "Stations data"@en;
+    rdfs:comment "Telementry data"@en;
+    skos:notation "stations";
+    dct:isPartOf :ref;
+    dms:updatePolicy dms:multiple;
+    .
+
+:vocab a dms:DataComponent;
+    rdfs:label "Vocabularies"@en;
+    rdfs:comment "Vocabularies"@en;
+    skos:notation "vocab";
+    dct:isPartOf :ref;
+    dms:updatePolicy dms:multiple;
+    .
+
+:wims a dms:DataComponent;
+    rdfs:label "WIMS data"@en;
+    rdfs:comment "Water quality sampling poitndata"@en;
+    skos:notation "sims";
     dct:isPartOf :ref;
     dms:updatePolicy dms:multiple;
     .
@@ -78,7 +126,8 @@
     dms:allocateAction "ref/server/allocate";
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;
-    dms:operation :upgradeOp ;
+    dms:activateAction "ref/webSyncServer";
+    dms:operation :upgradeOp, :webSyncOp; ;
     .
 
 :tpubLB a dms:LoadBalancer;
@@ -107,7 +156,8 @@
     dms:allocateAction "ref/server/production/allocate";
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;
-    dms:operation :upgradeOp ;
+    dms:activateAction "ref/webSyncServer";
+    dms:operation :upgradeOp, :webSyncOp; ;
     .
 
 :ppubLB a dms:LoadBalancer;
@@ -137,3 +187,11 @@
     skos:notation "clearCacheOp";
     dms:tierOnly true;
 .
+
+:webSyncOp
+    rdfs:label "Web sync";
+    rdfs:comment "Synchronize shared web content";
+    dms:action "ref/webSync";
+    skos:notation "webSyncOp";
+    dms:tierOnly true;
+    .

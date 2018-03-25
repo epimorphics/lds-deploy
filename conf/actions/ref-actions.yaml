@@ -63,3 +63,17 @@
 "@script" : "dbutil/resetServerData.sh"
 "@args" :
     -  "serverDir"
+---
+# Synchronize web content - whole tier
+"@name" : ref/webSync
+"@type" : script
+"@script" : "ref/web-sync.sh"
+"@args" :
+  - "tier"
+---
+# Synchronize web content - single server
+"@name" : ref/webSyncServer
+"@type" : script
+"@script" : "ref/web-sync-server.sh"
+"@args" :
+  - "serverDir"
