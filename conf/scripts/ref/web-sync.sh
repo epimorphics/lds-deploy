@@ -11,7 +11,7 @@ set -o errexit
 readonly tierDir="$1"
 
 echo "Synchronizing web content, including source/dump files"
-cd $tierDir/../../Web
+cd $tierDir/../../Web/asset-management/assets
 for server in $tierDir/servers/* 
 do
     if grep -qv Terminated $server/status 
@@ -19,6 +19,6 @@ do
         FLAGS="$SSH_FLAGS -i /var/opt/dms/.ssh/lds.pem"
         echo "Sync to $server"
         IP=$( jq -r .address "$server/config.json" )
-        rsync -a --delete -e "ssh $FLAGS" * ubuntu@$IP:/var/www/ref/html
+        rsync -a --delete -e "ssh $FLAGS" * ubuntu@$IP:/var/www/ref/html/asset-management/assets
     fi
 done
