@@ -35,4 +35,7 @@ checkAll() {
   check "Postgresql has asset data"          5 $(sqlCheck)
 }
 
+# Good luck pause for services to start up
+sleep 8s
+
 checkAll
