@@ -127,7 +127,7 @@
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;
     dms:activateAction "ref/webSyncServer";
-    dms:operation :upgradeOp, :webSyncOp; ;
+    dms:operation :upgradeOp, :webSyncOp, :testServerOp ;
     .
 
 :tpubLB a dms:LoadBalancer;
@@ -157,7 +157,7 @@
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;
     dms:activateAction "ref/webSyncServer";
-    dms:operation :upgradeOp, :webSyncOp; ;
+    dms:operation :upgradeOp, :webSyncOp, :testServerOp ;
     .
 
 :ppubLB a dms:LoadBalancer;
@@ -194,4 +194,11 @@
     dms:action "ref/webSync";
     skos:notation "webSyncOp";
     dms:tierOnly true;
+    .
+
+:testServerOp
+    rdfs:label "Integration test";
+    rdfs:comment "Run integration test defined for this server class";
+    dms:action "default/testServer";
+    skos:notation "testServerOp";
     .
