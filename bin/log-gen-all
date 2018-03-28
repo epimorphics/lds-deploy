@@ -12,10 +12,11 @@ cd $WORK_DIR
 
 printf -v month "%02d" $(( 10#$(date +%m) - 1 ))
 
-/opt/dms/bin/log-gen s3://dms-logs/bwq/production/presServers environment-access.log $month
-/opt/dms/bin/log-gen s3://dms-logs/floods/production/productionServers flood-monitoring-access.log $month
-/opt/dms/bin/log-gen s3://dms-logs/epr/production/productionServers epr-access.log $month
-/opt/dms/bin/log-gen s3://dms-logs/wims/production/productionServers wims-access.log $month
-/opt/dms/bin/log-gen s3://dms-logs/cde/production/productionServers environment.dgu-cde-access.log $month
+/opt/dms/bin/log-gen s3://dms-logs/bwq/production/presServers          environment-access.log         $month
+/opt/dms/bin/log-gen s3://dms-logs/floods/production/productionServers flood-monitoring-access.log    $month
+/opt/dms/bin/log-gen s3://dms-logs/epr/production/productionServers    epr-access.log                 $month
+/opt/dms/bin/log-gen s3://dms-logs/wims/production/productionServers   wims-access.log                $month
+/opt/dms/bin/log-gen s3://dms-logs/cde/production/productionServers    environment.dgu-cde-access.log $month
+/opt/dms/bin/log-gen s3://dms-logs/ref/production/pubServers           environment.dgu-ref-access.log $month
 
 rm *
