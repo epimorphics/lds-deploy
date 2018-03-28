@@ -77,3 +77,10 @@
 "@script" : "ref/web-sync-server.sh"
 "@args" :
   - "serverDir"
+---
+# Synchronize web content - single server
+"@name" : ref/updateGeoserver
+"@type" : script
+"@script" : "ref/update-geoserver.sh"
+"@args" :
+  - "serverDir"
