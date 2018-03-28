@@ -204,7 +204,7 @@
     .
 
 :updateGeoserverOp
-    rdfs:label "Upgrade server";
+    rdfs:label "Update geoserver config";
     dms:action "ref/updateGeoserver";
     skos:notation "updateGeoserverOp";
     dms:removeFromLB true;
