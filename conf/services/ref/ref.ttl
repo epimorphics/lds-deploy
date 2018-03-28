@@ -127,7 +127,7 @@
     dms:terminateAction "default/terminate";
     dms:parallelPublish true ;
     dms:activateAction "ref/webSyncServer";
-    dms:operation :upgradeOp, :webSyncOp, :testServerOp. :updateGeoserverOp ;
+    dms:operation :upgradeOp, :webSyncOp, :testServerOp, :updateGeoserverOp ;
     .
 
 :tpubLB a dms:LoadBalancer;
