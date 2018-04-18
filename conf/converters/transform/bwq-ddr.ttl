@@ -1,0 +1,126 @@
+@prefix def-dclg: <http://opendatacommunities.org/def/local-government/> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix def-geom: <http://location.data.gov.uk/def/common/Geometry/> .
+@prefix def-sp: <http://location.data.gov.uk/def/ef/SamplingPoint/> .
+@prefix def-cc12: <http://environment.data.gov.uk/def/bwq-cc-2012/> .
+@prefix def-bwp: <http://environment.data.gov.uk/def/bathing-water-profile/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix spatialrelations: <http://data.ordnancesurvey.co.uk/ontology/spatialrelations/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix def-bwq: <http://environment.data.gov.uk/def/bathing-water-quality/> .
+@prefix geo:   <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix chterms: <http://business.data.gov.uk/companies/def/terms/> .
+@prefix def-ddr: <http://environment.data.gov.uk/def/dedesignation-reason/> .
+@prefix qb:    <http://purl.org/linked-data/cube#> .
+@prefix dgu:   <http://reference.data.gov.uk/def/reference/> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix reg:   <http://purl.org/linked-data/registry#> .
+@prefix wqa-sp: <http://environment.data.gov.uk/water-quality/def/sampling-point/> .
+@prefix def-incident-type: <http://environment.data.gov.uk/def/incident-type/> .
+@prefix def-stp: <http://environment.data.gov.uk/def/bwq-stp/> .
+@prefix admingeo: <http://data.ordnancesurvey.co.uk/ontology/admingeo/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix void:  <http://rdfs.org/ns/void#> .
+@prefix onsadmingeo: <http://statistics.data.gov.uk/def/administrative-geography/> .
+@prefix org:   <http://www.w3.org/ns/org#> .
+@prefix def-ver: <http://environment.data.gov.uk/def/version/> .
+@prefix so-sp: <http://location.data.gov.uk/so/ef/SamplingPoint/bwsp.eaew/> .
+@prefix def-zoi: <http://location.data.gov.uk/def/ef/ZoneOfInfluence/> .
+@prefix id-bw: <http://environment.data.gov.uk/id/bathing-water/> .
+@prefix intervals: <http://reference.data.gov.uk/def/intervals/> .
+@prefix def-som: <http://environment.data.gov.uk/def/bwq-som/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix def-feat: <http://location.data.gov.uk/def/ef/BathingWaterProfileFeature/> .
+@prefix interval: <http://reference.data.gov.uk/def/intervals/> .
+@prefix geometry: <http://data.ordnancesurvey.co.uk/ontology/geometry/> .
+@prefix geowgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix time:  <http://www.w3.org/2006/time#> .
+@prefix status: <http://reference.data.gov.uk/def/status/> .
+@prefix def-bw: <http://environment.data.gov.uk/def/bathing-water/> .
+
+def-ddr:CP  a           skos:Concept , def-ddr:DedesignationReasonCode ;
+        rdfs:label      "Classified poor"@en ;
+        skos:broader    def-ddr:PAAB ;
+        skos:inScheme   def-ddr:DedesignationReasonScheme ;
+        skos:notation   "CP" ;
+        skos:prefLabel  "Classified poor"@en .
+
+def-ddr:PAAB-TI  a         skos:Concept , def-ddr:DedesignationReasonCode ;
+        rdfs:label         "Permanent advice against bathing, Technically infeasible"@en ;
+        skos:inScheme      def-ddr:DedesignationReasonScheme ;
+        skos:notation      "PAAB-TI" ;
+        skos:prefLabel     "Permanent advice against bathing, Technically infeasible"@en ;
+        skos:topConceptOf  def-ddr:DedesignationReasonScheme .
+
+def-ddr:PAAB-DEXP  a       skos:Concept , def-ddr:DedesignationReasonCode ;
+        rdfs:label         "Permanent advice against bathing, Disproportionately expensive"@en ;
+        skos:inScheme      def-ddr:DedesignationReasonScheme ;
+        skos:notation      "PAAB-DEXP" ;
+        skos:prefLabel     "Permanent advice against bathing, Disproportionately expensive"@en ;
+        skos:topConceptOf  def-ddr:DedesignationReasonScheme .
+
+def-ddr:DedesignationReasonScheme
+        a                   skos:ConceptScheme ;
+        rdfs:label          "A SKOS ConceptScheme for bathing water dedesignation coded reasons."@en ;
+        skos:hasTopConcept  def-ddr:PAAB-TI , def-ddr:PAAB-DEXP , def-ddr:PAAB-CP , def-ddr:PAAB , def-ddr:LOW , def-ddr:CBO .
+
+def-ddr:DEXP  a         skos:Concept , def-ddr:DedesignationReasonCode ;
+        rdfs:label      "Disproportionately expensive"@en ;
+        skos:broader    def-ddr:PAAB ;
+        skos:inScheme   def-ddr:DedesignationReasonScheme ;
+        skos:notation   "DEXP" ;
+        skos:prefLabel  "Disproportionately expensive"@en .
+
+def-ddr:PAAB-CP  a         skos:Concept , def-ddr:DedesignationReasonCode ;
+        rdfs:label         "Permanent advice against bathing, Classified poor"@en ;
+        skos:inScheme      def-ddr:DedesignationReasonScheme ;
+        skos:notation      "PAAB-CP" ;
+        skos:prefLabel     "Permanent advice against bathing, Classified poor"@en ;
+        skos:topConceptOf  def-ddr:DedesignationReasonScheme .
+
+def-ddr:dedesignationReasonText
+        a            owl:DatatypeProperty ;
+        rdfs:domain  def-bw:BathingWater ;
+        rdfs:label   "A property for associating a dedesignated bathing-water with a narrative reason for its dedesignation."@en ;
+        rdfs:range   def-ddr:DedesignationReasonCode .
+
+def-ddr:PAAB  a            def-ddr:DedesignationReasonCode , skos:Concept ;
+        rdfs:label         "Permanent advice against bathing"@en ;
+        skos:inScheme      def-ddr:DedesignationReasonScheme ;
+        skos:narrower      def-ddr:DEXP , def-ddr:CP , def-ddr:TI ;
+        skos:notation      "PAAB" ;
+        skos:prefLabel     "Permanent advice against bathing"@en ;
+        skos:topConceptOf  def-ddr:DedesignationReasonScheme .
+
+def-ddr:CBO  a             skos:Concept , def-ddr:DedesignationReasonCode ;
+        rdfs:label         "De-listed access closed by private owner"@en ;
+        skos:inScheme      def-ddr:DedesignationReasonScheme ;
+        skos:notation      "CBO" ;
+        skos:prefLabel     "De-listed access closed by private owner"@en ;
+        skos:topConceptOf  def-ddr:DedesignationReasonScheme .
+
+def-ddr:dedesignationReasonCode
+        a            owl:ObjectProperty ;
+        rdfs:domain  def-bw:BathingWater ;
+        rdfs:label   "A property for associating a dedesignated bathing-water with a coded reason for its dedesignation."@en ;
+        rdfs:range   def-ddr:DedesignationReasonCode .
+
+def-ddr:DedesignationReasonCode
+        a                owl:Class ;
+        rdfs:label       "A subclass of SKOS Concept for bathing water dedesignation coded reasons."@en ;
+        rdfs:subClassOf  skos:Concept .
+
+def-ddr:LOW  a             skos:Concept , def-ddr:DedesignationReasonCode ;
+        rdfs:label         "De-listed low usage for bathing"@en ;
+        skos:inScheme      def-ddr:DedesignationReasonScheme ;
+        skos:notation      "LOW" ;
+        skos:prefLabel     "De-listed low usage for bathing"@en ;
+        skos:topConceptOf  def-ddr:DedesignationReasonScheme .
+
+def-ddr:TI  a           skos:Concept , def-ddr:DedesignationReasonCode ;
+        rdfs:label      "Technically infeasible"@en ;
+        skos:broader    def-ddr:PAAB ;
+        skos:inScheme   def-ddr:DedesignationReasonScheme ;
+        skos:notation   "TI" ;
+        skos:prefLabel  "Technically infeasible"@en .
