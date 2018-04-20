@@ -127,7 +127,7 @@
                      return county ;                 
                  } }",
         },{
-            r_ddr : "<{empty(de_des_year)||empty(de_des_desc) ? null : de_des_desc.split(',').map('bwq-ddr-label-concept')}>"
+            r_ddr : "<{empty(de_des_year)||empty(de_des_desc) ? null : de_des_desc.map('bwq-ddr-label-concept')}>"
         },{
             ddr_check : "{!empty(de_des_year) && !empty(de_des_desc) && empty(r_ddr) ? print(value('WARNING : Failed to resolve de-designation code for : ').append(de_des_desc)) : null }"
         }

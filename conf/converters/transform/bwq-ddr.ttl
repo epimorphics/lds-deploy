@@ -39,45 +39,31 @@
 @prefix status: <http://reference.data.gov.uk/def/status/> .
 @prefix def-bw: <http://environment.data.gov.uk/def/bathing-water/> .
 
-def-ddr:CP  a           skos:Concept , def-ddr:DedesignationReasonCode ;
-        rdfs:label      "Classified poor"@en ;
+def-ddr:PAAB-TI  a      skos:Concept , def-ddr:DedesignationReasonCode ;
+        rdfs:label      "Permanent advice against bathing, Technically infeasible"@en ;
         skos:broader    def-ddr:PAAB ;
         skos:inScheme   def-ddr:DedesignationReasonScheme ;
-        skos:notation   "CP" ;
-        skos:prefLabel  "Classified poor"@en .
+        skos:notation   "PAAB-TI" ;
+        skos:prefLabel  "Permanent advice against bathing, Technically infeasible"@en .
 
-def-ddr:PAAB-TI  a         skos:Concept , def-ddr:DedesignationReasonCode ;
-        rdfs:label         "Permanent advice against bathing, Technically infeasible"@en ;
-        skos:inScheme      def-ddr:DedesignationReasonScheme ;
-        skos:notation      "PAAB-TI" ;
-        skos:prefLabel     "Permanent advice against bathing, Technically infeasible"@en ;
-        skos:topConceptOf  def-ddr:DedesignationReasonScheme .
-
-def-ddr:PAAB-DEXP  a       skos:Concept , def-ddr:DedesignationReasonCode ;
-        rdfs:label         "Permanent advice against bathing, Disproportionately expensive"@en ;
-        skos:inScheme      def-ddr:DedesignationReasonScheme ;
-        skos:notation      "PAAB-DEXP" ;
-        skos:prefLabel     "Permanent advice against bathing, Disproportionately expensive"@en ;
-        skos:topConceptOf  def-ddr:DedesignationReasonScheme .
+def-ddr:PAAB-DEXP  a    skos:Concept , def-ddr:DedesignationReasonCode ;
+        rdfs:label      "Permanent advice against bathing, Disproportionately expensive"@en ;
+        skos:broader    def-ddr:PAAB ;
+        skos:inScheme   def-ddr:DedesignationReasonScheme ;
+        skos:notation   "PAAB-DEXP" ;
+        skos:prefLabel  "Permanent advice against bathing, Disproportionately expensive"@en .
 
 def-ddr:DedesignationReasonScheme
         a                   skos:ConceptScheme ;
         rdfs:label          "A SKOS ConceptScheme for bathing water dedesignation coded reasons."@en ;
-        skos:hasTopConcept  def-ddr:PAAB-TI , def-ddr:PAAB-DEXP , def-ddr:PAAB-CP , def-ddr:PAAB , def-ddr:LOW , def-ddr:CBO .
+        skos:hasTopConcept  def-ddr:PAAB , def-ddr:LOW , def-ddr:CBO .
 
-def-ddr:DEXP  a         skos:Concept , def-ddr:DedesignationReasonCode ;
-        rdfs:label      "Disproportionately expensive"@en ;
+def-ddr:PAAB-CP  a      skos:Concept , def-ddr:DedesignationReasonCode ;
+        rdfs:label      "Permanent advice against bathing, Classified poor"@en ;
         skos:broader    def-ddr:PAAB ;
         skos:inScheme   def-ddr:DedesignationReasonScheme ;
-        skos:notation   "DEXP" ;
-        skos:prefLabel  "Disproportionately expensive"@en .
-
-def-ddr:PAAB-CP  a         skos:Concept , def-ddr:DedesignationReasonCode ;
-        rdfs:label         "Permanent advice against bathing, Classified poor"@en ;
-        skos:inScheme      def-ddr:DedesignationReasonScheme ;
-        skos:notation      "PAAB-CP" ;
-        skos:prefLabel     "Permanent advice against bathing, Classified poor"@en ;
-        skos:topConceptOf  def-ddr:DedesignationReasonScheme .
+        skos:notation   "PAAB-CP" ;
+        skos:prefLabel  "Permanent advice against bathing, Classified poor"@en .
 
 def-ddr:dedesignationReasonText
         a            owl:DatatypeProperty ;
@@ -88,7 +74,7 @@ def-ddr:dedesignationReasonText
 def-ddr:PAAB  a            def-ddr:DedesignationReasonCode , skos:Concept ;
         rdfs:label         "Permanent advice against bathing"@en ;
         skos:inScheme      def-ddr:DedesignationReasonScheme ;
-        skos:narrower      def-ddr:DEXP , def-ddr:CP , def-ddr:TI ;
+        skos:narrower      def-ddr:PAAB-CP , def-ddr:PAAB-TI , def-ddr:PAAB-DEXP ;
         skos:notation      "PAAB" ;
         skos:prefLabel     "Permanent advice against bathing"@en ;
         skos:topConceptOf  def-ddr:DedesignationReasonScheme .
@@ -117,10 +103,3 @@ def-ddr:LOW  a             skos:Concept , def-ddr:DedesignationReasonCode ;
         skos:notation      "LOW" ;
         skos:prefLabel     "De-listed low usage for bathing"@en ;
         skos:topConceptOf  def-ddr:DedesignationReasonScheme .
-
-def-ddr:TI  a           skos:Concept , def-ddr:DedesignationReasonCode ;
-        rdfs:label      "Technically infeasible"@en ;
-        skos:broader    def-ddr:PAAB ;
-        skos:inScheme   def-ddr:DedesignationReasonScheme ;
-        skos:notation   "TI" ;
-        skos:prefLabel  "Technically infeasible"@en .
