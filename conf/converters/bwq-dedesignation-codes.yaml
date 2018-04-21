@@ -1,0 +1,56 @@
+name : bwq-dedesignation-codes.yaml
+type: Composite
+
+requiredColumns :
+- parent_notation
+- notation
+- de_des_desc
+
+bind:
+- r_ddf    : "<def-ddr:{notation}>"
+  r_parent : "<def-ddr:{parent_notation}>"
+  r_scheme : "<def-ddr:DedesignationReasonScheme>"
+  
+
+oneOffs :
+- name : bwq-dedesignation-code-class
+  "@id"               : "<def-ddr:DedesignationReasonCode>"
+  "<rdf:type>"        : "<owl:Class>"
+  "<rdfs:label>"      : "A subclass of SKOS Concept for bathing water dedesignation coded reasons.@en"
+  "<rdfs:subClassOf>" : "<skos:Concept>"
+
+- name  : bwq-dedesignation-code-prop
+  "@id"          : "<def-ddr:dedesignationReasonCode>"
+  "<rdf:type>"   : "<owl:ObjectProperty>"
+  "<rdfs:label>" : "A property for associating a dedesignated bathing-water with a coded reason for its dedesignation.@en"
+  "<rdfs:range>" : "<def-ddr:DedesignationReasonCode>"
+  "<rdfs:domain>" : "<def-bw:BathingWater>"
+  
+- name  : bwq-dedesignation-text-prop
+  "@id"          : "<def-ddr:dedesignationReasonText>"
+  "<rdf:type>"   : "<owl:DatatypeProperty>"
+  "<rdfs:label>" : "A property for associating a dedesignated bathing-water with a narrative reason for its dedesignation.@en"
+  "<rdfs:range>" : "<def-ddr:DedesignationReasonCode>"
+  "<rdfs:domain>" : "<def-bw:BathingWater>"
+
+- name  : bwq-dedesignation-code-scheme
+  "@id" : "<{r_scheme}>"
+  "<rdf:type>" : "<skos:ConceptScheme>"
+  "<rdfs:label>" : "A SKOS ConceptScheme for bathing water dedesignation coded reasons.@en"
+  
+
+templates :
+- name : bwq-dedesignation-code
+  "@id": "<{r_ddf}>"
+  "<rdf:type>" : 
+                           - "<skos:Concept>"
+                           - "<def-ddr:DedesignationReasonCode>"
+  "<rdfs:label>"          : "{de_des_desc}@en"
+  "<skos:prefLabel>"      : "{de_des_desc}@en"
+  "<skos:notation>"       : "{notation}"
+  "<skos:broader>"        : "<{r_parent}>"
+  "^<skos:narrower>"      : "<{r_parent}>"
+  "<skos:topConceptOf>"   : "<{empty(r_parent) ? r_scheme : null}>"
+  "^<skos:hasTopConcept>" : "<{empty(r_parent) ? r_scheme : null}>"
+  "<skos:inScheme>"       : "<{r_scheme}>"
+ 

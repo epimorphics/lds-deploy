@@ -25,6 +25,8 @@
         "ea_region" #,
 #        "watercompany",
 #        "companieshouseid"
+#        "de_des_desc"
+#        "de_des_reason"
     ],
     "bind" : [
         {
@@ -59,7 +61,7 @@
             "$altBwId" : "{description_english.replaceAll('[-#$&?]+',' ').replaceAll('[\\'`(),]','').trim().replaceAll('\\s+','-').toLowerCase()}",
             "$s_bwt"   : "{bathing_water_type.toLowerCase()}",
             "$eaRegion" : "{ea_region.map('ea-region')}",
-            "$sediment" : "{sediment_types.toLowerCase().replaceAll('\\\\sand\\\\s',',')}",
+            "$sediment" : "{empty(sediment_types) ? null : sediment_types.toLowerCase().replaceAll('\\\\sand\\\\s',',')}",
             "$srsDim"  : "2",
             "$srs"     : "http://www.opengis.net/def/crs/EPSG/0/27700",
             "$EA"      : "http://reference.data.gov.uk/id/public-body/environment-agency",
@@ -111,7 +113,10 @@
              r_water_company_regitem   : "http://environment.data.gov.uk/registry/water-companies/{companieshouseid}",
         },{
              r_county               : 
-                   "{ { var r_district  = os_uri.asRDFNode().fetch('rdf:type','admingeo:inCounty', 'admingeo:gssCode') ;
+                   "{ {
+                     if(empty(os_uri))
+                       return null ; 
+                     var r_district  = os_uri.asRDFNode().fetch('rdf:type','admingeo:inCounty', 'admingeo:gssCode') ;
                      var inCounty    = r_district.getPropertyValue('admingeo:inCounty') ;
                      var d_label     = r_district.getURI().map('bwq-os-admingeo-labels','label')
                      var county = 
@@ -121,6 +126,10 @@
                      county != null ? county.getURI().fetch('rdf:type') : null ;
                      return county ;                 
                  } }",
+        },{
+            r_ddr : "<{empty(de_des_year)||empty(de_des_desc) ? null : de_des_desc.map('bwq-ddr-label-concept')}>"
+        },{
+            ddr_check : "{!empty(de_des_year) && !empty(de_des_desc) && empty(r_ddr) ? print(value('WARNING : Failed to resolve de-designation code for : ').append(de_des_desc)) : null }"
         }
     ],
     "oneOffs" : [
@@ -279,6 +288,11 @@
         #     "key"        : "code",
         #     "value"      : "region"
         # },
+        {   name         : bwq-ddr-label-concept,
+            "sourceType" : "RDF",
+            "source"     : "transform/bwq-ddr.ttl",
+            "key"        : "rdfs:label"
+        },
         {
             "name"       : "bwq-sediment",
             "sourceType" : "CSV",
@@ -347,8 +361,9 @@
             "<def-bw:yearDesignated>"                  : "{empty(des_year)    ? null : des_year.asDate('xsd:gYear').referenceTime()}",
             "<def-bw:yearDedesignated>"                : "{empty(de_des_year) ? null : de_des_year.asDate('xsd:gYear').referenceTime()}",
             "<def-bw:regionalOrganization>"            : "<{$eaRegion}>",
-            "<def-bw:sedimentTypesPresent>"            : "<{$sediment.split(',').map('bwq-sediment')}>",
-            "<def-bw:waterQualityImpactedByHeavyRain>" : "{impact_from_heavy_rainfall.toLowerCase()=='yes' ? true :
+            "<def-bw:sedimentTypesPresent>"            : "<{empty($sediment) ? null : $sediment.split(',').map('bwq-sediment')}>",
+            "<def-bw:waterQualityImpactedByHeavyRain>" : "{empty(impact_from_heavy_rainfall) ? null :
+                                                           impact_from_heavy_rainfall.toLowerCase()=='yes' ? true :
                                                            impact_from_heavy_rainfall.toLowerCase()=='no'  ? false : null }",
             "<def-geom:envelope>"                      : "<{missing_bb_coords ? null : $so_env.append('/').append($eubwid).append(':1')}>",
             "<def-zoi:zoneOfInfluence>"                : "<{$so_zoi}/{$eubwid}:1>",
@@ -369,8 +384,12 @@
  #                } }",
  
              "<onsadmingeo:county>"                   : "<{r_county}>",
-             "<def-bw:appointedSewerageUndertaker>"   : "<{r_water_company}>"
-                                                                                                                 
+             "<def-bw:appointedSewerageUndertaker>"   : "<{r_water_company}>",
+ #
+ # 2018 Additions of  dedesignation reasons
+ #
+             "<def-ddr:dedesignationReasonCode>"      : "<{ empty(de_des_year)? null : r_ddr}>",
+             "<def-ddr:dedesignationReasonText>"       : "{ empty(de_des_year)? null : de_des_reason}@en"                                                                                                                 
         },
     #############################################################################################################################
     # District and County Labels
