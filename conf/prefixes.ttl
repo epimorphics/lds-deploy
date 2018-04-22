@@ -31,6 +31,8 @@
 @prefix def-som: <http://environment.data.gov.uk/def/bwq-som/> .
 @prefix def-zoi: <http://location.data.gov.uk/def/ef/ZoneOfInfluence/> .
 @prefix def-cc12: <http://environment.data.gov.uk/def/bwq-cc-2012/> .
+@prefix def-ddr: <http://environment.data.gov.uk/def/dedesignation-reason/> .
+
 @prefix id-bw:   <http://environment.data.gov.uk/id/bathing-water/> .
 @prefix dgu:     <http://reference.data.gov.uk/def/reference/> .
 @prefix status:  <http://reference.data.gov.uk/def/status/> .
