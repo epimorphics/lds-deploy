@@ -39,14 +39,16 @@
 @prefix status: <http://reference.data.gov.uk/def/status/> .
 @prefix def-bw: <http://environment.data.gov.uk/def/bathing-water/> .
 
-def-ddr:PAAB-TI  a      def-ddr:DedesignationReasonCode , skos:Concept ;
+def-ddr:PAAB-TI  a      skos:Concept , def-ddr:DedesignationReasonCode ;
+        rdfs:comment    "Permanent advice against bathing is in place at this water. It is no longer designated as a bathing water under the Bathing Water Regulations 2013 because it is infeasible to meet the minimum, legally required bathing water quality standard at this location."@en ;
         rdfs:label      "Permanent advice against bathing, Technically infeasible"@en ;
         skos:broader    def-ddr:PAAB ;
         skos:inScheme   def-ddr:DedesignationReasonScheme ;
         skos:notation   "PAAB-TI" ;
         skos:prefLabel  "Permanent advice against bathing, Technically infeasible"@en .
 
-def-ddr:PAAB-DEXP  a    def-ddr:DedesignationReasonCode , skos:Concept ;
+def-ddr:PAAB-DEXP  a    skos:Concept , def-ddr:DedesignationReasonCode ;
+        rdfs:comment    "Permanent advice against bathing is in place at this water.\nIt is no longer designated as a bathing water under the Bathing Water Regulations 2013 because the costs of meeting the minimum, legally required bathing water quality standard are disproportionately expensive."@en ;
         rdfs:label      "Permanent advice against bathing, Disproportionately expensive"@en ;
         skos:broader    def-ddr:PAAB ;
         skos:inScheme   def-ddr:DedesignationReasonScheme ;
@@ -58,7 +60,8 @@ def-ddr:DedesignationReasonScheme
         rdfs:label          "A SKOS ConceptScheme for bathing water dedesignation coded reasons."@en ;
         skos:hasTopConcept  def-ddr:PAAB , def-ddr:LOW , def-ddr:CBO .
 
-def-ddr:PAAB-CP  a      def-ddr:DedesignationReasonCode , skos:Concept ;
+def-ddr:PAAB-CP  a      skos:Concept , def-ddr:DedesignationReasonCode ;
+        rdfs:comment    "Permanent advice against bathing is in place at this water. It is no longer designated as a bathing water under the Bathing Water Regulations 2013 because the water has been classified as poor for five consecutive years."@en ;
         rdfs:label      "Permanent advice against bathing, Classified poor"@en ;
         skos:broader    def-ddr:PAAB ;
         skos:inScheme   def-ddr:DedesignationReasonScheme ;
@@ -80,7 +83,7 @@ def-ddr:PAAB  a            def-ddr:DedesignationReasonCode , skos:Concept ;
         skos:prefLabel     "Permanent advice against bathing"@en ;
         skos:topConceptOf  def-ddr:DedesignationReasonScheme .
 
-def-ddr:CBO  a             def-ddr:DedesignationReasonCode , skos:Concept ;
+def-ddr:CBO  a             skos:Concept , def-ddr:DedesignationReasonCode ;
         rdfs:label         "De-listed access closed by private owner"@en ;
         skos:inScheme      def-ddr:DedesignationReasonScheme ;
         skos:notation      "CBO" ;
@@ -100,7 +103,7 @@ def-ddr:DedesignationReasonCode
         rdfs:label       "DedesignationReasonCode" ;
         rdfs:subClassOf  skos:Concept .
 
-def-ddr:LOW  a             def-ddr:DedesignationReasonCode , skos:Concept ;
+def-ddr:LOW  a             skos:Concept , def-ddr:DedesignationReasonCode ;
         rdfs:label         "De-listed low usage for bathing"@en ;
         skos:inScheme      def-ddr:DedesignationReasonScheme ;
         skos:notation      "LOW" ;
