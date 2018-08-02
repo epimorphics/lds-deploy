@@ -179,7 +179,7 @@
  # @@TODO - Still required?
  # Inject the name of the sample point in the result file to simplify preview generation                    
  ################################################################################################################################
-                    "rbwd-sa-bathing-water"
+ #                   "rbwd-sa-bathing-water"
                    ] ,
     "referenced" : [
 #################################################################################################################################
@@ -266,11 +266,11 @@
         "<qb:sliceStructure>"              : "<def-bwq:bySamplingPointYearKey>",
         "<qb:observation>"                 : "<{$observation}>"
       },
-      { "name"                             : "rbwd-sa-bathing-water",
-        "@id"                              : "<{$bwspid.map('bwq-sp-to-bw')}>",
-        "<rdf:type>"                       : "<def-bw:BathingWater>",
-        "<rdfs:label>"                     : "{$bwLabel}"
-      },
+#      { "name"                             : "rbwd-sa-bathing-water",
+#        "@id"                              : "<{$bwspid.map('bwq-sp-to-bw')}>",
+#        "<rdf:type>"                       : "<def-bw:BathingWater>",
+#        "<rdfs:label>"                     : "{$bwLabel}"
+#      },
       { "name"                             : "rbwd-sa-sample-date-during",
         "@id"                              : "<{$r_sampleDate}>",
         "<time:intervalDuring>"            : [ "<{$r_sampleYear}>","<{$r_sampleWeek}>" ]
